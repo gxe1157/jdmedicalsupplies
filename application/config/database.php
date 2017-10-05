@@ -75,17 +75,17 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	// 'hostname' => 'localhost',
-	// 'username' => 'root',
-	// 'password' => '',
-	// 'database' => 'medicalsupplies',
-	// 'dbdriver' => 'MySQLi',
-
 	'hostname' => 'localhost',
-	'username' => 'jdmedica_admin20',
-	'password' => 'Smokey{2012}',
+	'username' => 'root',
+	'password' => '',
 	'database' => 'jdmedica_medicalsupplies',
-	'dbdriver' => 'mysqli',	
+	'dbdriver' => 'MySQLi',
+
+	// 'hostname' => 'localhost',
+	// 'username' => 'jdmedica_admin20',
+	// 'password' => 'Smokey{2012}',
+	// 'database' => 'jdmedica_medicalsupplies',
+	// 'dbdriver' => 'mysqli',	
 
 	'dbprefix' => '',
 	'pconnect' => FALSE,
