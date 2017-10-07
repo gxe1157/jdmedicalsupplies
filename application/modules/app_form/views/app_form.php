@@ -35,26 +35,22 @@ hr.draw_ln{
 
 
       <div class="col-md-8 offset-md-1" >
-          <center><h2 class="blue-text">Open A Business Account</h2></center>
-                    <div class="row" style="border: 0px red solid; display: block;">
-            <div class="col-md-4"></div>
-            <div class="col-md-5 well">
-                <p>Medical Supplies</p>
-                <ul>
-                <li>Ostomy Supplies</li>
-                <li>Diabetic Supplies</li>
-                <li>All Wound Care Products</li>
-                <li>Adult Incontinence Products</li>
-                <li>Chux Pads</li>
-                <li>Rubber Gloves</li>
-                <li>Medical Sheet Products</li>
-                <li>Medical Cleaning Products</li>
-                </ul>
-                <p>And More!</p>
+           <h2 class="blue-text">Open A Business Account</h2>
+                <div class="well" style="margin: 0 auto; width: 260px;">
+                  <p>Medical Supplies</p>
+                  <ul>
+                  <li>Ostomy Supplies</li>
+                  <li>Diabetic Supplies</li>
+                  <li>All Wound Care Products</li>
+                  <li>Adult Incontinence Products</li>
+                  <li>Chux Pads</li>
+                  <li>Rubber Gloves</li>
+                  <li>Medical Sheet Products</li>
+                  <li>Medical Cleaning Products</li>
+                  </ul>
+                  <p>And More!</p>
 
-            </div>
-
-          </div>
+                </div>
                 <h5 style="text-align:center;">Complete this form and submit to have a representative contact you.</h5>
           
           <p class="blue-text"> Fields marked with an asterisk (*) are required. </p>          

@@ -6,8 +6,8 @@ class MY_Controller extends MX_Controller
 function __construct()
 {
   parent::__construct();
-  $this->load->helper('lib/lib_helper');
-  
+
+  $this->load->module('site_security');  
   $this->load->library('form_validation');
   $this->form_validation->CI =& $this;
 

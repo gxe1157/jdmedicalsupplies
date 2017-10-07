@@ -64,13 +64,14 @@ jQuery(function($) {
          itemsMobile : [479,1]
 
       });
+
       //Product slide
 
       $("#product-slide").owlCarousel({
 
          loop:true,
          margin:20,
-         navigation:false,
+         navigation: true,
          pagination:false,
          navigationText: ["<i class='fa fa-angle-left'></i>", "<i class='fa fa-angle-right'></i>"],
          items : 4,
@@ -177,95 +178,6 @@ jQuery(function($) {
       });
 
 
-
-   /* ----------------------------------------------------------- */
-   /*  Contact map
-   /* ----------------------------------------------------------- */
-
-      // $("#map").gmap3({
-      //   map:{
-      //       options:{
-      //          center:[40.874577, -74.277741],
-      //          zoom: 14,
-      //          scrollwheel: false
-      //       }
-      //   },
-      //   marker:{
-      //     values:[
-      //       {address:"Independent Food and Beverage Insurance Brokers Inc., 165 Passaic Ave Suite 204 Fairfield, NJ 07004, United States", data:" Welcome To IFB Insure ! ! ", 
-      //        options:{icon: ""}}
-      //     ],
-      //     options:{
-      //       draggable: false
-      //     },
-      //     events:{
-      //       mouseover: function(marker, event, context){
-      //         var map = $(this).gmap3("get"),
-      //           infowindow = $(this).gmap3({get:{name:"infowindow"}});
-      //         if (infowindow){
-      //           infowindow.open(map, marker);
-      //           infowindow.setContent(context.data);
-      //         } else {
-      //           $(this).gmap3({
-      //             infowindow:{
-      //               anchor:marker, 
-      //               options:{content: context.data}
-      //             }
-      //           });
-      //         }
-      //       },
-      //       mouseout: function(){
-      //         var infowindow = $(this).gmap3({get:{name:"infowindow"}});
-      //         if (infowindow){
-      //           infowindow.close();
-      //         }
-      //       }
-      //     }
-      //   }
-      // });
-
-   /* ----------------------------------------------------------- */
-   /*  Contact form
-   /* ----------------------------------------------------------- */
-
-   $('#contact-form').submit(function(){
-
-      var $form = $(this),
-         $error = $form.find('.error-container'),
-         action  = $form.attr('action');
-
-      $error.slideUp(750, function() {
-         $error.hide();
-
-         var $name = $form.find('.form-control-name'),
-            $email = $form.find('.form-control-email'),
-            $subject = $form.find('.form-control-subject'),
-            $message = $form.find('.form-control-message');
-
-         $.post(action, {
-               name: $name.val(),
-               email: $email.val(),
-               subject: $subject.val(),
-               message: $message.val()
-            },
-            function(data){
-               $error.html(data);
-               $error.slideDown('slow');
-
-               if (data.match('success') != null) {
-                  $name.val('');
-                  $email.val('');
-                  $subject.val('');
-                  $message.val('');
-               }
-            }
-         );
-
-      });
-
-      return false;
-
-   });
 
 
    /* ----------------------------------------------------------- */

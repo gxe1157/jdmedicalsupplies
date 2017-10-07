@@ -78,7 +78,7 @@
 	    			<h3 class="contact-form-title">Contact Form</h3>
 
 	    			<form id="contact-form"
-	    				  action="contact_form" 
+	    				  action="<?= base_url() ?>default_module/contact_form"
 	    				  method="post" role="form">
 
 	    				<div class="error-container"></div>

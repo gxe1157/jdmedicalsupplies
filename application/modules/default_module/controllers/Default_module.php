@@ -41,6 +41,43 @@ function index()
 
 }
 
+function admin( $data = array() )
+{
+   
+    $this->load->module('site_security');
+    // $this->site_security->_make_sure_is_admin();
 
+    if( !isset( $data['view_module'] ) )
+        $data['view_module']= $this->uri->segment(1);
+
+    $this->load->view('admin/admin', $data);
+}
+
+function contact_form(){
+
+	if( ENV != 'local' ) {
+		// send email to jdmedical
+		$email 		 = 'info@jdmedicalsupplies.org';
+	    $admin_email = 'webmaster@411mysite.com';
+	    $from        = $_POST['email'];
+	    $subject     = 'JD Medical Supplies: '.$_POST['subject'];
+	    $message     = "Time Stamp : ".convert_timestamp( time(), 'full')."\n\n";
+	    $message    .= "Message    : ".$_POST['message']."\n\n";
+
+	    $this->load->library('email');
+	    $this->email->from( $from);
+	    $this->email->to($email);
+	    $this->email->cc();
+		$this->email->bcc($admin_email);
+
+	    $this->email->subject($subject);
+	    $this->email->message($message);
+
+	    $this->email->send();
+	}
+
+	/* send to confimation page */
+    redirect(base_url()."contactus-confirmation");
+}
 
 } // End class Controller

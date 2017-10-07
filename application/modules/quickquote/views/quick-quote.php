@@ -5,22 +5,14 @@
 ?>
 
 <style>
-  hr.style-four {
-      height: 12px;
-      border: 0;
-      box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
-      display: none;
-  }
-
-  hr.draw_ln{
-    display: block; 
-  }
-
   .blue-text{
     text-align: center;
     color: #295B9E;
   }
 
+  .border{
+      border: 0px red solid;
+  }
 
 </style>
 
@@ -30,15 +22,13 @@
                   role="form" >
 
     <div class="row">
-      <div class="container">
-      <div class="col-md-2">&nbsp;</div>
+      <div class="container border">
+      <div class="col-md-2 border">&nbsp;</div>
 
-      <div class="col-md-8 offset-md-1" style="border: 0px red solid;">
+      <div class="col-md-8 offset-md-1 border">
           <h3 class="blue-text">Consumer Products</h3>
-                <div class="row" style="border: 0px red solid; display: block;">
-                  <div class="col-md-4"></div>
-                  <div class="col-md-5 well">
-                    <p>Home Medical Equipment</p>
+                <div class="well" style="margin: 0 auto; width: 250px;">
+                    Home Medical Equipment
                     <ul>
                       <li> Walkers</li>
                       <li> Crutches</li>
@@ -48,12 +38,11 @@
                       <li> Canes</li>
                       <li> Grab Bars</li>
                     </ul>
-                    And More! 
-                  </div>
-                </div>
-
+                    And More!
+                </div>                
+          <br>      
           <p class="blue-text"> Fields marked with an asterisk (*) are required. </p>      
-          <br />
+
               <?php
                 foreach( $columns as $key => $value ) {
                   $line_title = "";                  
@@ -97,7 +86,7 @@
                         name="submit" value="Cancel">Cancel</button>
           </div>
       </div>
-      <div class="col-md-2">&nbsp;</div>
+      <div class="col-md-2 border">&nbsp;</div>
     </div>  
     </div> <!-- row ends  -->
 </form>   

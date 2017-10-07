@@ -19,7 +19,7 @@
                 $data = ( isset($columns) && !empty($columns) ) ? : null;
                 $data = ( isset($columns_not_allowed) && !empty($columns_not_allowed) ) ? : array();
 
-                // echo $view_module.'/'.$contents;
+                 // echo $view_module.'/'.$contents;
                 $this->load->view( $view_module.'/'.$contents, $data );
             ?>
         </div> <!-- End Main Content -->

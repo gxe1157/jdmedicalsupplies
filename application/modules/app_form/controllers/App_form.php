@@ -96,7 +96,7 @@ function index()
     }
 
     $data['columns'] = $this->fetch_data_from_post();
-    $data['req_flds'] = req_flds($this->column_rules);    
+    $data['req_flds'] = required_fields($this->column_rules);    
     $data['columns_not_allowed'] = $this->columns_not_allowed;
     $data['labels']    = $this->_get_column_names('label');  
     $data['captcha_html'] = $this->site_captcha->_create_captcha();

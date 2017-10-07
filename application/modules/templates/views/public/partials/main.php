@@ -198,10 +198,10 @@
 			<div class="row">
 				<div class="col-md-6 fact-text">
 					<h2 class="" style="font-size: 2.5em; color: #fff;">
-						<span class="title-head"> States Available </span>
+						<span class="title-head"> States Available: </span>
 					</h2>
 					<p style="font-size: 1.5em;">J&D Medical Supplies delivers to all 50 States</p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					<p>We ship to countries and territories outside the continental United States.<br>Please note that not all of our products are eligible for international shipping. Some of these items include certain brands flammable items and oversized products.</p>
 				</div><!-- Col end -->
 				<div class="col-md-6 fact-text">
     				<img class="img-responsive" 

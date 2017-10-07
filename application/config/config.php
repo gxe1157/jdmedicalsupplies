@@ -23,8 +23,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-// $config['base_url'] = "http://www.jdmedicalsupplies.org/";
-$config['base_url'] = "http://localhost/jdmedicalsupplies/";
+$config['base_url'] = ENV == 'local' ?
+		 "http://localhost/jdmedicalsupplies/" : "http://www.jdmedicalsupplies.org/";
+
 /*
 |--------------------------------------------------------------------------
 | Index File
