@@ -58,7 +58,6 @@ function index()
     if( $submit == "Cancel") redirect( base_url().'/');                
 
     if($submit == "Submit" ){
-        // Insert new option
         $this->load->library('form_validation');
         $this->form_validation->set_rules( $this->column_rules );
 
@@ -66,14 +65,20 @@ function index()
           $email_data = $this->fetch_data_from_post();       
           $email_data['create_date'] = SQLformat_date(getToday());
 
-          $this->_insert($email_data);
+                    $rec_num = $this->_insert($email_data);
           $this->_set_flash_msg("The quick quote was has been sent.");          
 
           /* Send Email */
-          if( ENVIRONMENT == 'production'){
-              // $email = $this->input->post( 'email', TRUE);
-              // $this->send_mail($email, 'activate', $paypal_trans_id);     
-              // $this->email_message($email_data);     
+            if( ENV != 'local' ) {
+              $from = $_POST['email'];
+              $subject = "JD Medical Supplies: Open A Business Account";
+
+              $message = "Time Stamp : ".convert_timestamp( time(), 'full')."\n\n";
+              foreach( $_POST as $fld_name => $fld_value){
+                $message .= $fld_name." : ".$fld_value."\n";
+              }
+
+              $this->send_mail($from, $subject, $message);     
           }
 
           redirect( $this->main_controller.'/app_form_thankyou');            
@@ -104,9 +109,9 @@ function index()
 
     $data['custom_jscript'] = '';
     $data['page_url']       = 'app_form';
-    $data['page_title']     = 'Insurance Application';
+    $data['page_title']     = 'Application';
     $data['view_module']    = 'app_form';
-    $data['title']          = 'Insurance Application';
+    $data['title']          = 'Application';
 
     $this->load->module('templates');
     $this->templates->public_main($data);

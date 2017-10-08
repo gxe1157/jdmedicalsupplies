@@ -64,7 +64,6 @@ function _fetch_data_from_post($use_fields)
 
 
 
-
 /* ===============================================
     Below is Perfect Model From David Connelly
    =============================================== */
@@ -107,6 +106,12 @@ function get_where_custom($col, $value, $orderby) {
 function _insert($data){
     $table = $this->get_table();
     $this->db->insert($table, $data);
+}
+
+function _get_insert_id(){
+   /* get record id number after insert completed */ 
+   $last_id =  $this->db->query('SELECT LAST_INSERT_ID() as last_id')->row()->last_id;
+   return $last_id;
 }
 
 function _update($id, $data){

@@ -22,30 +22,27 @@ function __construct()
 /* ===============================================
    Add DRY funtions  // Added By Evelio Velez 04-2017
    =============================================== */
-function email_message( $email_data )
-{
-    checkArray($email_data,0);
-    
-}
 
-function send_mail( )
+function send_mail($from, $subject, $message)     
 {
 
-    $admin_email = '';
-    $from        = $from;
-    $subject     = $subject;
-    $message     = $message;
+    if( ENV != 'local' ) {
+        // send email to jdmedical
+        $email       = 'info@jdmedicalsupplies.org';
+        $admin_email = 'webmaster@411mysite.com';
+        $from        = $_POST['email'];
 
-    $this->load->library('email');
-    $this->email->from( $from);
-    $this->email->to($email);
-    $this->email->cc($admin_email);
+        $this->load->library('email');
+        $this->email->from( $from);
+        $this->email->to($email);
+        $this->email->cc();
+        $this->email->bcc($admin_email);
 
-    $this->email->subject($subject);
-    $this->email->message($message);
+        $this->email->subject($subject);
+        $this->email->message($message);
 
-    $this->email->send();
-
+        $this->email->send();
+    }
     // if ( ! $this->email->send()) {
     //         // Generate log error
     // }
@@ -163,6 +160,7 @@ function get_where_custom($col, $value, $order_by = null)
 function _insert($data)
 {
     $this->model_name->_insert($data);
+    return $this->model_name->_get_insert_id(); // added 07-22-17 Evelio   
 }
 
 function _update($id, $data)

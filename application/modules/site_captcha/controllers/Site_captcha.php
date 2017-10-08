@@ -60,10 +60,22 @@ class Site_captcha extends MY_Controller
     Call backs go here...
   =============================================== */
     function check_captcha($code) {
-        // First, delete old captchas
-        $expiration = time() - 7200; // Two hour limit
+        /* First, delete old captchas  */
+        $expiration = time() - 3600; // One hour limit
         $this->db->where('captcha_time < ', $expiration)
                 ->delete('captcha');
+
+        /* read directory and unlink expired captcha images */
+        $dir = "./captcha/";
+        $a = scandir($dir);
+        foreach ($a as $key => $value) {
+        //     # code...
+            $time_value = substr($value, 0, -4);
+            if( $time_value < $expiration  && strlen($time_value) >3 ) {
+                $is_deleted = unlink($dir.$value);
+                //if( $is_deleted ) echo "delete: ".$expiration." | ".$time_value."<br>";
+            }
+        }
 
         // Then see if a captcha exists:
         $sql = 'SELECT COUNT(*) AS count FROM captcha WHERE word = ? AND ip_address = ? AND captcha_time > ?';
@@ -78,6 +90,13 @@ class Site_captcha extends MY_Controller
     }
 
 
+/* ===============================================
+    Notes
+   =============================================== */
+    // Reminder: Add this to controller on submit
+    // $this->load->module('site_captcha');            
+    // $captcha_value = $this->input->post('captcha', TRUE);        
+    // $captcha_isValid = $this->site_captcha->check_captcha($captcha_value);  
 
 /* ===============================================
     David Connelly's work from perfectcontroller

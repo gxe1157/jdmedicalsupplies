@@ -64,14 +64,20 @@ function index()
           $email_data = $this->fetch_data_from_post();       
           $email_data['create_date'] = SQLformat_date(getToday());
 
-          $this->_insert($email_data);
+          $rec_num = $this->_insert($email_data);
           $this->_set_flash_msg("The quick quote was has been sent.");          
 
           /* Send Email */
-          if( ENVIRONMENT == 'production'){
-              // $email = $this->input->post( 'email', TRUE);
-              // $this->send_mail($email, 'activate', $paypal_trans_id);     
-              // $this->email_message($email_data);     
+          if( ENV != 'local' ) {
+              $from = $_POST['email'];
+              $subject = "JD Medical Supplies: Consumer Products Information";
+              $message = "Time Stamp : ".convert_timestamp( time(), 'full')."\n\n";
+              foreach( $_POST as $fld_name => $fld_value){
+                $message .= $fld_name." : ".$fld_value."\n";
+              }
+              $message .= "\n\nRecord Number : ".$rec_num."\n\n";
+
+              $this->send_mail($from, $subject, $message);     
           }
 
           redirect( $this->main_controller.'/quick_quote_thankyou');            
