@@ -71,13 +71,17 @@
 										}
 
 							        } else {
-										echo '<a class="btn btn-default" href="'.$sub_cat_url.'">
+										echo '<a class="btn btn-default"
+											 style="font-size: 1.1em; padding: 0px 5px 0px 5px;"
+										 	 href="'.$sub_cat_url.'">
 										<i class="fa fa-eye" aria-hidden="true"></i> '.$num_sub_cats." ".$entity.'</a>';
 								    } ?>
 					        </td>
 							<td class="text-center">
-								<a class="btn btn-success" href="#">
-									<i class="halflings-icon white zoom-in"></i>  
+								<a class="btn btn-success btn-sm"
+								   style="font-size: 12px; padding: 0px 5px 0px 0px;"
+								   href="<?= $view_url ?>">
+									<i class="fa fa-eye fa-fw"></i> View 
 								</a>
 								<a class="btn btn-info btn-sm"
 								   style="font-size: 12px; padding: 0px 5px 0px 0px;"
