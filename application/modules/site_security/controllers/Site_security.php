@@ -30,7 +30,7 @@ function _make_sure_logged_in()
     //make sure the customer (member) is logged
     $user_id = $this->_get_user_id();
     if (!is_numeric($user_id)) {
-        redirect('youraccount/login');
+        redirect('site_dashboard/login');
     }
 }
 

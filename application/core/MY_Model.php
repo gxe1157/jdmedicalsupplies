@@ -14,6 +14,18 @@ function __construct() {
     Added By Evelio Velez 04-28-2017
    =============================================== */
 
+
+function get_login_byid($user_id)
+{
+    $this->db->select('*');
+    $this->db->from('user_login');
+    $this->db->join('user_main', 'user_main.id = user_login.id');
+    $this->db->where("user_login.id = '".$user_id."'" );    
+    $query = $this->db->get();
+    return $query;
+
+}   
+
 function get_view_data_custom($col, $value, $table, $orderby) {
     $this->db->where($col, $value);
     $this->db->order_by($orderby);        

@@ -14,7 +14,7 @@ if ( ! function_exists('isValid_username'))
       $value1 = $str;
       $col2 = 'email';
       $value2 = $str;
-      $query = $ci->cntlr_name->get_with_double_condition($col1, $value1, $col2, $value2);    
+      $query = $ci->model_name->get_with_double_condition($col1, $value1, $col2, $value2);    
       $num_rows = $query->num_rows();
 
       if ($num_rows<1) {

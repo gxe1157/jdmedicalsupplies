@@ -5,65 +5,72 @@ class Webpages extends MY_Controller
 {
 
 /* model name goes here */
-var $mdl_name = 'mdl_webpages';
-var $store_controller = 'webpages';
+public $mdl_name = 'mdl_webpages';
+public $store_controller = 'webpages';
 
-var $column_rules = array(
-        array('field' => 'page_url', 'label' => 'Page URL', 'rules' => ''),
-        array('field' => 'page_title', 'label' => 'Page Title', 'rules' => 'required|max_length[250]|callback_item_check'),
-        array('field' => 'page_keywords', 'label' => 'Page Keywords', 'rules' => ''),
-        array('field' => 'page_description', 'label' => 'Page Description', 'rules' => ''),
-        array('field' => 'page_content', 'label' => 'Page Content', 'rules' => '')
-        // array('field' => 'status', 'label' => 'Status', 'rules' => ''),
+public $column_rules = array(
+    array('field' => 'page_url', 'label' => 'Page URL', 'rules' => ''),
+    array('field' => 'page_title', 'label' => 'Page Title', 'rules' => 'required|max_length[250]|callback_item_check'),
+    array('field' => 'page_keywords', 'label' => 'Page Keywords', 'rules' => ''),
+    array('field' => 'page_description', 'label' => 'Page Description', 'rules' => ''),
+    array('field' => 'status', 'label' => 'Status', 'rules' => 'required'), 
+    array('field' => 'left_side_nav', 'label' => 'Left Side Nav Menu', 'rules' => ''),         
+    array('field' => 'image_repro', 'label' => 'Image Repository', 'rules' => ''),                
+    array('field' => 'page_content', 'label' => 'Page Content', 'rules' => ''),
+    array('field' => 'left_side_nav', 'label' => 'Left Side Nav', 'rules' => ''),
 );
 
 //// use like this.. in_array($key, $columns_not_allowed ) === false )
-var  $columns_not_allowed = array();
-
+public $columns_not_allowed = array();
+public $default = array();
 
 function __construct() {
     parent::__construct();
+
+    /* is user logged in */
+    $this->default = login_init();  
+
+    /* Manage panel */
+    $update_id = $this->uri->segment(3);
+    $this->default['page_nav']   = "Public Websites"; 
+    $this->default['page_title'] = !is_numeric($update_id) ?
+           "Manage Webpages" : "Update Webpage Details";        
+    $this->default['add_button'] = "Add New Webpage";      
+    $this->default['flash'] = $this->session->flashdata('item'); 
+    $this->site_security->_make_sure_logged_in();      
+
 }
-
-
 
 /* ===================================================
     Controller functions goes here. Put all DRY
     functions in applications/core/My_Controller.php
   ==================================================== */
 
-
-  function _render_view(  $arg, $data )
-  {
-      $data['flash'] = $this->session->flashdata('item');
-      $this->load->module('templates');
-      $arg == 'public_bootstrap' ? $this->templates->public_bootstrap($data) : $this->templates->admin($data);
-  }
-
-
   function manage()
   {
-      $this->_security_check();
 
-      $data['columns']      = $this->get('page_url'); // get form fields structure
+      $data['columns']  = $this->get('page_url'); // get data ordered by .. 
+      $data['status_mess'] = ['Active', 'Inactive', 'Under Construction'];
       $data['redirect_url'] = base_url().$this->uri->segment(1)."/create";
-      $data['add_button']   = "Create New Webpage";
-      $data['headtag']      = "Webpages listing";
-      $data['class_icon']   = "icon-file";
-      $data['headline']   = "Content Management System";
-      $data['view_file']    = "manage";
-      $data['update_id']    = "";
-      $this->_render_view('admin', $data);
+
+      $data['custom_jscript'] = [ 'public/js/datatables.min',
+                                  'public/js/site_datatable_loader',
+                                  'public/js/format_flds'];    
+
+      $data['default']  = $this->default;    
+      $data['page_url'] = "manage";
+      $data['title']    = "Admin Manage Pages";
+
+      $this->load->module('templates');
+      $this->templates->admin($data);                       
   }
-
-
 
   function create()
   {
-      $this->_security_check();
 
       $update_id = $this->uri->segment(3);
       $submit = $this->input->post('submit', TRUE);
+
       if( $submit == "Cancel" ) {
           redirect($this->store_controller.'/manage');
       }
@@ -82,7 +89,7 @@ function __construct() {
               if( $update_id == 1 || $update_id == 2 ){
                   unset( $data['page_url'] );
               }
-              
+
               if(is_numeric($update_id)){
                   //update the page details
                   $this->_update($update_id, $data);
@@ -91,7 +98,6 @@ function __construct() {
                   //insert a new page
                   $this->_insert($data);
                   $update_id = $this->get_max(); // get the ID of new page
-                  // $flash_msg
                   $this->_set_flash_msg("The page was sucessfully created.");
               }
               redirect($this->store_controller.'/create/'.$update_id);
@@ -104,15 +110,34 @@ function __construct() {
           $data['columns'] = $this->fetch_data_from_post();
       }
 
-      $data['columns_not_allowed'] = $this->columns_not_allowed;
-      $data['labels']    = $this->_get_column_names('label');
+      // $data['columns_not_allowed'] = $this->columns_not_allowed;
+      // $data['labels']    = $this->_get_column_names('label');
       $data['button_options'] = "Update Customer Details";
-      $data['headline']  = !is_numeric($update_id) ? "Content Management System" : "Update Content Management System Details";
+      // $data['headline']  = !is_numeric($update_id) ? "Content Management System" : "Update Content Management System Details";
       $data['headtag']   = "Webpages listing";
-      $data['view_file'] = "create";
-      $data['update_id'] = $update_id;
+      // $data['page_url'] = "create";
+      // $data['update_id'] = $update_id;
 
-      $this->_render_view('admin', $data);
+      // $this->_render_view('admin', $data);
+
+
+    $data['default'] = $this->default;  
+    $data['columns_not_allowed'] = $this->columns_not_allowed;
+    $data['labels'] = $this->_get_column_names('label');
+
+    $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min',
+                                'public/js/format_flds',
+                                'public/js/model_js',                                  
+                                'public/js/site_cleditor_loader'      
+                                ];    
+
+    $data['page_url'] = "create";
+    $data['title']    = "Admin Manage Pages";    
+    $data['update_id'] = $update_id;
+
+    $this->load->module('templates');
+    $this->templates->admin($data);    
+          
   }
 
   function view( $update_id )
@@ -123,7 +148,7 @@ function __construct() {
 
       $data['headline']  = "";
       $data['view_module'] = "webpages";
-      $data['view_file'] = "view";
+      $data['page_url'] = "view";
       $data['update_id'] = $update_id;
 
       $this->_render_view('public_bootstrap', $data);
@@ -165,7 +190,7 @@ function __construct() {
       $data['page_title'] = $row_data['page_title'];
 
       $data['headline']  = "Delete page";
-      $data['view_file'] = "deleteconf";
+      $data['page_url'] = "deleteconf";
       $data['update_id']  = $update_id;
 
       $this->_render_view('admin', $data);
