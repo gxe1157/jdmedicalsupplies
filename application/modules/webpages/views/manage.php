@@ -1,55 +1,53 @@
-<?php
-	if( isset($flash) ) echo $flash;
+
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+	if( isset( $default['flash']) ) {
+		echo $this->session->flashdata('item');
+		unset($_SESSION['item']);
+	}
 ?>
 
-<h1><?= $headline ?></h1>
-
+<h2 style="margin-top: -5px;"><small><?= $default['page_title'] ?></small></h2>
 <p style="margin-top: 30px,">
-	<a href="<?= $redirect_url ?>" ><button type="button" class="btn btn-primary"><?= $add_button ?></button></a>
+	<a href="<?= base_url().$this->uri->segment(1) ?>/create" >
+		<button type="button" class="btn btn-primary"><?= $default['add_button'] ?></button></a>
 </p>
 
-
-<div class="row-fluid sortable">
-	<div class="box span12">
-		<div class="box-header" data-original-title >
-			<h2><i class="<?= $class_icon ?>" ></i><span class="break"></span><?= $headtag ?></h2>
-			<div class="box-icon">
-				<a href="#" ><i class="halflings-icon white remove"></i></a>
-			</div>
-		</div>
-		<div class="box-content">
-			<table class="table table-striped table-bordered bootstrap-datatable datatable">
-			  <thead>
+<div class="row">		
+	<div class="col-md-12">
+			<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+			 <thead>
 				  <tr>
-					  <th class="span6">Page URL</th>
-					  <th class="span4">Page Title</th>
-					  <th class="span2">Actions</th>
+					  <th>Page URL</th>
+					  <th>Page Title</th>
+					  <th>Actions</th>
+					  <th>Status</th>					  
 				  </tr>
 			  </thead>
 			  <tbody>
 
 			    <?php
 			    	 foreach( $columns->result() as $row ){
-			    	 	$edit_page_url = $redirect_url."/".$row->id;
-			    	 	$view_page_url =base_url().$row->page_url;
+			    	 	$edit_url = $redirect_url."/".$row->id;
+			    	 	$view_url =base_url().$row->page_url;
 			    ?>
 						<tr>
-							<td class="right"><?=  $view_page_url ?></td>
+							<td class="right"><?=  $view_url ?></td>
 							<td class="right"><?= $row->page_title ?></td>
+							<td class="right"><?= $status_mess[$row->status] ?></td>
 							<td class="center">
-								<a class="btn btn-success" href="<?= $view_page_url ?>">
-									<i class="halflings-icon white zoom-in"></i>
+								<a class="btn btn-success btn-sm" style="font-size: 12px; padding: 0px 5px 0px 0px;" href="<?= $view_url ?>">
+									<i class="fa fa-eye fa-fw"></i> View
 								</a>
-								<a class="btn btn-info" href="<?= $edit_page_url ?>">
-									<i class="halflings-icon white edit"></i>
+								<a class="btn btn-info btn-sm" style="font-size: 12px; padding: 0px 5px 0px 0px;" href="<?= $edit_url ?>">
+									<i class="fa fa-pencil fa-fw"></i> Edit
 								</a>
-							</td>
+							</td>							
 						</tr>
 			    <?php } ?>
 
 			  </tbody>
 		  </table>
-		</div>
 	</div><!--/span-->
 
 </div><!--/row-->
