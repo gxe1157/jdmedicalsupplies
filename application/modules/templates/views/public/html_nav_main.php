@@ -17,6 +17,18 @@ $medical_supplies = [
 	'Medicine Cups'
 ];
 
+$test_kits = [
+'Blood Pressure Monitor',
+'Blood Glucose Meter',
+'Drug Test Kit',
+'Pregnancy Test Kit',
+'Hepatitis Test Kit',
+'HIV Test Kit',
+'Malaria Test Kits',
+'Syphilis Test Kits',
+'Tuberculosis Test Kits',
+'Urinalysis Test Strips'
+]
 
 ?>
 
@@ -74,6 +86,14 @@ $medical_supplies = [
         <ul class="dropdown-menu">
           <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
           <li><a tabindex="-1" href="#">2nd level dropdown</a></li>
+        </ul>
+      </li>    
+      <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Test Kits<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+        <?php foreach ( $test_kits  as $key => $value) { ?>
+          		<li><a tabindex="-1" href="<?= base_url() ?>store_products/manage/<?= $key ?>"><?= $value ?></a></li>
+        <?php  } ?>
         </ul>
       </li>    
 

@@ -37,7 +37,7 @@ function __construct() {
            "Manage Webpages" : "Update Webpage Details";        
     $this->default['add_button'] = "Add New Webpage";      
     $this->default['flash'] = $this->session->flashdata('item'); 
-    $this->site_security->_make_sure_logged_in();      
+    //$this->site_security->_make_sure_logged_in();      
 
 }
 

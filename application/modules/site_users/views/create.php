@@ -87,6 +87,7 @@
 <div class="row">
 <div class="col-md-12 ">
 <div class="well">
+
  
 <?php if( is_numeric($update_id) && $show_buttons): ?>
   <!-- use bootstrap alert codes: warning, danger etc. -->
@@ -106,7 +107,6 @@
   <a class ="btnConfirm " id="delete-danger"
      href="<?= base_url().$this->uri->segment(1) ?>/delete/<?= $update_id ?>/<?= $default['username'] ?>">
     <button type="button" class="btn btn-danger">Delete Account</button></a>
-
 <?php endif ?>   
 
 </div>    

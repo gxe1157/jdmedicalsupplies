@@ -2,6 +2,7 @@
 <style>
 .main_blue{
 	color: #467091;
+
 }
 
 </style>
@@ -16,13 +17,13 @@
 
 		<!-- Carousel inner -->
 		<div class="carousel-inner">
-		<!-- public/images/jkingsley/photodune-19068088.jpg -->
-			<div class="item active" style="background-image:url(public/images/jkingsley/jdmed/site_img/JD_Slide1.jpg)">
+		<!-- public/images/jkingsley/jdmed/site_img/ -->
+			<div class="item active" style="background-image:url(public/images/jkingsley/jdmed/site_img/20171007_220253.jpg)"> 
+				<!-- JD_Slide1.jpg -->
            	<div class="slider-content banner-text-shadow">
                <div class="col-md-12 text-center">
-                   <h2 class="slide-title animated4 main_blue">Home Medical Equipment<br>and supplies</h2>
-                   <h4 class="slide-sub-title animated5">
-                   	Home Health<span class="main_blue"> • </span> Physicians Office <span class="main_blue">•</span> Consumer Hospice<br>Long Term Care <span class="main_blue">•</span> Assisted Living</h4>	
+                   <h2 class="slide-title animated4" style="background-color: rgba(255, 255, 255, 0.8); margin-top: 15px;">JD Medical Supplies Is Assisting in Aid To Puerto Rico</h2>
+                   <h4 class="slide-sub-title animated5">...</h4>	
                    <p class="animated6">
                    	<a href="<?= base_url() ?>about-us" class="slider btn btn-primary">Learn More</a>
                    	<!-- <a href="#" class="slider btn btn-primary border">Get a Quote</a> -->
