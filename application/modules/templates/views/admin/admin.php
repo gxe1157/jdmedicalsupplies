@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 //echo '----->'.$default['status'];
 // checkArray($default,1);
-
 ?>
 
 <!DOCTYPE html>
@@ -185,7 +184,6 @@
                 <script src="<?= base_url() ?><?= $value ?>.js"></script>
               <?php }
           }?>
-          <!-- <?= checkArray($custom_jscript,1) ?> -->
           <div>Page rendered time: {elapsed_time} seconds</div>          
     </div>    
 

@@ -11,7 +11,7 @@ function __construct( ) {
 
 function get_table() {
 	// table name goes here	
-    $table = "store_products";
+    $table = "store_items";
     return $table;
 }
 

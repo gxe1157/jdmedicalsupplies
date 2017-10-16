@@ -7,12 +7,12 @@
 	let build = '';
 	let fldNames = model_js_mess['fldNames'];
 
-	build ='<form class="form-horizontal" role="form">'; 	
+	build ='<form id="myModel" class="form-horizontal" role="form">'; 	
   	for (var i = 0; i < fldNames.length; i++) {
         build +='<div class="form-group">'+
                 '<label class="col-sm-3 control-label" for="textinput">'+upperFirstletter(fldNames[i])+'</label>'+
                 '<div class="col-sm-8">'+
-                '<input type="text" id="'+fldNames[i]+'" placeholder="'+fldNames[i]+'" class="form-control">'+
+                '<input type="text" id="'+fldNames[i]+'" name="'+fldNames[i]+'" placeholder="'+fldNames[i]+'" class="form-control">'+
             	'</div>'+
           		'</div>';
   	}
@@ -38,7 +38,6 @@ function ezBSAlert (options) {
   
 	var _show = function(){
 		var headClass = "navbar-default";
-		console.log('headClass', headClass, ' | ',defaults.alertType);
 		switch (defaults.alertType) {
 			case "primary":
 				headClass = "alert-primary";
@@ -100,6 +99,7 @@ function ezBSAlert (options) {
 
 		var keyb = "false", backd = "static";
 		var calbackParam = "";
+
 		switch (defaults.type) {
 			case 'alert':
 				keyb = "true";
@@ -131,8 +131,9 @@ function ezBSAlert (options) {
 
 				$('#ezAlerts-footer').html(btnhtml).on('click', 'button', function (e) {
 						if (e.target.id === 'ezok-btn') {
-							calbackParam = true;
-							$('#ezAlerts').modal('hide');
+							add_data_ajax();							
+							// calbackParam = true;
+							// $('#ezAlerts').modal('hide');
 						} else if (e.target.id === 'ezclose-btn') {
 							calbackParam = false;
 							$('#ezAlerts').modal('hide');
@@ -167,9 +168,20 @@ function ezBSAlert (options) {
   return deferredObject.promise();    
 }
 
+function myAlert( headerTxt, messTxt ){
+    var prom = ezBSAlert({
+	  headerText: headerTxt,    	
+      messageText: messTxt,
+      alertType: "danger"
+    }).done(function (e) {
+      $("body").append('<div>Callback from alert</div>');
+    });
+}
 
 $(document).ready(function(){
-  $("#btnAlert").on("click", function(){  	
+
+  $("#btnAlert").on("click", function(e){  	
+	e.preventDefault();  	
     var prom = ezBSAlert({
       messageText: "hello world",
       alertType: "danger"
@@ -178,7 +190,8 @@ $(document).ready(function(){
     });
   });   
 
-  $("#btnPrompt").on("click", function(){  	
+  $("#btnPrompt").on("click", function(e){  	
+	e.preventDefault();
     ezBSAlert({
       type: "prompt",
       messageText: "Enter Something",
@@ -227,12 +240,12 @@ $(document).ready(function(){
       headerText : myHeader,
       alertType: "primary"
     }).done(function (e) {
-      // console.log('href '+href);	
-	  if( e ) window.location.replace( href );	  	
+    	// alert( e )	;
+        // console.log('href '+href);	
+  	    // if( e ) window.location.replace( href );	  	
     });
   });   
 
-  
 //==================================
 
   

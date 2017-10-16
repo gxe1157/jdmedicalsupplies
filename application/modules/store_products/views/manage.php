@@ -5,6 +5,7 @@
 		unset($_SESSION['item']);
 	}
 	$redirect_url = base_url().'store_products/create/';
+
 ?>
 
 <style>
@@ -48,18 +49,23 @@
 			  </thead>   
 			  <tbody>
 			    <?php
-			    	 foreach( $products->result() as $row ){?> 	
+			    	 foreach( $products->result() as $row ){
+			    	 	$img_name = strtolower($row->part_num).".jpg";
+			    	 	$img_src = base_url().$main_category_dir."/".$img_name;
+			    	 ?> 	
+
 						<tr><td>	
 							<div class="col-md-1" >
+								<img src="<?= $img_src ?>"
+							    alt="<?= $img_name ?>" class="img-responsive thumb" id="prd_img">
+
 <!-- 								<img src="<?= base_url() ?>public/images/store_products_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
  -->
-								<img src="<?= base_url() ?>public/images/store_products_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
-
 
  							</div>							
 							<div class="col-md-2 prd_name">
 								<h5>Product</h5>
-								<?= $row->prd_headline ?>
+								<?= $row->short_desc ?>
 								<p class="meta">
 									Part Number: <?= $row->part_num ?><br>
 									UPC : <?= $row->upc ?>

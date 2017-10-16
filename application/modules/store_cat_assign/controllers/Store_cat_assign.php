@@ -26,25 +26,17 @@ function __construct() {
 
 }
 
-function update( $item_id )
+
+function get_category_info( $item_id )
 {
-
-    $this->_numeric_check( $item_id );
-
-    // get item title and image from store_items table
-    list ($item_title, $small_img) = $this->model_name->_get_item_title_byid($item_id);
-
+    $this->load->model( $this->mdl_name );    
     // get sub_catergories from store_catergories
-    $sub_categories = $this->model_name->_get_all_sub_cats_for_dropdown();
-
+    $sub_categories = $this->mdl_store_cat_assign->_get_all_sub_cats_for_dropdown();
     // get an array of all assigned to item_id from store_cat_assign
-    $query = $this->model_name->_get_assigned_categories('item_id', $item_id, $orderby = null);
-
-    $data['query'] = $query;
-    $data['num_rows'] = $query->num_rows();
+    $query = $this->mdl_store_cat_assign->_get_assigned_categories('item_id', $item_id, $orderby = null);
 
     foreach ($query->result() as $row) {
-       list ($cat_title, $parent_cat_title) = $this->model_name->_get_parent_cat_title($row->cat_id);
+       list ($cat_title, $parent_cat_title) = $this->mdl_store_cat_assign->_get_parent_cat_title($row->cat_id);
        $assigned_categories[$row->cat_id] = $parent_cat_title." > ".$cat_title;
     }
 
@@ -52,19 +44,41 @@ function update( $item_id )
        if( empty($sub_categories) ) {
             $this->_set_flash_danger_msg("A <b>Sub Category</b> has not been assined.<br>Go to Manage Categories and click on \"Add Sub Category\" button.");
         }
-       $assigned_categories ="";
-     } else {
+        $assigned_categories ="";
+    } else {
         // Item has been assigned to at least one catergory
         $sub_categories = array_diff( $sub_categories, $assigned_categories );
-     }
+    }
+
+    return [$query, $assigned_categories, $sub_categories];
+}
+
+
+function update( $item_id )
+{
+    $assigned_categories = [];
+    $sub_categories = [];
+
+    $this->_numeric_check( $item_id );
+
+    // get item title and image from store_items table
+    list ($item_title, $small_img) =
+            $this->model_name->_get_item_title_byid($item_id);
+
+    // category values
+    list( $query, $assigned_categories, $sub_categories ) =
+            $this->get_category_info($item_id);
+
+    $data['query'] = $query;
+    $data['num_rows'] = $query->num_rows();
 
     $data['assigned_categories'] = $assigned_categories;
-    $data['options']         = $sub_categories;
-    $data['cat_id']          = $this->input->post('cat_id',TRUE);
-    $data['options_hdr']     = 'Assign New Categories';
+    $data['options']     = $sub_categories;
+    $data['cat_id']      = $this->input->post('cat_id',TRUE);
+    $data['options_hdr'] = 'Assign New Categories';
 
     $data['item_title']= $item_title;
-    $data['small_img']= $small_img;
+    $data['small_img'] = $small_img;
     $data['item_id']   = $item_id;
 
     $data['custom_jscript'] = [ 'public/js/datatables.min',

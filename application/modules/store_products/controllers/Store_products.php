@@ -24,8 +24,6 @@ function __construct() {
     $this->default['page_header'] = !is_numeric($update_id) ? "Add New Prodcut" : "Update Product Details";
     $this->default['add_button']  = "Add New Product";
     $this->default['flash'] = $this->session->flashdata('item');   
-    // $this->site_security->_make_sure_logged_in();     
-
 }
 
 
@@ -38,16 +36,21 @@ function __construct() {
 
 function manage($sub_cat_id)
 {
- 
-    $data['products'] = $this->get_where_custom('sub_cat_id', $sub_cat_id, 'prd_headline');
+
+    $data['products'] = $this->get_where_custom('sub_cat_id', $sub_cat_id, 'short_desc');
     $prod_fields = $data['products']->result()[0];
 
+    $str =  explode(" ",$prod_fields->parent_cat);
+    $parent_dir = strtolower(join("_",$str));
+    $main_category_dir = "public/images/jkingsley/jdmed/products/".$parent_dir;
+checkField($main_category_dir,1);
+
+    $data['main_category_dir'] = $main_category_dir;
     $data['sub_cat'] = $prod_fields->sub_cat;
     $data['parent_cat'] = $prod_fields->parent_cat;
 
     $data['add_items']    = true;
     $data['custom_jscript'] = [];
-
     $data['page_url'] = "manage";
     $data['view_module'] = 'store_products';
     $data['title'] = "Manage Products";

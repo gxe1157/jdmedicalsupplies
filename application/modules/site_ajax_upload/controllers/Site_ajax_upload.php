@@ -94,12 +94,12 @@ function ajax_remove()
 
 function ajax_upload_one()
 {
-    // $this->_security_check();
+
     sleep(1);
     $this->load->module('site_security');
-    $userid = $this->site_security->_make_sure_logged_in();
+    $update_id = $this->site_security->_make_sure_logged_in();
 
-    $config["upload_path"]   = './upload/';
+    $config["upload_path"]   = './public/images/jkingsley/jdmed/products/medical_supply/new_uploads/';
     $config['allowed_types'] = 'jpeg|jpg|png|gif';
     $config['max_size']      = '2048';
 
@@ -111,7 +111,7 @@ function ajax_upload_one()
 
     if($this->upload->do_upload('file')) {
       $data = $this->upload->data();
-      // $this->_update_avatar_data($imagename, $userid);          
+      // $this->_update_img_data($imagename, $update_id, $config["upload_path"]);          
       // echo 1;
     } else {
       // display errors 
@@ -119,23 +119,46 @@ function ajax_upload_one()
       $data = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
 
     }
-    echo json_encode($data);    
+    echo json_encode($update_id);    
 }
 
 
-function _generate_thumbnail($file_name)
+function _update_img_data($imagename, $update_id, $img_path)
 {
-    $config['image_library'] = 'gd2';
-    $config['source_image']  = './public/big_pic/'.$file_name;
-    $config['new_image']     = './public/small_pic/'.$file_name;
-    $config['create_thumb']  = FALSE;
-    $config['maintain_ratio']= TRUE;
-    $config['width']         = 200;
-    $config['height']        = 200;
+    // /* get image name on file */ 
+    // $default_avatar = "http://via.placeholder.com/300x250";    
+    // $mysql_query    = "SELECT prd_img_name FROM `store_items` WHERE `id` =".$update_id;
+    // $result_set     = $this->model_name->_custom_query($mysql_query)->result();
+    // $avatar_on_file = $result_set[0]->prd_img_name;
 
-    $this->load->library('image_lib', $config);
-    $this->image_lib->resize();
+    // if( $avatar_on_file != $default_avatar  &&  $avatar_on_file !='' ){
+    //     $file_location  = $img_path.$avatar_on_file;  
+    //     if( file_exists( $file_location ) )
+    //         unlink($file_location);
+    // }
+    
+    /* Update database */
+    $mysql_query = "UPDATE `store_items` SET `prd_img_name` = '".$imagename."' WHERE `store_items`.`id` = ".$update_id;
+
+    $this->model_name->_custom_query($mysql_query);
 }
+
+
+// function _generate_thumbnail($file_name)
+// {
+//     $config['image_library'] = 'gd2';
+//     $config['source_image']  = './public/big_pic/'.$file_name;
+//     $config['new_image']     = './public/small_pic/'.$file_name;
+//     $config['create_thumb']  = FALSE;
+//     $config['maintain_ratio']= TRUE;
+//     $config['width']         = 200;
+//     $config['height']        = 200;
+
+//     $this->load->library('image_lib', $config);
+//     $this->image_lib->resize();
+// }
+
+
 
 // function ajax_remove_avatar()
 // {
@@ -144,31 +167,11 @@ function _generate_thumbnail($file_name)
 //     $userid = $this->site_security->_make_sure_logged_in();
     
 //     $imagename = 'annon_user.png';
-//     $this->_update_avatar_data($imagename, $userid);
+//     $this->_update_img_data($imagename, $userid);
 
 //     $data['file_name'] = $imagename;   
 //     echo json_encode($data);    
 
-// }
-
-// function _update_avatar_data($imagename, $userid)
-// {
-//     /* get image name on file */ 
-//     $default_avatar = 'annon_user.png';    
-//     $mysql_query    = "SELECT avatar_name FROM `user_login` WHERE `id` =".$userid;
-//     $result_set     = $this->model_name->_custom_query($mysql_query)->result();
-//     $avatar_on_file = $result_set[0]->avatar_name;
-
-//     if( $avatar_on_file != $default_avatar  &&  $avatar_on_file !='' ){
-//         $file_location  = './upload/'.$avatar_on_file;  
-//         if( file_exists( $file_location ) )
-//             unlink($file_location);
-//     }
-    
-//     /* Update database */
-//     $mysql_query = "UPDATE `user_login` SET `avatar_name` = '".$imagename."' WHERE `user_login`.`id` = ".$userid;
-
-//     $this->model_name->_custom_query($mysql_query);
 // }
 
 

@@ -92,9 +92,9 @@ function _get_column_names( $key_value )  // we will use for $key_value only "fi
 
 function fetch_data_from_post()
 {
+
     $field_names = $this->_get_column_names('field');
     $data = $this->model_name->_fetch_data_from_post($field_names);
-
     return $data;
 }
 

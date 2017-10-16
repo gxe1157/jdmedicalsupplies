@@ -1,5 +1,5 @@
 <!--site_ajax_upload image -->
-
+        
           <style>
             .form-style-fake{position:absolute;top:0px;}
             .form-style-base{position:absolute;top:0px;z-index: 999;opacity: 0;}
@@ -7,12 +7,15 @@
                 background: #006cad;
                 padding: 10px;
                 color: #fff; }
+            .img-responsive {
+                margin: 0 auto;
+            }                
           </style>
 
+          <div style="display:block; border: 0px red solid">
           <input type="hidden" id="active_image" name="active_image" value="">
-          <img src="http://via.placeholder.com/250x250";
-               class="img-responsive img-thumbnail";
-               style="width: 250px; height:250px;"
+          <img src="http://via.placeholder.com/300x250"
+               class="img-responsive img-thumbnail"
                alt="#"
                id="previewImg">
 
@@ -33,15 +36,15 @@
 
           <div class="caption" id="confirm_upload" 
                style="display: none; margin-top: 8px; padding-bottom: 0px;">
-                <a href="#" >
                     <button class="btn btn-md btn-primary btn-sm" id="upload-button"
                             type="button">Upload image</button>                            
-                </a>
-                <a href="#" >
+
+
                    <button type="button" id='cancelImg'
                            class="btn btn-default btn-sm">Cancel</button>
-                </a>
+
           </div>        
 
           <div id="message"></div>
+        </div>
 

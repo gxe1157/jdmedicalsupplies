@@ -33,8 +33,24 @@ function _delete_for_item( $item_id, $store_db_table ){
     $query = $this->_custom_query($mysql_query);
 }
 
+function _insert_manufacturer($data){
+    $table = 'store_manufacturer';
+    $this->db->insert($table, $data);
+}
 
 
+function _get_manufacturer($order_by){
+    $table = 'store_manufacturer';
+    $this->db->select('company');    
+    $this->db->order_by($order_by);
+    $query=$this->db->get($table);
+    $manu_list = [];
+    foreach ($query->result() as $key => $value) {
+            $manu_list[$key] = $value->company;
+    }
+    
+    return $manu_list;
+}
 /* ===============================================
     David Connelly's work from mdl_perctmodel
     is in applications/core/My_Model.php which

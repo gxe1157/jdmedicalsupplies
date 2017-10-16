@@ -5,11 +5,30 @@ class Store_items extends MY_Controller
 {
 
 /* model name goes here */
-var $mdl_name = 'mdl_store_items';
-var $main_controller = 'store_items';
+public $mdl_name = 'mdl_store_items';
+public $main_controller = 'store_items';
 
-var $column_rules = array(
-        array('field' => 'item_title', 'label' => 'Item Title', 'rules' => 'required|max_length[240]|callback_item_check'),
+public $column_rules = array(
+        // array('field' => 'parent_cat', 'label' => 'Category', 'rules' => ''),
+        array('field' => 'parent_cat_id', 'label' => 'Category', 'rules' => ''),        
+        array('field' => 'prd_name', 'label' => 'Product Name', 'rules' => ''),        
+        array('field' => 'sub_cat_id', 'label' => 'Sub Category Id', 'rules' => 'required'),
+        array('field' => 'sub_cat', 'label' => 'Sub Category name', 'rules' => ''),
+        array('field' => 'manufacturer', 'label' => 'Manufacturer', 'rules' => ''),
+        array('field' => 'short_desc', 'label' => 'Short Description', 'rules' => ''),
+        array('field' => 'description', 'label' => 'Product Description', 'rules' => 'required'),
+
+        array('field' => 'prd_width', 'label' => 'Prd Width', 'rules' => ''),
+        array('field' => 'prd_height', 'label' => 'Prd Height', 'rules' => ''),
+        array('field' => 'prd_depth', 'label' => 'Prd Depth', 'rules' => ''),
+        array('field' => 'prd_weight', 'label' => 'Prd Weight', 'rules' => ''),
+        array('field' => 'prd_status', 'label' => 'Prd Status', 'rules' => ''),        
+        array('field' => 'prd_image_status', 'label' => 'Prd Image Status', 'rules' => ''),
+
+        array('field' => 'part_num', 'label' => 'Part Number', 'rules' => 'required'),
+        array('field' => 'upc', 'label' => 'UPC', 'rules' => ''),
+        array('field' => 'price', 'label' => 'Price', 'rules' => 'required'),
+        array('field' => 'sale_price', 'label' => 'Sale Price', 'rules' => 'required')
 );
 
 //// use like this.. in_array($key, $columns_not_allowed ) === false )
@@ -42,8 +61,9 @@ function __construct() {
 
 function manage()
 {
+    $this->load->helper('text');    
 
-    $data['columns']      = $this->get('item_title'); // get form fields structure
+    $data['columns']      = $this->get('short_desc'); // get form fields structure
     $data['add_items']    = true;
 
     $data['custom_jscript'] = [ 'public/js/datatables.min',
@@ -64,13 +84,11 @@ function manage()
 
 function create()
 {
-
     $update_id = $this->uri->segment(3);
-
     $submit = $this->input->post('submit', TRUE);
-    if( $submit == "Cancel" ) {
+
+    if( $submit == "Cancel" )
         redirect($this->main_controller.'/manage');
-    }
 
     if( $submit == "Submit" ) {
         // process changes
@@ -80,33 +98,42 @@ function create()
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
             // make search friendly url
-            $data['item_url'] = url_title( $data['item_title'] );
+            $data['prd_url'] = url_title( $data['prd_name'] );
             if(is_numeric($update_id)){
                 //update the item details
                 $this->_update($update_id, $data);
+                // checkArray($data,0);                
                 $this->_set_flash_msg("The item details were sucessfully updated");
             } else {
                 //insert a new item
-                $this->_insert($data);
-                $update_id = $this->get_max(); // get the ID of new item
+                // $this->_insert($data);
+                // $update_id = $this->get_max(); // get the ID of new item
                 // $flash_msg
                 $this->_set_flash_msg("The item was sucessfully added");
             }
             redirect($this->main_controller.'/create/'.$update_id);
         }
+        echo validation_errors("<p style='color: red;'>", "</p>");
+        quit('failed val1',0);        
+
     }
 
     if( ( is_numeric($update_id) ) && ($submit != "Submit") ) {
         $data['columns'] = $this->fetch_data_from_db($update_id);
+        //checkArray($data['columns'],0);
     } else {
         $data['columns'] = $this->fetch_data_from_post();
     }
 
+    $this->load->module('store_cat_assign');
+    list( $query, $data['assigned_categories'], $data['sub_categories'] )=
+         $this->store_cat_assign->get_category_info($update_id);
+
+    $data['manufactures_list'] = $this->model_name->_get_manufacturer('company');
     $data['columns_not_allowed'] = $this->columns_not_allowed;
     $data['labels'] = $this->_get_column_names('label');
-    
-    $data['update_id'] = $update_id;    
 
+    $data['update_id'] = $update_id;    
     $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min',
                                 'public/js/format_flds',
                                 'public/js/model_js',     
@@ -192,6 +219,15 @@ function deleteconf( $update_id )
     $this->_render_view('admin', $data);
 }
 
+function modal_post_ajax()
+{
+    $data = $this->input->post( null, TRUE);
+    $this->model_name->_insert_manufacturer($data);
+ 
+    echo 1;
+    return;
+}
+
 
 // function view( $update_id )
 // {
@@ -248,29 +284,29 @@ function deleteconf( $update_id )
 //     return $breadcrumbs_array;
 // }
 
-function _get_sub_cat_id( $col, $update_id, $table, $orderby )
-{
-  $query = $this->model_name->get_view_data_custom($col, $update_id, $table, $orderby);
-  $sub_cat_id = $query->result()[0]->cat_id;
-  return $sub_cat_id;
-}
-
-function _get_cat_data($col, $update_id, $table, $orderby)
-{
-  $query = $this->model_name->get_view_data_custom($col, $update_id, $table, $orderby);
-  $sub_cat_title = $query->result()[0]->cat_title;
-  $sub_cat_url = $query->result()[0]->category_url;
-  return array( $sub_cat_title, $sub_cat_url );
-}
-
-// function ajaxPost(){
-//     $data['item_setup']   = $this->input->post('item_setup', TRUE);
-//     $update_id   = $this->input->post('update_id', TRUE);    
-//     $this->_update( $update_id, $data);
-
-//     echo "Id: ".$update_id." Selected: ".$data['item_setup'];
-//     return;
+// function _get_sub_cat_id( $col, $update_id, $table, $orderby )
+// {
+//   $query = $this->model_name->get_view_data_custom($col, $update_id, $table, $orderby);
+//   $sub_cat_id = $query->result()[0]->cat_id;
+//   return $sub_cat_id;
 // }
+
+// function _get_cat_data($col, $update_id, $table, $orderby)
+// {
+//   $query = $this->model_name->get_view_data_custom($col, $update_id, $table, $orderby);
+//   $sub_cat_title = $query->result()[0]->cat_title;
+//   $sub_cat_url = $query->result()[0]->category_url;
+//   return array( $sub_cat_title, $sub_cat_url );
+// }
+
+function ajaxPost(){
+    $data['item_setup']   = $this->input->post('item_setup', TRUE);
+    $update_id   = $this->input->post('update_id', TRUE);    
+    $this->_update( $update_id, $data);
+
+    echo "Id: ".$update_id." Selected: ".$data['item_setup'];
+    return;
+}
 
 /* ===============================================
     Call backs go here...

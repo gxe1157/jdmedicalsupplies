@@ -45,15 +45,15 @@ if ( ! function_exists('get_fields'))
   {
 
       $site_user_rules = array(
-            array(
-              'field' => 'username',
-              'label' => 'Username',
-              'rules' => 'required|max_length[200]|callback_username',
-              'icon'  => 'envelope',
-              'placeholder'=>'',
-              'input_type' =>'text'
-              // 'input_options' => '0'
-            ),
+            // array(
+            //   'field' => 'username',
+            //   'label' => 'Username',
+            //   'rules' => 'required|max_length[200]|callback_username',
+            //   'icon'  => 'envelope',
+            //   'placeholder'=>'',
+            //   'input_type' =>'text'
+            //   // 'input_options' => '0'
+            // ),
             array(
               'field' => 'email',
               'label' => 'Email',

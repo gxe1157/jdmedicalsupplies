@@ -7,6 +7,18 @@
 	$redirect_url = base_url().'store_items/create/';
 ?>
 
+<style>
+ .right{
+ 	text-align: right;
+ }
+
+.left{
+ 	text-align: left;
+ }
+
+</style>
+
+
 <h2 style="margin-top: -5px;"><small><?= $default['page_title'] ?></small></h2>
 <p style="margin-top: 30px,">
 	<a href="<?= base_url().$this->uri->segment(1) ?>/create" >
@@ -18,9 +30,10 @@
 			<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			  <thead>
 				  <tr>
-					  <th>Item Tile</th>
+					  <th>Product Name</th>				  	
+					  <th>Short Desrciption</th>
 					  <th>Price</th>
-					  <th>Was Price</th>
+					  <th>sale Price</th>
 					  <th>Status</th>
 					  <th>Image</th>					  
 					  <th>Actions</th>
@@ -31,30 +44,26 @@
 			    <?php
 			    	 foreach( $columns->result() as $row ){
 			    	 	$edit_url = $redirect_url.$row->id;			    	 	
-			    	 	$status = $row->status;
-			    	 	if( $status == 1) {
-			    	 		$status_label = "success";
-			    	 		$status_desc  = "Active";
-			    	 	} else {
-			    	 		$status_label = "defaults";
-			    	 		$status_desc  = "Inactive";			    	 		
-			    	 	}	
-			    	 	$image = $row->big_pic == "" ? "No" : "Yes";
+			    	 	list($status_label, $status_desc )=
+			    	 	 $row->prd_status ? ["success", "Active"] : ["danger", "Inactive"];
+
+			    	 	list($image_label, $image_desc )=
+			    	 	 $row->prd_image_status ? ["success", "Yes"] : ["danger", "No"];
 			    ?> 	
 						<tr>
-							<td class="right"><?= $row->item_title ?></td>
-							<td class="right"><?= $row->item_price ?></td>
-							<td class="right"><?= $row->was_price ?></td>
+							<td class="left"><?= $row->prd_name ?></td>						
+							<td class="left"><?= character_limiter($row->short_desc, 60); ?></td>
+							<td class="right"><?= $row->price ?></td>
+							<td class="right"><?= $row->sale_price ?></td>
 							<td class="center">
 								<span class="label label-<?= $status_label ?>"><?= $status_desc ?></span>
 							</td>
+
 							<td class="center">
-								<span class="label label-<?= $status_label ?>"><?= $image ?></span>
+								<span class="label label-<?= $image_label ?>"><?= $image_desc ?></span>
 							</td>
+
 							<td class="center">
-								<a class="btn btn-success" href="#">
-									<i class="halflings-icon white zoom-in"></i>  
-								</a>
 								<a class="btn btn-info btn-sm"
 								   style="font-size: 12px; padding: 0px 5px 0px 0px;"
 								   href="<?= $edit_url ?>">

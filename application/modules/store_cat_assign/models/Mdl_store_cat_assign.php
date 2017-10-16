@@ -41,7 +41,7 @@ function _get_assigned_categories($col, $value, $orderby)
 function _get_item_title_byid($id)
 {
     $data = $this->db->get_where('store_items', array('id' => $id) )->result()[0];
-    $title  = $data->item_title;
+    $title  = $data->sub_cat;
     $small_img = $data->small_pic ? : null;
     return array( $title, $small_img );
 }

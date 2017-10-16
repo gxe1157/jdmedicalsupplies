@@ -281,6 +281,7 @@ function _process_delete( $update_id )
 
 // 
   function username($str) {
+
       $mysql_query = "select * from user_login where username='$str'";
 
       $update_id = $this->uri->segment(3);

@@ -29,9 +29,10 @@
 				<div class="form-group">
 				  <div class="col-md-5">
 						<?php
-						$additional_opt = array( 'id' => 'selectStatus', 'style' => 'max-width:300px',
-												 'class' =>'form-control' );
-						echo form_dropdown('cat_id', $options, $cat_id, $additional_opt);
+							$additional_opt = array( 'id' => 'selectStatus',
+													 'style' => 'max-width:300px',
+													 'class' =>'form-control' );
+							echo form_dropdown('cat_id', $options, $cat_id, $additional_opt);
 						?>
 				  </div>
 				</div>
@@ -69,7 +70,7 @@
 							<td class="right"><?= $assigned_categories[$row->cat_id] ?></td>
 							<td class="center">
 								<a class="btn btn-danger" href="<?= $delete_url ?>">
-									<i class="halflings-icon white trash"></i> Remove Option  
+									<i class="fa fa-trash-o" aria-hidden="true"></i> Remove Option  
 								</a>
 							</td>
 						</tr>

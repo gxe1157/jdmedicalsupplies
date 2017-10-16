@@ -6,6 +6,39 @@ var model_js_mess = {
     }
 /* Build obj to be used by model_js */
 
+function add_data_ajax(){
+    const update_flds = {};
+
+    let formData = new FormData();
+    let getData = $('#myModel').find(':input').serializeArray();
+    $.each(getData, function(i, field){
+        formData.append( field.name, field.value);  
+        update_flds[field.name] = field.value; 
+        //console.log('jdata', field.name, field.value );
+    });
+
+    $.ajax({
+      url: '../store_items/modal_post_ajax', 
+      method:"POST",
+      data: formData,
+      contentType: false,
+      cache: false,
+      processData:false,
+      success:function(data)
+      {
+        console.log( 'Return Data:......  ', data);
+        if( data == 1 ) {
+            myAlert('Success!','<b>Record has been to database.</b>');
+            console.log('Successfully added record to database.' );
+        } else {
+            myAlert('Error!','<b>Record failed to be added to database.</b>');
+            console.log('Error: Record failed to be added to database.');            
+        }
+      }// success
+
+    })  
+}
+
 
 $(document).ready(function() {
     let change_occurred = false;
@@ -24,47 +57,4 @@ $(document).ready(function() {
        // if( change_occurred ) save_changes_ajax( this.id ); 
     });
 
-    function save_changes_ajax( id ){
-        const update_flds = {};
-        let formData = new FormData();
-        let div_id = id.split('-');
-
-		let jdata = div_id[1]; // This is the id of the div we want data from.
-        let getData = $('#'+jdata).find(':input').serializeArray();
-
-        formData.append( 'fld_group', div_id[1] );              
-        formData.append( 'id', div_id[2]);                            
-        $.each(getData, function(i, field){
-            formData.append( field.name, field.value);  
-            update_flds[field.name] = field.value; 
-            console.log('jdata', field.name, field.value );
-        });
-
-        $.ajax({
-          url: '../', 
-          method:"POST",
-          data: formData,
-          contentType: false,
-          cache: false,
-          processData:false,
-          success:function(data)
-          {
-   		    $(".clear_error_mess").html('');          	
-            console.log( 'Return Data:......  ', data);
-            if( data == 1 ) {
-                console.log('Success server side validation.............' );
-            } else {
-				let error_message = JSON.parse(data);
-				for ( var key in error_message ) {
-					if (error_message.hasOwnProperty(key)){
-						if( key !== 'contains' ) {
-							$('.'+key).html(error_message[key]);							 
-						}
-					}
-				}
-            }
-          }// success
-
-        })  
-    }
 });

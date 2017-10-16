@@ -322,7 +322,7 @@ CREATE TABLE `store_products` (
 -- Dumping data for table `store_products`
 --
 
-INSERT INTO `store_products` (`id`, `parent_cat`, `sub_cat_id`, `sub_cat`, `manufacturer`, `prd_headline`, `part_num`, `upc`, `description`, `price`, `sale_price`, `create_date`, `userid`, `modified_date`) VALUES
+INSERT INTO `store_products` (`id`, `parent_cat`, `sub_cat_id`, `sub_cat`, `manufacturer`, `short_desc`, `part_num`, `upc`, `description`, `price`, `sale_price`, `create_date`, `userid`, `modified_date`) VALUES
 (2, 'Medical Supply', 0, 'Feminine Hygiene', 'Medline', 'Medline Pad, Maternity, 11 in, with Tails, Non-Sterile', 'NON241280', '80196781488', '\nMedline OB Pad with Tails, 11\" long Non-sterile 12 per bg, 24 in a case. There is no adhesive strip along the back of the pad.\nQuantity : 288 per Case, 24 One-Dozen Bags\nSterile :No\nLatex-Free : Yes\n', 74.52, 55.20, 0, 0, 0),
 (3, 'Medical Supply', 0, 'Feminine Hygiene', '\nVendPink dittie?', 'VendPink dittie? Vended Tampons', '80011', '', 'VendPink donates 20% of the profits from vended tampons to Y-ME National Breast Cancer Organization. Regular absorbency with pearlized plastic applicator. Packaged in uniquely designed vending tubes with mood-lifting messages on every wrapper.\n\nQuantity : 300 per Case', 114.24, 84.62, 0, 0, 0),
 (4, 'Medical Supply', 0, 'Feminine Hygiene', 'Hospeco', 'Hospeco Maxithins? Vended Sanitary Napkins - 250 per Case', 'MT-4, ', '75289000447', 'Thin full protection. Folded to fit into #4 box for vending from feminine hygiene dispensers. For use with Hospeco HSC MT 1 and HSC FOCJR-25 vendors both sold separately. Also fits any vendor/feminine hygeine dispenser that vends #4 boxes.\n\nGrade : #4 Box Size\nQuantity : 250 per Case', 56.50, 41.85, 0, 0, 0),

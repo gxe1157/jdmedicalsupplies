@@ -23,11 +23,11 @@ $(document).ready(function (e) {
 
   /* On submit */
   $('#upload-button').on('click', function(e) {
-    $( '#upload-button').prop("disabled",true);
-    $( '#cancelImg').prop("disabled",true);
+    // $( '#upload-button').prop("disabled",true);
+    // $( '#cancelImg').prop("disabled",true);
 
     e.preventDefault();
-    let target_url = '../site_ajax_upload/ajax_upload_one'; 
+    let target_url = '../../site_ajax_upload/ajax_upload_one'; 
 
     var formData = new FormData();
     formData.append('file', file.files[0]);
@@ -46,7 +46,7 @@ $(document).ready(function (e) {
 
     $('div .modal-footer #yes').modal('toggle').on('click', function(){
         $('#modal').modal('data-dismiss');
-        let target_url = '../site_ajax_upload/ajax_remove_avatar'; 
+        let target_url = '../../site_ajax_upload/ajax_remove_avatar'; 
         upload_ajax( target_url, null );
     });
 
@@ -59,7 +59,6 @@ $(document).ready(function (e) {
 
   function upload_ajax(target_url, formData)
   {
-
     $.ajax({
       url: target_url, 
       method:"POST",

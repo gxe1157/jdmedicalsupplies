@@ -1,6 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
 if ( ! function_exists('login_init'))
 {
 	function login_init( ) {
@@ -48,10 +47,10 @@ if ( ! function_exists('checkField'))
 
 if ( ! function_exists('quit'))
 {
-	function quit($output){
-	    exit('<h3>'.$output.'</h3>');
+	function quit($output = null, $exit = null){
+	    echo('<h3>Debug Position: '.$output.'</h3>');
+	    if( empty($exit) ) exit();  
 	}
-
 }
 
 if ( ! function_exists('base_dir'))

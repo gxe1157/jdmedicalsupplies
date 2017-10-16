@@ -160,9 +160,7 @@ function create()
     $data['default'] = $this->default;  
     $data['columns_not_allowed'] = $this->columns_not_allowed;
     $data['labels'] = $this->_get_column_names('label');
-    $data['custom_jscript'] = [ 'adminfiles/js/jquery.cleditor.min',
-                                'public/js/site_email_manage',
-                                'public/js/format_flds'];    
+    $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min'];    
 
     $data['page_url'] = "create";
     $data['update_id'] = $update_id;
