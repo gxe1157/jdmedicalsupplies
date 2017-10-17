@@ -37,7 +37,8 @@
 
             <div class="well">
                <form id="myForm" method="post" action="<?= $form_location ?>" >
-               <input type="hidden"  name="parent_cat_id"  value="<?= $columns['parent_cat_id'] ?>" >              
+               <input type="hidden"  id="update_id"
+                      name="update_id"  value="<?= $update_id ?>" >              
 <!-- form row -->                  
                 <div class="row">
 <!-- col-md-5 -->                  
@@ -159,7 +160,7 @@
                             <label for="sku">SKU</label>
                             <div>
                               <input type="text" id="sku" name="sku"
-                                     value="<?= $columns['part_num'] ?> "
+                                     value="<?= $columns['sku'] ?> "
                                      placeholder="" class="form-control sku">
                             </div>
                           </div>

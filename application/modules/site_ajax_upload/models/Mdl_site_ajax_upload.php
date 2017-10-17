@@ -18,7 +18,14 @@ function get_table() {
 /* ===================================================
     Add custom model functions here
    =================================================== */
- 
+          
+function update_data( $update_id, $table_name, $table_data )
+{
+
+    $this->db->where('id', $update_id);
+    $this->db->update( $table_name, $table_data);
+
+}
 
 
 /* ===============================================

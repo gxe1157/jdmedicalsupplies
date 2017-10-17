@@ -14,7 +14,7 @@
 
           <div style="display:block; border: 0px red solid">
           <input type="hidden" id="active_image" name="active_image" value="">
-          <img src="http://via.placeholder.com/300x250"
+          <img src="<?= $img_name ?>"
                class="img-responsive img-thumbnail"
                alt="#"
                id="previewImg">

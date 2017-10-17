@@ -24,9 +24,11 @@ public $column_rules = array(
         array('field' => 'prd_weight', 'label' => 'Prd Weight', 'rules' => ''),
         array('field' => 'prd_status', 'label' => 'Prd Status', 'rules' => ''),        
         array('field' => 'prd_image_status', 'label' => 'Prd Image Status', 'rules' => ''),
-
+        array('field' => 'prd_img_name', 'label' => 'Image Name', 'rules' => ''),        
+   
         array('field' => 'part_num', 'label' => 'Part Number', 'rules' => 'required'),
         array('field' => 'upc', 'label' => 'UPC', 'rules' => ''),
+        array('field' => 'sku', 'label' => 'SKU', 'rules' => ''),        
         array('field' => 'price', 'label' => 'Price', 'rules' => 'required'),
         array('field' => 'sale_price', 'label' => 'Sale Price', 'rules' => 'required')
 );
@@ -34,6 +36,7 @@ public $column_rules = array(
 //// use like this.. in_array($key, $columns_not_allowed ) === false )
 PUBLIC  $columns_not_allowed = array( 'create_date' );
 PUBLIC $default = [];
+public $upload_img_base = 'public/images/jkingsley/jdmed/products/';    
 
 function __construct() {
     parent::__construct();
@@ -49,7 +52,6 @@ function __construct() {
     $this->default['add_button']  = "Add New Product";
     $this->default['flash'] = $this->session->flashdata('item');   
     $this->site_security->_make_sure_logged_in();     
-
 }
 
 
@@ -106,9 +108,8 @@ function create()
                 $this->_set_flash_msg("The item details were sucessfully updated");
             } else {
                 //insert a new item
-                // $this->_insert($data);
-                // $update_id = $this->get_max(); // get the ID of new item
-                // $flash_msg
+                $this->_insert($data);
+                $update_id = $this->get_max(); // get the ID of new item
                 $this->_set_flash_msg("The item was sucessfully added");
             }
             redirect($this->main_controller.'/create/'.$update_id);
@@ -128,6 +129,7 @@ function create()
     $this->load->module('store_cat_assign');
     list( $query, $data['assigned_categories'], $data['sub_categories'] )=
          $this->store_cat_assign->get_category_info($update_id);
+    
 
     $data['manufactures_list'] = $this->model_name->_get_manufacturer('company');
     $data['columns_not_allowed'] = $this->columns_not_allowed;
@@ -146,12 +148,33 @@ function create()
     $data['view_module'] = 'store_items';
     $data['title'] = "Update User Details";
 
+    $parent_cat_name  = $this->get_parent_cat_name($data['columns']['sub_cat_id'], null);
+    $data['img_name'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['prd_img_name'];
+
     $this->default['page_title'] = 'Update User Details';
     $data['default'] =  $this->default;  
+    $data['update_id'] = $update_id;
 
     $this->load->module('templates');
     $this->templates->admin($data);       
 
+}
+
+function get_parent_cat_name($sub_cat_id, $col = null)
+{
+    if( isset($col[0] && !empty($col) ){
+
+    } else {
+
+    }
+
+    $mysql_query = "SELECT * FROM `store_categories` WHERE id = (SELECT `parent_cat_id` FROM `store_categories` WHERE id = '".$sub_cat_id."')";
+
+    $results =  $this->model_name->_custom_query($mysql_query)->result();
+    checkArray($results,1);
+    checkField($results[0]->cat_title ,0);
+    
+    return $results;
 }
 
 

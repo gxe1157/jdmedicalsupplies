@@ -48,9 +48,9 @@ function _get_manufacturer($order_by){
     foreach ($query->result() as $key => $value) {
             $manu_list[$key] = $value->company;
     }
-    
     return $manu_list;
 }
+
 /* ===============================================
     David Connelly's work from mdl_perctmodel
     is in applications/core/My_Model.php which

@@ -15,9 +15,11 @@ var $column_rules = array(
 // use like this.. in_array($key, $columns_not_allowed ) === false )
 var  $columns_not_allowed = array( 'create_date' );
 
+public $upload_img_base ='./public/images/jkingsley/jdmed/products/';
+
+
 function __construct() {
     parent::__construct();
-
 }
 
 
@@ -94,54 +96,82 @@ function ajax_remove()
 
 function ajax_upload_one()
 {
-
     sleep(1);
-    $this->load->module('site_security');
-    $update_id = $this->site_security->_make_sure_logged_in();
+    // $update_id = $this->site_security->_make_sure_logged_in();
+    $update_id  = $this->input->post('update_id', TRUE);
+    $part_num   = $this->input->post('part_num', TRUE);
 
-    $config["upload_path"]   = './public/images/jkingsley/jdmed/products/medical_supply/new_uploads/';
-    $config['allowed_types'] = 'jpeg|jpg|png|gif';
-    $config['max_size']      = '2048';
+    /* full upload path */
+    $prd_folder = 'medical_supply/new_uploads/';    
+    $upload_folder = $this->upload_img_base.$prd_folder;
 
     $this->load->library('upload', $config);
-    $imagename = $_FILES['file']['name'];
-    $config['file_name'] = $imagename; // set the name here
+    $config["upload_path"]  = $upload_folder;
+    $config['allowed_types']= 'jpeg|jpg|png|gif';
+    $config['max_size']     = '2048';
+    $config['overwrite']    = true;
+    $imagename = rtrim($part_num);
 
+    /* check mysql for img_name */
+    $is_uploaded = $this->is_already_uploaded($update_id, $imagename, $upload_folder);
+
+    $config['file_name'] = $imagename; // set the name here
     $this->upload->initialize($config);
 
-    if($this->upload->do_upload('file')) {
+    if( $this->upload->do_upload('file') && $is_uploaded == false ) {
       $data = $this->upload->data();
-      // $this->_update_img_data($imagename, $update_id, $config["upload_path"]);          
-      // echo 1;
+
+      $imagename .=$data['file_ext'];  
+      $orig_name = $data['client_name'];
+
+      $this->_update_img_data($imagename, $update_id, $orig_name, $upload_folder);
     } else {
       // display errors 
       $data = '';
       $data = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
 
     }
-    echo json_encode($update_id);    
+    echo json_encode($data);    
 }
 
-
-function _update_img_data($imagename, $update_id, $img_path)
+function _update_img_data($imagename, $update_id, $orig_name)
 {
-    // /* get image name on file */ 
-    // $default_avatar = "http://via.placeholder.com/300x250";    
-    // $mysql_query    = "SELECT prd_img_name FROM `store_items` WHERE `id` =".$update_id;
-    // $result_set     = $this->model_name->_custom_query($mysql_query)->result();
-    // $avatar_on_file = $result_set[0]->prd_img_name;
-
-    // if( $avatar_on_file != $default_avatar  &&  $avatar_on_file !='' ){
-    //     $file_location  = $img_path.$avatar_on_file;  
-    //     if( file_exists( $file_location ) )
-    //         unlink($file_location);
-    // }
-    
     /* Update database */
-    $mysql_query = "UPDATE `store_items` SET `prd_img_name` = '".$imagename."' WHERE `store_items`.`id` = ".$update_id;
-
-    $this->model_name->_custom_query($mysql_query);
+    $table_data = ['prd_img_name' => $imagename, 'prd_img_org_name' => $orig_name ];
+    $this->model_name->update_data($update_id, 'store_items', $table_data );    
 }
+
+function is_already_uploaded($update_id, $imagename, $img_path)
+{
+    $is_found = false;
+    $img_on_file ='';
+
+    /* check if image on file */ 
+    $mysql_query = "SELECT prd_img_name FROM `store_items` WHERE `id` =".$update_id;
+    $result_set  = $this->model_name->_custom_query($mysql_query)->result();
+    $num_rows = count($result_set);
+
+    if($num_rows>0){
+       $img_on_file = $result_set[0]->prd_img_name;      
+       $is_found = ( $imagename == $img_on_file ) ? true : false; 
+    }
+
+    if( $is_found == false){
+        $file_location  = $img_path.$img_on_file;
+          if( !is_dir($file_location) ){   
+             $this->delete_file($file_location);   
+          }  
+    }
+    return $is_found;
+}
+
+function delete_file($file_location)
+{
+    /* check for image on server's drive */
+    if( file_exists( $file_location ) )
+            unlink($file_location);
+}
+
 
 
 // function _generate_thumbnail($file_name)

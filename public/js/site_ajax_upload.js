@@ -31,6 +31,9 @@ $(document).ready(function (e) {
 
     var formData = new FormData();
     formData.append('file', file.files[0]);
+    formData.append('update_id', $('#update_id').val());
+    formData.append('part_num', $('#part_num').val());
+
     upload_ajax( target_url, formData );
 
   });
@@ -68,8 +71,8 @@ $(document).ready(function (e) {
       processData:false,
       success:function(data)
       {
-        var imgData = JSON.parse( data );
-      //  console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
+       var imgData = JSON.parse( data );
+       // console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
 
         document.getElementById('active_image').value = imgData['file_name'];
         $( '#upload-button').prop("disabled",false);
@@ -77,7 +80,7 @@ $(document).ready(function (e) {
         $( '#confirm_upload').css("display", "none"); 
         $( '#pre_upload').css("display", "block");         
 
-        if( imgData['file_name'] == 'annon_user.png' ) noPreview();
+        if( imgData['file_name'] == '' ) noPreview();
       }
 
     });
