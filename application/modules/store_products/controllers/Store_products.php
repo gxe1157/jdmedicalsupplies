@@ -17,6 +17,7 @@ public $default = [];
 
 function __construct() {
     parent::__construct();
+
     /* get product data */
     $update_id = $this->uri->segment(3);
     $this->default['page_nav']   = "Products";     
@@ -43,7 +44,6 @@ function manage($sub_cat_id)
     $str =  explode(" ",$prod_fields->parent_cat);
     $parent_dir = strtolower(join("_",$str));
     $main_category_dir = "public/images/jkingsley/jdmed/products/".$parent_dir;
-checkField($main_category_dir,1);
 
     $data['main_category_dir'] = $main_category_dir;
     $data['sub_cat'] = $prod_fields->sub_cat;

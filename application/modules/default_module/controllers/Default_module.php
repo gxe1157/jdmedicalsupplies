@@ -39,7 +39,6 @@ function index()
 
 	$this->load->module('templates');
 	$this->templates->public_main($data);
-
 }
 
 function admin( $data = array() )

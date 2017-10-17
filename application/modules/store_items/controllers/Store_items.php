@@ -148,8 +148,10 @@ function create()
     $data['view_module'] = 'store_items';
     $data['title'] = "Update User Details";
 
-    $parent_cat_name  = $this->get_parent_cat_name($data['columns']['sub_cat_id'], null);
+    $parent_cat_name  = $this->parent_cat_folder($data['columns']['sub_cat_id']);
     $data['img_name'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['prd_img_name'];
+
+// checkField($data['img_name'],0);
 
     $this->default['page_title'] = 'Update User Details';
     $data['default'] =  $this->default;  
@@ -160,21 +162,15 @@ function create()
 
 }
 
-function get_parent_cat_name($sub_cat_id, $col = null)
+function parent_cat_folder($sub_cat_id)
 {
-    if( isset($col[0] && !empty($col) ){
-
-    } else {
-
-    }
-
+    /* get the parent category title which id folder for porduct images */
     $mysql_query = "SELECT * FROM `store_categories` WHERE id = (SELECT `parent_cat_id` FROM `store_categories` WHERE id = '".$sub_cat_id."')";
 
     $results =  $this->model_name->_custom_query($mysql_query)->result();
-    checkArray($results,1);
-    checkField($results[0]->cat_title ,0);
-    
-    return $results;
+    $folder_name = explode(" ",$results[0]->cat_title);
+    $folder_name = join("_",$folder_name);
+    return strtolower($folder_name);
 }
 
 
