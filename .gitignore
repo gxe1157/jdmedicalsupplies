@@ -20,4 +20,4 @@ _archive/*
 ftp_drop/*
 cpatcha/*
 upload/*
-images/*
+public/images/*
