@@ -22,7 +22,6 @@ if ( ! function_exists('login_init'))
 	}
 }
 
-
 if ( ! function_exists('checkArray'))
 {
 	function checkArray( $array = array(), $exit){
@@ -32,6 +31,18 @@ if ( ! function_exists('checkArray'))
 	    if( empty($exit) ){
 	        exit();  
 	    }
+	}
+}
+
+if ( ! function_exists('checkTrue'))
+{
+	function checkTrue( $fld = null, $exit){
+		$state = $fld ? "true" : "false";
+	    echo "<h4>fld value| ".$state." |</h4>";
+	    if( empty($exit) ){
+	        exit();  
+	    }
+	    return $state;
 	}
 }
 

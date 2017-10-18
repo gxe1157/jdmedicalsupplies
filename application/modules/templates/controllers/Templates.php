@@ -7,18 +7,7 @@ function __construct()
 {
     parent::__construct();
 
-    // checkArray( gd_info(),1);
-
-
 }
-
-
-// function _draw_breadcrumbs($data)
-// {
-//     // NOTE: template, current_page_title, breadcrumbs_array are needed
-//     if( $data['breadcrumbs_array'] )
-//         $this->load->view('public_bootstrap/breadcrumbs_public_bootstrap', $data);
-// }
 
 
 function public_main( $data = array() )
@@ -55,6 +44,14 @@ function public_bootstrap($data = null)
 
     $this->load->view('public_bootstrap/public_bootstrap', $data);
 }
+
+
+// function _draw_breadcrumbs($data)
+// {
+//     // NOTE: template, current_page_title, breadcrumbs_array are needed
+//     if( $data['breadcrumbs_array'] )
+//         $this->load->view('public_bootstrap/breadcrumbs_public_bootstrap', $data);
+// }
 
 
 } // end Templates

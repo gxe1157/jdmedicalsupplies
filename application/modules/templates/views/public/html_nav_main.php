@@ -47,7 +47,7 @@ foreach ($menu_prd_drop_down as $key => $sub_cat) {
 			               <li class="dropdown">
 			                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products
 			                  <i class="fa fa-angle-down"></i></a>
-<!-- ev -->
+<!-- products nav dropdown -->
 								<ul class="dropdown-menu" role="menu">
 									<?php foreach($menu_prd_drop_down as $key => $sub_cat){ ?>
 									      <li class="dropdown-submenu">
@@ -61,7 +61,7 @@ foreach ($menu_prd_drop_down as $key => $sub_cat) {
 									<?php }?>      
 			                    </ul>
 			                </li>
-<!-- ev -->
+<!-- /products nav dropdown -->
 			               <li class="dropdown">
 			                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">News <i class="fa fa-angle-down"></i></a>
 	      					  <ul class="dropdown-menu" role="menu">

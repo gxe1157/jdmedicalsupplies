@@ -72,15 +72,21 @@ $(document).ready(function (e) {
       success:function(data)
       {
        var imgData = JSON.parse( data );
-       // console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
+       console.log(imgData);
 
-        document.getElementById('active_image').value = imgData['file_name'];
-        $( '#upload-button').prop("disabled",false);
-        $( '#cancelImg').prop("disabled",false);
-        $( '#confirm_upload').css("display", "none"); 
-        $( '#pre_upload').css("display", "block");         
+       if(imgData == 1){
+          // console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
+          document.getElementById('active_image').value = imgData['file_name'];
+          $( '#upload-button').prop("disabled",false);
+          $( '#cancelImg').prop("disabled",false);
+          $( '#confirm_upload').css("display", "none"); 
+          $( '#pre_upload').css("display", "block");         
 
-        if( imgData['file_name'] == '' ) noPreview();
+          // if( imgData['file_name'] == '' ) noPreview();
+       } else{
+          $('#message').html( imgData['error_mess'] );
+       }
+
       }
 
     });

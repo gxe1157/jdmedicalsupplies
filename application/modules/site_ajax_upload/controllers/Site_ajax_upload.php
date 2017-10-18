@@ -17,7 +17,6 @@ var  $columns_not_allowed = array( 'create_date' );
 
 public $upload_img_base ='./public/images/jkingsley/jdmed/products/';
 
-
 function __construct() {
     parent::__construct();
 }
@@ -100,10 +99,9 @@ function ajax_upload_one()
     // $update_id = $this->site_security->_make_sure_logged_in();
     $update_id  = $this->input->post('update_id', TRUE);
     $part_num   = $this->input->post('part_num', TRUE);
-//checkArray($_POST,1);
 
     /* full upload path */
-    $prd_folder = 'medical_supply/new_uploads/';    
+    $prd_folder = 'medical_supplies/new_uploads/';    
     $upload_folder = $this->upload_img_base.$prd_folder;
 
     $this->load->library('upload', $config);
@@ -121,19 +119,22 @@ function ajax_upload_one()
 
     if( $this->upload->do_upload('file') ) {
       $data = $this->upload->data();
-
+      $data['success'] = 1;
       $imagename .=$data['file_ext'];  
       $orig_name = $data['client_name'];
 
       $this->_update_img_data($imagename, $update_id, $orig_name, $upload_folder);
     } else {
       // display errors 
-      $data = '';
-      $data = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
+      $error_mmesage = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
+
+      $data['success'] = 0;
+      $data['error_mess'] = $error_mmesage;
 
     }
     echo json_encode($data);    
 }
+
 
 function _update_img_data($imagename, $update_id, $orig_name)
 {
@@ -144,20 +145,20 @@ function _update_img_data($imagename, $update_id, $orig_name)
 
 function is_already_uploaded($update_id, $imagename, $img_path)
 {
+
     $is_found = false;
     $img_on_file ='';
+    is_numeric($update_id);
 
     /* check if image on file */ 
     $mysql_query = "SELECT prd_img_name FROM `store_items` WHERE `id` =".$update_id;
     $result_set  = $this->model_name->_custom_query($mysql_query)->result();
-    $num_rows = count($result_set);
 
-    if($num_rows>0){
-       $img_on_file = $result_set[0]->prd_img_name;      
-       $is_found = ( $imagename == $img_on_file ) ? true : false; 
-    }
+    $img_on_file = $result_set[0]->prd_img_name;      
+    $is_found = ( $imagename == $img_on_file ) ? true : false; 
 
     if( $is_found == false){
+        $this->error_mess['is_found'] = 'no image available';      
         $file_location  = $img_path.$img_on_file;
           if( !is_dir($file_location) ){   
              $this->delete_file($file_location);   
@@ -165,6 +166,21 @@ function is_already_uploaded($update_id, $imagename, $img_path)
     }
     return $is_found;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function delete_file($file_location)
 {
