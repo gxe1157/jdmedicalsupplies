@@ -20,13 +20,8 @@ function __construct() {
 
     /* get product data */
     $update_id = $this->uri->segment(3);
-    $this->default['page_nav']   = "Products";     
-    $this->default['headline']    = !is_numeric($update_id) ? "Manage Products" : "Update Product Details";
-    $this->default['page_header'] = !is_numeric($update_id) ? "Add New Prodcut" : "Update Product Details";
-    $this->default['add_button']  = "Add New Product";
     $this->default['flash'] = $this->session->flashdata('item');   
 }
-
 
 
 
@@ -38,25 +33,21 @@ function __construct() {
 function manage($sub_cat_id)
 {
 
-    $data['products'] = $this->get_where_custom('sub_cat_id', $sub_cat_id, 'short_desc');
-    $prod_fields = $data['products']->result()[0];
+    $this->load->helper('store_items/store_prd_helper');    
+    list($parent_dir, $parent_cat_title) = parent_cat_folder($sub_cat_id);
+    $sub_cat_title = sub_cat_title($sub_cat_id);
 
-    $str =  explode(" ",$prod_fields->parent_cat);
-    $parent_dir = strtolower(join("_",$str));
     $main_category_dir = "public/images/jkingsley/jdmed/products/".$parent_dir;
 
+    $data['products'] = $this->get_where_custom('sub_cat_id', $sub_cat_id, 'short_desc');
     $data['main_category_dir'] = $main_category_dir;
-    $data['sub_cat'] = $prod_fields->sub_cat;
-    $data['parent_cat'] = $prod_fields->parent_cat;
+    $data['sub_cat'] = $sub_cat_title;
+    $data['parent_cat'] = $parent_cat_title;
 
-    $data['add_items']    = true;
     $data['custom_jscript'] = [];
     $data['page_url'] = "manage";
     $data['view_module'] = 'store_products';
-    $data['title'] = "Manage Products";
-
-    $this->default['page_title'] = "Manage Products";
-    $data['default'] =  $this->default;  
+    // $data['title'] = "Manage Products";
 
     $this->load->module('templates');
     $this->templates->public_main($data);            

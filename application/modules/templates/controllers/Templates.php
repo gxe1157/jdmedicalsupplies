@@ -24,7 +24,6 @@ function __construct()
 function public_main( $data = array() )
 {
     $this->load->helper('store_items/store_prd_helper');    
- //   $this->load->helper('site_users/form_flds_helper');    
     $data['menu_prd_drop_down']  = get_all_prd_cats_for_dropdown();
     $data['title']       = $data['page_title'];
     $data['contents']    = $data['page_url']  ? :'main';

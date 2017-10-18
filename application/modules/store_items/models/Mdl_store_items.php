@@ -19,13 +19,13 @@ function get_table() {
     Add custom model functions here
    =================================================== */
    
-function _get_byId_useTable_custom( $update_id, $use_fields) {
-      $table = 'site_items'; 
-    $this->db->where( array('id' => $id));
-    $query =$this->db->get($table);
-    $data  = $this->_parse_db($query, $use_fields);
-    return $data;    
-}
+// function _get_byId_useTable_custom( $update_id, $use_fields) {
+//       $table = 'site_items'; 
+//     $this->db->where( array('id' => $id));
+//     $query =$this->db->get($table);
+//     $data  = $this->_parse_db($query, $use_fields);
+//     return $data;    
+// }
 
 function _delete_for_item( $item_id, $store_db_table ){
     // request is from Store_items.php to remove all item content

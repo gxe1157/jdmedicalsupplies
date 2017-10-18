@@ -50,18 +50,20 @@
 			  <tbody>
 			    <?php
 			    	 foreach( $products->result() as $row ){
-			    	 	$img_name = strtolower($row->part_num).".jpg";
-			    	 	$img_src = base_url().$main_category_dir."/".$img_name;
+			    	 	if( $row->prd_img_name != null ){
+				    	 	$img_name = strtolower($row->prd_img_name);
+				    	 	$img_src = base_url().$main_category_dir."/".$img_name;
+			    	 	} else {
+			    	 		$img_name ="****";
+				    	 	$img_src = base_url()."public/images/jkingsley/jdmed/grid-default-thumb.png";
+			    	 	}
 			    	 ?> 	
 
 						<tr><td>	
 							<div class="col-md-1" >
 								<img src="<?= $img_src ?>"
-							    alt="<?= $img_name ?>" class="img-responsive thumb" id="prd_img">
-
-<!-- 								<img src="<?= base_url() ?>public/images/store_products_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
- -->
-
+									 alt="<?= $img_name ?>" class="img-responsive thumb"
+									 id="prd_img">
  							</div>							
 							<div class="col-md-2 prd_name">
 								<h5>Product</h5>

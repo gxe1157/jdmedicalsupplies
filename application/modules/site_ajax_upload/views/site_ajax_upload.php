@@ -1,5 +1,12 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+//checkField($img_name,0);
+
+echo $columns['prd_img_name']."<br>";
+
+?>
 <!--site_ajax_upload image -->
-        
+
+
           <style>
             .form-style-fake{position:absolute;top:0px;}
             .form-style-base{position:absolute;top:0px;z-index: 999;opacity: 0;}

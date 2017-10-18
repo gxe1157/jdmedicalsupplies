@@ -86,6 +86,7 @@ function manage()
 
 function create()
 {
+
     $update_id = $this->uri->segment(3);
     $submit = $this->input->post('submit', TRUE);
 
@@ -93,23 +94,21 @@ function create()
         redirect($this->main_controller.'/manage');
 
     if( $submit == "Submit" ) {
-        // process changes
         $this->load->library('form_validation');
         $this->form_validation->set_rules( $this->column_rules );
 
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
-            // make search friendly url
+            /* make search friendly url */
             $data['prd_url'] = url_title( $data['prd_name'] );
             if(is_numeric($update_id)){
-                //update the item details
+                /* update the item details */
                 $this->_update($update_id, $data);
                 // checkArray($data,0);                
                 $this->_set_flash_msg("The item details were sucessfully updated");
             } else {
-                //insert a new item
-                $this->_insert($data);
-                $update_id = $this->get_max(); // get the ID of new item
+                /* insert a new item and get new update Id */
+                $update_id = $this->_insert($data); // get the ID of new item
                 $this->_set_flash_msg("The item was sucessfully added");
             }
             redirect($this->main_controller.'/create/'.$update_id);
@@ -126,10 +125,10 @@ function create()
         $data['columns'] = $this->fetch_data_from_post();
     }
 
+
     $this->load->module('store_cat_assign');
     list( $query, $data['assigned_categories'], $data['sub_categories'] )=
          $this->store_cat_assign->get_category_info($update_id);
-    
 
     $data['manufactures_list'] = $this->model_name->_get_manufacturer('company');
     $data['columns_not_allowed'] = $this->columns_not_allowed;
@@ -148,29 +147,26 @@ function create()
     $data['view_module'] = 'store_items';
     $data['title'] = "Update User Details";
 
-    $parent_cat_name  = $this->parent_cat_folder($data['columns']['sub_cat_id']);
-    $data['img_name'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['prd_img_name'];
+    $this->load->helper('store_items/store_prd_helper');    
+    list($parent_cat_name, $parent_cat_title) =
+             parent_cat_folder($data['columns']['sub_cat_id']);    
 
-// checkField($data['img_name'],0);
+    /* Set image name here */
+    if( empty($data['columns']['prd_img_name']) ) {
+        $data['img_name'] = "http://via.placeholder.com/350x250";
+    } else {
+      $data['img_name'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['prd_img_name'];
+    }
 
-    $this->default['page_title'] = 'Update User Details';
+//checkField($data['img_name'],0);
+
+   // $this->default['page_title'] = 'Update Product Details';
     $data['default'] =  $this->default;  
     $data['update_id'] = $update_id;
 
     $this->load->module('templates');
     $this->templates->admin($data);       
 
-}
-
-function parent_cat_folder($sub_cat_id)
-{
-    /* get the parent category title which id folder for porduct images */
-    $mysql_query = "SELECT * FROM `store_categories` WHERE id = (SELECT `parent_cat_id` FROM `store_categories` WHERE id = '".$sub_cat_id."')";
-
-    $results =  $this->model_name->_custom_query($mysql_query)->result();
-    $folder_name = explode(" ",$results[0]->cat_title);
-    $folder_name = join("_",$folder_name);
-    return strtolower($folder_name);
 }
 
 

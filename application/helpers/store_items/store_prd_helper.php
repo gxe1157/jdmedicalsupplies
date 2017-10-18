@@ -1,6 +1,21 @@
 
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+
+if ( ! function_exists('sub_cat_title'))
+{
+	function sub_cat_title($sub_cat_id)
+	{
+      	$ci =& get_instance();		
+	    /* get the parent category title which id folder for porduct images */
+	    $mysql_query = "SELECT cat_title FROM `store_categories` WHERE id ='".$sub_cat_id."'";
+	    $results =  $ci->model_name->_custom_query($mysql_query)->result();
+
+		return $results[0]->cat_title;
+	}
+}
+
+
 if ( ! function_exists('parent_cat_folder'))
 {
 	function parent_cat_folder($sub_cat_id)
@@ -11,9 +26,11 @@ if ( ! function_exists('parent_cat_folder'))
 	    $mysql_query = "SELECT * FROM `store_categories` WHERE id = (SELECT `parent_cat_id` FROM `store_categories` WHERE id = '".$sub_cat_id."')";
 
 	    $results =  $ci->model_name->_custom_query($mysql_query)->result();
+		$parent_cat_title = $results[0]->cat_title;
 	    $folder_name = explode(" ",$results[0]->cat_title);
-	    $folder_name = join("_",$folder_name);
-	    return strtolower($folder_name);
+	    $folder_name = strtolower(join("_",$folder_name));
+
+	    return [ $folder_name, $parent_cat_title ];
 	}
 }
 

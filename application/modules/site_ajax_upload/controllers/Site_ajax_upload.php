@@ -100,6 +100,7 @@ function ajax_upload_one()
     // $update_id = $this->site_security->_make_sure_logged_in();
     $update_id  = $this->input->post('update_id', TRUE);
     $part_num   = $this->input->post('part_num', TRUE);
+//checkArray($_POST,1);
 
     /* full upload path */
     $prd_folder = 'medical_supply/new_uploads/';    
@@ -118,7 +119,7 @@ function ajax_upload_one()
     $config['file_name'] = $imagename; // set the name here
     $this->upload->initialize($config);
 
-    if( $this->upload->do_upload('file') && $is_uploaded == false ) {
+    if( $this->upload->do_upload('file') ) {
       $data = $this->upload->data();
 
       $imagename .=$data['file_ext'];  
