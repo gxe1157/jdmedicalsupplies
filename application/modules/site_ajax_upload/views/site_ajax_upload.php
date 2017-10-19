@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-//checkField($img_name,0);
-
-echo $columns['prd_img_name']."<br>";
+echo $columns['active_name']."<br>";
 
 ?>
 <!--site_ajax_upload image -->
@@ -20,8 +18,7 @@ echo $columns['prd_img_name']."<br>";
           </style>
 
           <div style="display:block; border: 0px red solid">
-          <input type="hidden" id="active_image" name="active_image" value="">
-          <img src="<?= $img_name ?>"
+          <img src="<?= $active_image ?>"
                class="img-responsive img-thumbnail"
                alt="#"
                id="previewImg">
@@ -43,13 +40,10 @@ echo $columns['prd_img_name']."<br>";
 
           <div class="caption" id="confirm_upload" 
                style="display: none; margin-top: 8px; padding-bottom: 0px;">
-                    <button class="btn btn-md btn-primary btn-sm" id="upload-button"
+                  <button class="btn btn-md btn-primary btn-sm" id="upload-button"
                             type="button">Upload image</button>                            
-
-
-                   <button type="button" id='cancelImg'
+                  <button type="button" id='cancelImg'
                            class="btn btn-default btn-sm">Cancel</button>
-
           </div>        
 
           <div id="message"></div>

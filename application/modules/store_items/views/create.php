@@ -37,8 +37,8 @@
 
             <div class="well">
                <form id="myForm" method="post" action="<?= $form_location ?>" >
-               <input type="hidden"  id="update_id"
-                      name="update_id"  value="<?= $update_id ?>" >              
+                <input type="hidden"  id="current_img" name="current_img"  value="<?= $active_image ?>" >
+                <input type="hidden"  id="update_id" name="update_id"  value="<?= $update_id ?>" >              
 <!-- form row -->                  
                 <div class="row">
 <!-- col-md-5 -->                  

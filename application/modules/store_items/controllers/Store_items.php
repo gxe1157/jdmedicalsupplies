@@ -9,28 +9,28 @@ public $mdl_name = 'mdl_store_items';
 public $main_controller = 'store_items';
 
 public $column_rules = array(
-        // array('field' => 'parent_cat', 'label' => 'Category', 'rules' => ''),
-        array('field' => 'parent_cat_id', 'label' => 'Category', 'rules' => ''),        
-        array('field' => 'prd_name', 'label' => 'Product Name', 'rules' => ''),        
-        array('field' => 'sub_cat_id', 'label' => 'Sub Category Id', 'rules' => 'required'),
-        array('field' => 'sub_cat', 'label' => 'Sub Category name', 'rules' => ''),
-        array('field' => 'manufacturer', 'label' => 'Manufacturer', 'rules' => ''),
-        array('field' => 'short_desc', 'label' => 'Short Description', 'rules' => ''),
-        array('field' => 'description', 'label' => 'Product Description', 'rules' => 'required'),
+    // array('field' => 'parent_cat', 'label' => 'Category', 'rules' => ''),
+    array('field' => 'parent_cat_id', 'label' => 'Category', 'rules' => ''),        
+    array('field' => 'prd_name', 'label' => 'Product Name', 'rules' => ''),        
+    array('field' => 'sub_cat_id', 'label' => 'Sub Category Id', 'rules' => 'required'),
+    array('field' => 'sub_cat', 'label' => 'Sub Category name', 'rules' => ''),
+    array('field' => 'manufacturer', 'label' => 'Manufacturer', 'rules' => ''),
+    array('field' => 'short_desc', 'label' => 'Short Description', 'rules' => ''),
+    array('field' => 'description', 'label' => 'Product Description', 'rules' => 'required'),
 
-        array('field' => 'prd_width', 'label' => 'Prd Width', 'rules' => ''),
-        array('field' => 'prd_height', 'label' => 'Prd Height', 'rules' => ''),
-        array('field' => 'prd_depth', 'label' => 'Prd Depth', 'rules' => ''),
-        array('field' => 'prd_weight', 'label' => 'Prd Weight', 'rules' => ''),
-        array('field' => 'prd_status', 'label' => 'Prd Status', 'rules' => ''),        
-        array('field' => 'prd_image_status', 'label' => 'Prd Image Status', 'rules' => ''),
-        array('field' => 'prd_img_name', 'label' => 'Image Name', 'rules' => ''),        
-   
-        array('field' => 'part_num', 'label' => 'Part Number', 'rules' => 'required'),
-        array('field' => 'upc', 'label' => 'UPC', 'rules' => ''),
-        array('field' => 'sku', 'label' => 'SKU', 'rules' => ''),        
-        array('field' => 'price', 'label' => 'Price', 'rules' => 'required'),
-        array('field' => 'sale_price', 'label' => 'Sale Price', 'rules' => 'required')
+    array('field' => 'prd_width', 'label' => 'Prd Width', 'rules' => ''),
+    array('field' => 'prd_height', 'label' => 'Prd Height', 'rules' => ''),
+    array('field' => 'prd_depth', 'label' => 'Prd Depth', 'rules' => ''),
+    array('field' => 'prd_weight', 'label' => 'Prd Weight', 'rules' => ''),
+    array('field' => 'prd_status', 'label' => 'Prd Status', 'rules' => ''),        
+    array('field' => 'prd_image_status', 'label' => 'Prd Image Status', 'rules' => ''),
+    array('field' => 'active_image', 'label' => 'Image Name', 'rules' => ''),        
+
+    array('field' => 'part_num', 'label' => 'Part Number', 'rules' => 'required'),
+    array('field' => 'upc', 'label' => 'UPC', 'rules' => ''),
+    array('field' => 'sku', 'label' => 'SKU', 'rules' => ''),        
+    array('field' => 'price', 'label' => 'Price', 'rules' => 'required'),
+    array('field' => 'sale_price', 'label' => 'Sale Price', 'rules' => 'required')
 );
 
 //// use like this.. in_array($key, $columns_not_allowed ) === false )
@@ -152,13 +152,13 @@ function create()
              parent_cat_folder($data['columns']['sub_cat_id']);    
 
     /* Set image name here */
-    if( empty($data['columns']['prd_img_name']) ) {
-        $data['img_name'] = "http://via.placeholder.com/350x250";
+    if( empty($data['columns']['active_image']) ) {
+        $data['active_image'] = "http://via.placeholder.com/350x250";
     } else {
-      $data['img_name'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['prd_img_name'];
+      $data['active_image'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['active_image'];
     }
 
-//checkField($data['img_name'],0);
+// checkField($data['img_name'],0);
 
    // $this->default['page_title'] = 'Update Product Details';
     $data['default'] =  $this->default;  

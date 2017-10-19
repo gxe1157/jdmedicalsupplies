@@ -111,7 +111,7 @@ function ajax_upload_one()
     $config['overwrite']    = true;
     $imagename = rtrim($part_num);
 
-    /* check mysql for img_name */
+    /* check mysql for active_image */
     $is_uploaded = $this->is_already_uploaded($update_id, $imagename, $upload_folder);
 
     $config['file_name'] = $imagename; // set the name here
@@ -120,7 +120,7 @@ function ajax_upload_one()
     if( $this->upload->do_upload('file') ) {
       $data = $this->upload->data();
       $data['success'] = 1;
-      $imagename .=$data['file_ext'];  
+      $imagename .=$data['file_ext'];  // add ext to filename
       $orig_name = $data['client_name'];
 
       $this->_update_img_data($imagename, $update_id, $orig_name, $upload_folder);
@@ -139,7 +139,7 @@ function ajax_upload_one()
 function _update_img_data($imagename, $update_id, $orig_name)
 {
     /* Update database */
-    $table_data = ['prd_img_name' => $imagename, 'prd_img_org_name' => $orig_name ];
+    $table_data = ['active_image' => $imagename, 'prd_img_org_name' => $orig_name ];
     $this->model_name->update_data($update_id, 'store_items', $table_data );    
 }
 
@@ -151,10 +151,10 @@ function is_already_uploaded($update_id, $imagename, $img_path)
     is_numeric($update_id);
 
     /* check if image on file */ 
-    $mysql_query = "SELECT prd_img_name FROM `store_items` WHERE `id` =".$update_id;
+    $mysql_query = "SELECT active_image FROM `store_items` WHERE `id` =".$update_id;
     $result_set  = $this->model_name->_custom_query($mysql_query)->result();
 
-    $img_on_file = $result_set[0]->prd_img_name;      
+    $img_on_file = $result_set[0]->active_name;      
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
 
     if( $is_found == false){

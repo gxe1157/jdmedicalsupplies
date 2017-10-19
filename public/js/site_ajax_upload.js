@@ -4,7 +4,12 @@ $(document).ready(function (e) {
   function noPreview(){
     $( 'input[type="file"]').val('');
     $( '#pre_upload' ).css("display", "block");    
-    $( '#previewImg').attr('src', 'http://via.placeholder.com/250x250' );    
+
+    if( $('#current_img').val() ) {
+      $('#previewImg').attr('src', $('#current_img').val());        
+    } else {
+      $( '#previewImg').attr('src', 'http://via.placeholder.com/250x250' );    
+    }  
     $( '#confirm_upload').css("display", "none"); 
   }
 
@@ -23,8 +28,8 @@ $(document).ready(function (e) {
 
   /* On submit */
   $('#upload-button').on('click', function(e) {
-    // $( '#upload-button').prop("disabled",true);
-    // $( '#cancelImg').prop("disabled",true);
+    $( '#upload-button').prop("disabled",true);
+    $( '#cancelImg').prop("disabled",true);
 
     e.preventDefault();
     let target_url = '../../site_ajax_upload/ajax_upload_one'; 
@@ -72,18 +77,19 @@ $(document).ready(function (e) {
       success:function(data)
       {
        var imgData = JSON.parse( data );
-       console.log(imgData);
+       // console.log(imgData);
 
-       if(imgData == 1){
-          // console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
-          document.getElementById('active_image').value = imgData['file_name'];
+       if(imgData['success'] == 1){
+          console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
+          // document.getElementById('active_image').value = imgData['full_path'];
           $( '#upload-button').prop("disabled",false);
           $( '#cancelImg').prop("disabled",false);
-          $( '#confirm_upload').css("display", "none"); 
-          $( '#pre_upload').css("display", "block");         
+          $('#confirm_upload').css("display", "none"); 
 
-          // if( imgData['file_name'] == '' ) noPreview();
+          $( '#pre_upload').css("display", "block");         
+          if( imgData['file_name'] == '' ) noPreview();
        } else{
+
           $('#message').html( imgData['error_mess'] );
        }
 
