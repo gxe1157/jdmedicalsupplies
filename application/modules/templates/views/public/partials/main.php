@@ -117,73 +117,95 @@
 				<div id="testimonial-slide" class="owl-carousel owl-theme testimonial-slide">
 				  <div class="item">
 				     <div class="testimonial-quote-item">
-				     		<img class="testimonial-thumb" src="<?= base_url() ?>public/images/clients/testimonial1.png" alt="testimonial">
+				     		<img class="testimonial-thumb"
+src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial1.jpg" alt="testimonial">
 				         <span class="quote-text">
-				           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				            <h4>SUPERIOR PRODUCT KNOWLEDGE</h4>
+
+“Recently we had the pleasure to work with JD Medical Supplies.  There is an abundance of Medical Supplies Companies out there, but one thing that stands out for this company is their vast knowledge of product. We were looking for the right company to order our Supplies. JD Medical Supplies was the perfect match for our needs. The knowledge from this company is just as good if not better than the manufacturer. The quality and turn-around time is better than what we have experienced in the past with other Medical Supplies companies. I would highly recommend using JD Medical Supplies for your medical Supplies."
+
 				         </span>
-				         <span class="quotes-author">Leslie R. Kelley,</span>
-				         <span class="quotes-subtext">Manager, Luina Private Firm</span>
+				         <span class="quotes-author">Dr. John Phillips,</span>
+				         <span class="quotes-subtext">Senior Vice President of Material Management,<br> Eastern Maine Medical Center. </span>
 				       	
 				     </div>
 				  </div><!--/ Item 1 end -->
 
 				  <div class="item">
 				     <div class="testimonial-quote-item">
-				     		<img class="testimonial-thumb" src="<?= base_url() ?>public/images/clients/testimonial2.png" alt="testimonial">
+				     		<img class="testimonial-thumb"
+src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial2.jpg" alt="testimonial">
 				         <span class="quote-text">
-				           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				            <h4>DONE RIGHT ALL THE TIME</h4>
+“JD Medical Supplies is the true meaning of customer service! They do what they say they are going to do and on time. The quality and the price of their products can’t be beat.”
+<br><br>
+Ms. Janeth Martins the Business Executive of JD Medical Supplies is a true professional.
+I would highly recommend JD Medical Supplies for your medical Supplies needs
+
 				         </span>
-				         <span class="quotes-author">Kevin Dixon,</span>
-				         <span class="quotes-subtext">Govt. Official</span>
-				       	
+				         <span class="quotes-author">James H. Paterson,</span>
+				         <span class="quotes-subtext">Vice President of Support Services, 
+								<br>West Virginia United Health System</span>
 				     </div>
 				  </div><!--/ Item 2 end -->
 
 				  <div class="item">
 				     <div class="testimonial-quote-item">
-				     		<img class="testimonial-thumb" src="<?= base_url() ?>public/images/clients/testimonial3.png" alt="testimonial">
-				         <span class="quote-text">
-				           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				     		<img class="testimonial-thumb"
+src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial3.jpg" alt="testimonial">
+				            <h4> DEPENDABLE</h4>
+“We depend on JD Medical Supplies for quality products, excellent customer service and product availability. The JD Medical Supplies team is always willing to help and is very conscientious about taking care of the customer's needs. JD Medical Supplies has always been there and come through for us whenever we are in a pinch. We are very thankful to have such a great business partner to work and grow with year after year."
+<br><br>
+Thank you,
+<br><br>
 				         </span>
-				         <span class="quotes-author">Michael J. Higgins,</span>
-				         <span class="quotes-subtext">Rtd. Army Officer</span>
+				         <span class="quotes-author">Edward Edmonds III,</span>
+				         <span class="quotes-subtext">Vice President of Support Services, 
+								<br>President/CEO Jefferson Health, New Jersey</span>
 				       	
 				     </div>
 				  </div><!--/ Item 3 end -->
 
 				  <div class="item">
 				     <div class="testimonial-quote-item">
-				     		<img class="testimonial-thumb" src="<?= base_url() ?>public/images/clients/testimonial4.png" alt="testimonial">
-				         <span class="quote-text">
-				           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				     		<img class="testimonial-thumb"
+src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial4.jpg" alt="testimonial">
+				            <h4>JD Medical Supplies - The Best</h4>
+I have placed many orders with JD Medical Supplies. All have been handled with 100% accuracy, all shipped on time, the quality is unmatched. Thank you very much. I will continue to make JD Medical Supplies my primary supply source.
+<br><br>
 				         </span>
-				         <span class="quotes-author">Tara Gray,</span>
-				         <span class="quotes-subtext">Accountant, Private Firm</span>
+				         <span class="quotes-author">Teddy Boxer,</span>
+				         <span class="quotes-subtext">Vice President of Support Services, 
+								<br>New Brunswick, NJ</span>
 				       	
 				     </div>
 				  </div><!--/ Item 4 end -->
 
 				  <div class="item">
 				     <div class="testimonial-quote-item">
-				     		<img class="testimonial-thumb" src="<?= base_url() ?>public/images/clients/testimonial5.png" alt="testimonial">
-				         <span class="quote-text">
-				           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				     		<img class="testimonial-thumb"
+src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial5.jpg" alt="testimonial">
+				            <h4>Great Experience</h4>
+It was my first time ordering from JD Medical Supplies and it was a great experience that it came on time as well as the product was so helpful. The item was exactly what I was expecting. Thank you and will shop again.
+<br><br>
 				         </span>
-				         <span class="quotes-author">Connie Tinker,</span>
-				         <span class="quotes-subtext">Govt. Official</span>
-				       	
+				         <span class="quotes-author">Samantha Kohl,</span>
+				         <span class="quotes-subtext">Vice President of Support Services, 
+								<br>Brooklyn, NY</span>
 				     </div>
 				  </div><!--/ Item 5 end -->
 
 				  <div class="item">
 				     <div class="testimonial-quote-item">
-				     		<img class="testimonial-thumb" src="<?= base_url() ?>public/images/clients/testimonial6.png" alt="testimonial">
-				         <span class="quote-text">
-				           Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor inci done idunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitoa tion ullamco laboris nisi ut aliquip ex ea commodo consequat.
+				     		<img class="testimonial-thumb"
+src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial6.jpg" alt="testimonial">
+				            <h4>Outstanding</h4>
+I love ordering from JD Medical Supplies. The prices are amazing it’s easy to order and your packages are always on time. I have never had any problems with anything I order. Thank you JD Medical Supplies I would recommend you to anyone.
+<br><br>
 				         </span>
-				         <span class="quotes-author">Glen E. Green,</span>
-				         <span class="quotes-subtext">School Teacher</span>
-				       	
+				         <span class="quotes-author">Susan Rosenberg,</span>
+				         <span class="quotes-subtext">Vice President of Support Services, 
+								<br>Scranton, PA</span>				       	
 				     </div>
 				  </div><!--/ Item 6 end -->
 

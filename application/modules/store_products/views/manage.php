@@ -26,11 +26,19 @@
 	}
 
 	.price{
+		text-decoration: line-through;		
 		margin: 0px 0px 0px 10px;
-		color: red;
+		color: #000;
 		font-size: 1.3em;
 		font-weight: bold;
 	}
+	.sale_price{
+		margin: 0px 0px 0px 10px;
+		color: red;
+		font-size: 1.4em;
+		font-weight: bold;
+	}
+
 	thead th{
 		text-align: center;
 		font-size: 1.5em;
@@ -52,6 +60,8 @@
 			    	 foreach( $products->result() as $row ){
 			    	 	if( $row->prd_img_name != null ){
 				    	 	$img_name = strtolower($row->prd_img_name);
+				    	 	$img_name = rtrim($img_name).".jpg";
+
 				    	 	$img_src = base_url().$main_category_dir."/".$img_name;
 			    	 	} else {
 			    	 		$img_name ="****";
@@ -60,9 +70,11 @@
 			    	 ?> 	
 
 						<tr><td>	
-							<div class="col-md-1" >
+							<div class="col-md-2" >
 								<img src="<?= $img_src ?>"
-									 alt="<?= $img_name ?>" class="img-responsive thumb"
+									 class="img-responsive img-thumbnail"
+									 style="width: 100%;"
+									 alt="<?= $img_name ?>"
 									 id="prd_img">
  							</div>							
 							<div class="col-md-2 prd_name">
@@ -73,11 +85,16 @@
 									UPC : <?= $row->upc ?>
 								</p>
 							</div>
-							<div class="col-md-8" style="border: 0px red solid">
-								<h5>Description:</h5><div class="description"><?= $row->description ?></div>
+							<div class="col-md-7" 
+								 style="padding: 20px; border: 0px red solid">
+								<h5>Description:</h5>
+								<div class="description"><?= $row->description ?></div>
 							</div>
-							<div class="col-md-1" style="border: 0px red solid"> 
-								<p class="price">$<?= $row->sale_price ?></p>
+							<div class="col-md-1"
+							     style="padding: 0px; margin-left: -5px; border: 0px red solid"> 
+								<p><b>Price</b><br><span class="price">$<?= $row->price ?></span></p>
+								<p><b>Sale Price</b><br><span class="sale_price">$<?= $row->sale_price ?></span></p>
+
 							</div>
 						</td></tr>
 
