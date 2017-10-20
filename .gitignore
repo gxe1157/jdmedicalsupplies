@@ -20,4 +20,5 @@ _archive/*
 ftp_drop/*
 cpatcha/*
 upload/*
-public/images/*
+public/images/
+
