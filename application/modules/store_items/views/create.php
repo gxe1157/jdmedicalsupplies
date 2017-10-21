@@ -4,7 +4,6 @@
     echo $this->session->flashdata('item');
     unset($_SESSION['item']);
   }
-  $show_buttons = true;
 	$form_location = base_url().$this->uri->segment(1)."/create/".$update_id;
 ?>
 
@@ -12,8 +11,10 @@
   #dimensions{ color: #000; font-weight: bold; font-size: 1em; margin-bottom: 5px; margin-left: 15px; }
   .border{
     border: 1px red solid;
-
   }
+  .color_red { color: red;}
+  }  
+
 </style>
 
 <h2 style="margin-top: -10px;"><small><?= $default['page_header'] ?></small></h2>
@@ -28,8 +29,8 @@
   				<a class ="btnConfirm" id="delete-danger" href="<?= base_url() ?>store_items/deleteconf/<?= $update_id ?>">
             <button type="button" class="btn btn-danger">Delete Product</button></a>
 
-  				<a id="btnAlert" href="<?= base_url() ?>store_items/view/<?= $update_id ?>/preview"><button type="button" class="btn btn-default">Preview Page</button></a>
-  			</div>
+<!--   				<a id="btnAlert" href="<?= base_url() ?>store_items/view/<?= $update_id ?>/preview"><button type="button" class="btn btn-default">Preview Page</button></a>
+ -->  			</div>
   	</div>
     <!-- end well -->
 <?php } ?>
@@ -62,7 +63,7 @@
                                  placeholder="" class="form-control price">
                               </div>
                           </div>
-                          <span style="color: red"><?php echo form_error('price'); ?></span>
+                         <span class="help-block color_red"><?php echo form_error('price'); ?></span>
                          </div>
                           <div class="col-md-6">
                             <div class="form-group">
@@ -74,7 +75,7 @@
                               </div>
                             </div>
                          </div>
-                         <span style="color: red"><?php echo form_error('sale_price'); ?></span>
+                         <span class="help-block color_red"><?php echo form_error('sale_price'); ?></span>
                        </div>
 
                       <div class="form-group">
@@ -82,7 +83,7 @@
                           <textarea name="short_desc" id="short_desc" class="form-control"
                                     rows="2" cols="25"
                                     placeholder="Enter a brief product description"><?= $columns['short_desc'] ?></textarea>
-                      <span style="color: red"><?php echo form_error('short_desc'); ?></span>
+                         <span class="help-block color_red"><?php echo form_error('short_desc'); ?></span>
                       </div>
 
                       <div class="form-group">
@@ -137,8 +138,8 @@
                               array( 'id' => 'sub_cat_id','class' =>'form-control' );
                               echo form_dropdown('sub_cat_id', $assigned_categories,
                                            $columns['sub_cat_id'], $additional_opt);
-                          ?>                          
-                          <span style="color: red"><?php echo form_error('sub_cat_id'); ?></span>
+                          ?>
+                         <span class="help-block color_red"><?php echo form_error('sub_cat_id'); ?></span>
                         </div>
                       </div>
                        <div class="form-group">
@@ -175,7 +176,7 @@
                                      placeholder="" class="form-control manufacturer-part">
                             </div>
                           </div>
-                          <span style="color: red"><?php echo form_error('part_num'); ?></span>                          
+                          <span class="help-block color_red"><?php echo form_error('part_num'); ?></span>
                           </div>
                           <div class="col-lg-4"> 
                           <div class="form-group">
@@ -189,21 +190,22 @@
                         </div>
                       </div>
                      </div>
+
                       <div class="row">
-                          <div class="col-md-12">
+                          <div class="col-sm-12 col-md-12">
                               <div class="form-group">
                                   <div id="dimensions" >Dimentions(Width x Height X Depth)</div>
-                                  <div class="col-lg-4"> 
+                                  <div class="col-sm-8 col-lg-4"> 
                                       <input type="text" id="prd_width" name="prd_width"
                                              placeholder=""
                                              value="<?= $columns['prd_width'] ?>"
                                              class="form-control prd_width"></div>
-                                  <div class="col-lg-4">
+                                  <div class="col-sm-8 col-lg-4">
                                       <input type="text" id="prd_height" name="prd_height"
                                              value="<?= $columns['prd_height'] ?>"
                                              Placeholder="" 
                                              class="form-control prd_height"></div>
-                                  <div class="col-lg-4">
+                                  <div class="col-sm-8 col-lg-4">
                                       <input type="text" id="prd_depth" name="prd_depth"
                                              value="<?= $columns['prd_depth'] ?>"
                                              placeholder="" 
@@ -211,6 +213,7 @@
                               </div>
                           </div> 
                       </div>                      
+
                       <div class="form-group">
                           <label for="prd_weight">Weight</label>
                           <div>

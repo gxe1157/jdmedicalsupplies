@@ -42,7 +42,7 @@ function __construct() {
 
     /* get product data */
     $update_id = $this->uri->segment(3);
-    $this->default['page_nav']   = "Products";     
+    $this->default['page_nav']    = "Products";     
     $this->default['headline']    = !is_numeric($update_id) ? "Manage Products" : "Update Product Details";
     $this->default['page_header'] = !is_numeric($update_id) ? "Add New Prodcut" : "Update Product Details";
     $this->default['add_button']  = "Add New Product";
@@ -66,7 +66,7 @@ function manage()
 
     $data['custom_jscript'] = [ 'public/js/datatables.min',
                                 'public/js/site_datatable_loader',
-                                'public/js/format_flds'];
+                                'public/js/format_flds' ];
 
     $data['page_url'] = "manage";
     $data['view_module'] = 'store_items';
