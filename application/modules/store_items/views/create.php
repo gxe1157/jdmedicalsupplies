@@ -36,14 +36,13 @@
  
 
             <div class="well">
+<div><?= $active_image ?></div>   
                <form id="myForm" method="post" action="<?= $form_location ?>" >
                 <input type="hidden"  id="current_img" name="current_img"  value="<?= $active_image ?>" >
                 <input type="hidden"  id="update_id" name="update_id"  value="<?= $update_id ?>" >              
 <!-- form row -->                  
                 <div class="row">
 <!-- col-md-5 -->                  
-                  <?= validation_errors("<p style='color: red;'>", "</p>"); ?>
-
                     <div class="col-md-5">
                       <div class="form-group">
                         <label for="prd_name">Product Name</label>
@@ -63,6 +62,7 @@
                                  placeholder="" class="form-control price">
                               </div>
                           </div>
+                          <span style="color: red"><?php echo form_error('price'); ?></span>
                          </div>
                           <div class="col-md-6">
                             <div class="form-group">
@@ -74,6 +74,7 @@
                               </div>
                             </div>
                          </div>
+                         <span style="color: red"><?php echo form_error('sale_price'); ?></span>
                        </div>
 
                       <div class="form-group">
@@ -81,6 +82,7 @@
                           <textarea name="short_desc" id="short_desc" class="form-control"
                                     rows="2" cols="25"
                                     placeholder="Enter a brief product description"><?= $columns['short_desc'] ?></textarea>
+                      <span style="color: red"><?php echo form_error('short_desc'); ?></span>
                       </div>
 
                       <div class="form-group">
@@ -136,7 +138,7 @@
                               echo form_dropdown('sub_cat_id', $assigned_categories,
                                            $columns['sub_cat_id'], $additional_opt);
                           ?>                          
-
+                          <span style="color: red"><?php echo form_error('sub_cat_id'); ?></span>
                         </div>
                       </div>
                        <div class="form-group">
@@ -149,7 +151,6 @@
                               echo form_dropdown('manufacturer', $manufactures_list,
                                          $columns['manufacturer'], $additional_opt);
                           ?>                          
-
                           <p class="help-block btnSubmitForm" id="Manufacturer"><a>Manufacturer Quick Add</a></p>
                         </div>
                       </div>
@@ -174,6 +175,7 @@
                                      placeholder="" class="form-control manufacturer-part">
                             </div>
                           </div>
+                          <span style="color: red"><?php echo form_error('part_num'); ?></span>                          
                           </div>
                           <div class="col-lg-4"> 
                           <div class="form-group">

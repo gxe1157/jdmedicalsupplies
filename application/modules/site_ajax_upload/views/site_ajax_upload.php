@@ -3,8 +3,6 @@ echo $columns['active_name']."<br>";
 
 ?>
 <!--site_ajax_upload image -->
-
-
           <style>
             .form-style-fake{position:absolute;top:0px;}
             .form-style-base{position:absolute;top:0px;z-index: 999;opacity: 0;}
