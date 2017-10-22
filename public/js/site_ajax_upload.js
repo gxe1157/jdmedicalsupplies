@@ -38,6 +38,7 @@ $(document).ready(function (e) {
     formData.append('file', file.files[0]);
     formData.append('update_id', $('#update_id').val());
     formData.append('part_num', $('#part_num').val());
+    formData.append('sub_cat_id', $('#sub_cat_id').val());    
 
     upload_ajax( target_url, formData );
 
@@ -89,7 +90,7 @@ $(document).ready(function (e) {
           $( '#pre_upload').css("display", "block");         
           if( imgData['file_name'] == '' ) noPreview();
        } else{
-
+          console.log(imgData,1);
           $('#message').html( imgData['error_mess'] );
        }
 

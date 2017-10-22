@@ -19,7 +19,6 @@ public $upload_img_base ='./public/images/jkingsley/jdmed/products/';
 
 function __construct() {
     parent::__construct();
-    // $this->_security_check();  
 }
 
 
@@ -28,29 +27,50 @@ function __construct() {
     functions in applications/core/My_Controller.php
    =================================================== */
 
-function build_upload_folder($sub_cat_id)
+function ajax_remove()
 {
-    $this->load->helper('store_items/store_prd_helper');    
-    list($parent_cat_name, $parent_cat_title) = parent_cat_folder($sub_cat_id);    
+    // $this->_security_check();
+    sleep(1);
 
-    $prd_folder = 'parent_cat_name'.'/new_uploads/';
-    $upload_folder = $this->upload_img_base;
+    $id = $_POST['id'];  // image_id
+    $query = $this->get_where_custom('id', $id);
+    $results = $query->result();
+    $file_name = $results[0]->image;
+    $file_location = './upload/'.$file_name;
+    $file_name = explode("_",$file_name);
 
-    return $upload_folder;
+    $this->_delete($id);
+
+    /* get absolute path to file */
+    if( file_exists( $file_location ) ) {
+        unlink($file_location);
+        $response = array(
+          "position"  => $_POST['position'],
+          "remove_name" => $file_name[1],
+          "error_mess" => ''          
+        );
+    } else {
+        $response = array(
+          "position"  => $_POST['position'],
+          "remove_name" => $file_location,
+          "error_mess" => 'We can not remove the file at this time... Try again later... '
+        );
+    }      
+
+    echo json_encode($response);
 }
 
 
 function ajax_upload_one()
 {
-
     sleep(1);
     // $update_id = $this->site_security->_make_sure_logged_in();
     $update_id  = $this->input->post('update_id', TRUE);
     $part_num   = $this->input->post('part_num', TRUE);
-    $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
 
     /* full upload path */
-    $data['upload_folder'] = $this->build_upload_folder($sub_cat_id);
+    $prd_folder = 'medical_supplies/new_uploads/';    
+    $upload_folder = $this->upload_img_base.$prd_folder;
 
     $this->load->library('upload', $config);
     $config["upload_path"]  = $upload_folder;
@@ -81,7 +101,6 @@ function ajax_upload_one()
 
     }
     echo json_encode($data);    
-    return;      
 }
 
 
@@ -92,33 +111,30 @@ function _update_img_data($imagename, $update_id, $orig_name)
     $this->model_name->update_data($update_id, 'store_items', $table_data );    
 }
 
-
 function is_already_uploaded($update_id, $imagename, $img_path)
 {
+
     $is_found = false;
-    // is_numeric($update_id);
+    $img_on_file ='';
+    is_numeric($update_id);
 
-    /* get image from database */ 
-    list($img_on_file)= $this->get_image_name($update_id); 
+    /* check if image on file */ 
+    $mysql_query = "SELECT active_image FROM `store_items` WHERE `id` =".$update_id;
+    $result_set  = $this->model_name->_custom_query($mysql_query)->result();
 
+    $img_on_file = $result_set[0]->active_name;      
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
+
     if( $is_found == false){
+        $this->error_mess['is_found'] = 'no image available';      
         $file_location  = $img_path.$img_on_file;
-        if( !is_dir($file_location) ){   
-            $this->delete_file($file_location);   
-        }  
+          if( !is_dir($file_location) ){   
+             $this->delete_file($file_location);   
+          }  
     }
     return $is_found;
 }
 
-function get_image_name($update_id)
-{
-    $mysql_query = "SELECT active_image FROM `store_items` WHERE `id` =".$update_id;
-    $result_set  = $this->model_name->_custom_query($mysql_query)->result();
-    $img_on_file = $result_set[0]->active_name;      
-
-    return $img_on_file;
-}
 
 function delete_file($file_location)
 {
@@ -126,32 +142,6 @@ function delete_file($file_location)
     if( file_exists( $file_location ) )
             unlink($file_location);
 }
-
-
-// function ajax_remove_one()
-// {
-//     sleep(1);
-//     $update_id  = $this->input->post('update_id', TRUE);
-//     $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
-
-//     /* full upload path */
-//     $upload_folder = $this->build_upload_folder($sub_cat_id);
-
-//     list($file_name)= $this->get_image_name($update_id);
-//     $file_location  = $upload_folder.$file_name;
-//     if( !is_dir($file_location) ){   
-//         $this->delete_file($file_location);   
-//     } else {
-//       // display errors 
-//       $error_mmesage = 'We can not remove the file at this time... Try again later... ';
-
-//       $data['success'] = 0;
-//       $data['error_mess'] = $error_mmesage;
-//     }      
-
-//     echo json_encode($data);
-// }
-
 
 
 /* ===============================================
