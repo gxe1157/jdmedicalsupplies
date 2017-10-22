@@ -28,7 +28,7 @@ if ( ! function_exists('parent_cat_folder'))
 	    $results =  $ci->model_name->_custom_query($mysql_query)->result();
 		$parent_cat_title = $results[0]->cat_title;
 	    $folder_name = explode(" ",$results[0]->cat_title);
-	    $folder_name = strtolower(join("_",$folder_name));
+	    $folder_name = strtolower(join("_",$folder_name)); // will output medical_supplies from medical supplies
 
 	    return [ $folder_name, $parent_cat_title ];
 	}

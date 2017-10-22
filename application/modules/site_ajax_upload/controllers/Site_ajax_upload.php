@@ -35,9 +35,9 @@ function build_upload_folder($sub_cat_id)
     list($parent_cat_name, $parent_cat_title) = parent_cat_folder($sub_cat_id);
 
     $prd_folder = $parent_cat_name.'/new_uploads/';
-    $upload_folder = $this->upload_img_base.$prd_folder;
+    $upload_path = $this->upload_img_base.$prd_folder;
 
-    return $upload_folder;
+    return $upload_path;
 }
 
 
@@ -51,17 +51,17 @@ function ajax_upload_one()
     $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
 
     /* full upload path */
-    $data['upload_folder'] = $this->build_upload_folder($sub_cat_id);
+    $upload_path = $this->build_upload_folder($sub_cat_id);
 
     $this->load->library('upload', $config);
-    $config["upload_path"]   = $upload_folder;
+    $config["upload_path"]   = $upload_path;
     $config['allowed_types'] = 'jpeg|jpg|png|gif';
     $config['max_size']      = '2048';
     $config['overwrite']     = true;
     $imagename = rtrim($part_num);
 
     /* check mysql for active_image */
-    $is_uploaded = $this->is_already_uploaded($update_id, $imagename, $upload_folder);
+    $is_uploaded = $this->is_already_uploaded($update_id, $imagename, $upload_path);
 
     $config['file_name'] = $imagename; // set the name here
     $this->upload->initialize($config);
@@ -72,7 +72,7 @@ function ajax_upload_one()
       $imagename .=$data['file_ext'];  // add ext to filename
       $orig_name = $data['client_name'];
 
-      $this->_update_img_data($imagename, $update_id, $orig_name, $upload_folder);
+      $this->_update_img_data($imagename, $update_id, $orig_name, $upload_path);
     } else {
       // display errors 
       $error_mmesage = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
@@ -81,6 +81,8 @@ function ajax_upload_one()
       $data['error_mess'] = $error_mmesage;
 
     }
+
+    $data['upload_path'] = $upload_path;    // use to debug
     echo json_encode($data);    
     return;      
 }
@@ -97,7 +99,6 @@ function _update_img_data($imagename, $update_id, $orig_name)
 function is_already_uploaded($update_id, $imagename, $img_path)
 {
     $is_found = false;
-    // is_numeric($update_id);
 
     /* get image from database */ 
     list($img_on_file)= $this->get_image_name($update_id); 
@@ -136,10 +137,10 @@ function delete_file($file_location)
 //     $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
 
 //     /* full upload path */
-//     $upload_folder = $this->build_upload_folder($sub_cat_id);
+//     $upload_path = $this->build_upload_folder($sub_cat_id);
 
 //     list($file_name)= $this->get_image_name($update_id);
-//     $file_location  = $upload_folder.$file_name;
+//     $file_location  = $upload_path.$file_name;
 //     if( !is_dir($file_location) ){   
 //         $this->delete_file($file_location);   
 //     } else {
