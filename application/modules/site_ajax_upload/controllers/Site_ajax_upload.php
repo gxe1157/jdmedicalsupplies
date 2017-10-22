@@ -29,16 +29,23 @@ function __construct() {
     functions in applications/core/My_Controller.php
    =================================================== */
 
-function build_upload_folder($sub_cat_id)
+
+function ajax_remove_one()
 {
-    $this->load->helper('store_items/store_prd_helper');    
-    list($parent_cat_name, $parent_cat_title) = parent_cat_folder($sub_cat_id);
+    sleep(1);
+    $update_id  = $this->input->post('update_id', TRUE);
+    $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
 
-    $prd_folder = $parent_cat_name.'/new_uploads/';
-    $upload_path = $this->upload_img_base.$prd_folder;
+    /* full upload path */
+    $upload_path = $this->_build_upload_folder($sub_cat_id);
 
-    return $upload_path;
+    list($file_name)= $this->_get_image_name($update_id);
+    $file_location  = $upload_path.$file_name;
+
+    $this->_delete_file($file_location);   
+    echo json_encode($data);
 }
+
 
 
 function ajax_upload_one()
@@ -51,7 +58,7 @@ function ajax_upload_one()
     $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
 
     /* full upload path */
-    $upload_path = $this->build_upload_folder($sub_cat_id);
+    $upload_path = $this->_build_upload_folder($sub_cat_id);
 
     $this->load->library('upload', $config);
     $config["upload_path"]   = $upload_path;
@@ -61,7 +68,7 @@ function ajax_upload_one()
     $imagename = rtrim($part_num);
 
     /* check mysql for active_image */
-    $is_uploaded = $this->is_already_uploaded($update_id, $imagename, $upload_path);
+    $is_uploaded = $this->_is_already_uploaded($update_id, $imagename, $upload_path);
 
     $config['file_name'] = $imagename; // set the name here
     $this->upload->initialize($config);
@@ -96,24 +103,24 @@ function _update_img_data($imagename, $update_id, $orig_name)
 }
 
 
-function is_already_uploaded($update_id, $imagename, $img_path)
+function _is_already_uploaded($update_id, $imagename, $img_path)
 {
     $is_found = false;
 
     /* get image from database */ 
-    list($img_on_file)= $this->get_image_name($update_id); 
+    list($img_on_file)= $this->_get_image_name($update_id); 
 
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
+
     if( $is_found == false){
+        /* remove image on file */
         $file_location  = $img_path.$img_on_file;
-        if( !is_dir($file_location) ){   
-            $this->delete_file($file_location);   
-        }  
+        $this->_delete_file($file_location);   
     }
     return $is_found;
 }
 
-function get_image_name($update_id)
+function _get_image_name($update_id)
 {
     $mysql_query = "SELECT active_image FROM `store_items` WHERE `id` =".$update_id;
     $result_set  = $this->model_name->_custom_query($mysql_query)->result();
@@ -122,37 +129,30 @@ function get_image_name($update_id)
     return $img_on_file;
 }
 
-function delete_file($file_location)
+function _delete_file($file_location)
 {
-    /* check for image on server's drive */
-    if( file_exists( $file_location ) )
-            unlink($file_location);
+    /* delete image file */
+    if( file_exists( $file_location ) && !is_dir($file_location) ){   
+        if (!unlink($file_location)) {
+            // send to log and email......
+            $error_mmesage = 'Error: File did delete. Nofity Developer. ';
+            $data['success'] = 0;
+            $data['error_mess'] = $error_mmesage;
+        }
+    }      
 }
 
 
-// function ajax_remove_one()
-// {
-//     sleep(1);
-//     $update_id  = $this->input->post('update_id', TRUE);
-//     $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
+function _build_upload_folder($sub_cat_id)
+{
+    $this->load->helper('store_items/store_prd_helper');    
+    list($parent_cat_name, $parent_cat_title) = parent_cat_folder($sub_cat_id);
 
-//     /* full upload path */
-//     $upload_path = $this->build_upload_folder($sub_cat_id);
+    $prd_folder = $parent_cat_name.'/new_uploads/';
+    $upload_path = $this->upload_img_base.$prd_folder;
 
-//     list($file_name)= $this->get_image_name($update_id);
-//     $file_location  = $upload_path.$file_name;
-//     if( !is_dir($file_location) ){   
-//         $this->delete_file($file_location);   
-//     } else {
-//       // display errors 
-//       $error_mmesage = 'We can not remove the file at this time... Try again later... ';
-
-//       $data['success'] = 0;
-//       $data['error_mess'] = $error_mmesage;
-//     }      
-
-//     echo json_encode($data);
-// }
+    return $upload_path;
+}
 
 
 
