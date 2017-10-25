@@ -52,14 +52,15 @@
 			<table class="table table-striped" style="margin: 0 auto; width: 90%;">
 			  <thead>
 				  <tr>
-					  <th><?= $parent_cat ?>/<?= $sub_cat ?></th>
+					  <th><?= $parent_cat ?>/<?= $sub_cat ?>......</th>
 				  </tr>
 			  </thead>   
 			  <tbody>
 			    <?php
+
 			    	 foreach( $products->result() as $row ){
-			    	 	if( $row->prd_img_name != null ){
-				    	 	$img_name = strtolower($row->prd_img_name);
+			    	 	if( $row->active_image != null ){
+				    	 	$img_name = strtolower($row->active_image);
 				    	 	$img_name = rtrim($img_name).".jpg";
 
 				    	 	$img_src = base_url().$main_category_dir."/".$img_name;

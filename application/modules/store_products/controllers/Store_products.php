@@ -32,7 +32,6 @@ function __construct() {
 
 function manage($sub_cat_id)
 {
-
     $this->load->helper('store_items/store_prd_helper');    
     list($parent_dir, $parent_cat_title) = parent_cat_folder($sub_cat_id);
     $sub_cat_title = sub_cat_title($sub_cat_id);
@@ -47,7 +46,7 @@ function manage($sub_cat_id)
     $data['custom_jscript'] = [];
     $data['page_url'] = "manage";
     $data['view_module'] = 'store_products';
-    // $data['title'] = "Manage Products";
+    $data['title'] = "Manage Products";
 
     $this->load->module('templates');
     $this->templates->public_main($data);            
