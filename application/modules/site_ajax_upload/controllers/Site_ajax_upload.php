@@ -29,7 +29,6 @@ function __construct() {
     functions in applications/core/My_Controller.php
    =================================================== */
 
-
 function ajax_remove_one()
 {
     sleep(1);
