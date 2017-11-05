@@ -32,7 +32,7 @@ public $column_rules = array(
 //// use like this.. in_array($key, $columns_not_allowed ) === false )
 PUBLIC  $columns_not_allowed = array( 'create_date' );
 PUBLIC $default = [];
-public $upload_img_base = 'public/images/jkingsley/jdmed/products/';    
+public $upload_img_base = 'public/images/products/';    
 
 function __construct() {
     parent::__construct();

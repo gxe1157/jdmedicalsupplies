@@ -1,6 +1,6 @@
 
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-	$image_path = base_url()."public/images/jkingsley/jdmed/site_img/";
+	$image_path = base_url()."public/images/site_img/";
 ?>
 
 	<div id="banner-area" class="banner-area"
@@ -31,10 +31,10 @@
 
 					<div class="post">
 						<div class="post-media post-image">
-							<img src="public/images/jkingsley/OH3C7H0.jpg" class="img-responsive" alt=""
+							<img src="#" class="img-responsive" alt=""
 							 style=" border:2px solid #ccc; width: 600px;">
 						</div>
-
+						
 						<div class="post-body">
 
 							<div class="entry-header">
@@ -73,7 +73,7 @@ JD Medical Supplies carry products to lighten their daily caregiving workload an
 							<ul class="unstyled clearfix">
 			               	<li>
 			                    <div class="posts-thumb pull-left"> 
-									<img src="<?= base_url() ?>public/images/store_products_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
+									<img src="<?= base_url() ?>public/images/site_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
 			                    </div>
 			                    <div class="post-info">
 			                        <h4 class="entry-title">
@@ -87,7 +87,7 @@ JD Medical Supplies carry products to lighten their daily caregiving workload an
 							</li><!-- 1st post end-->
 			               	<li>
 			                    <div class="posts-thumb pull-left"> 
-									<img src="<?= base_url() ?>public/images/store_products_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
+									<img src="<?= base_url() ?>public/images/site_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
 			                    </div>
 			                    <div class="post-info">
 			                        <h4 class="entry-title">
@@ -101,7 +101,7 @@ JD Medical Supplies carry products to lighten their daily caregiving workload an
 							</li><!-- 1st post end-->
 			               	<li>
 			                    <div class="posts-thumb pull-left"> 
-									<img src="<?= base_url() ?>public/images/store_products_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
+									<img src="<?= base_url() ?>public/images/site_img/products/list-default-thumb.png" alt="default thumb" class="img-responsive thumb" id="prd_img">
 			                    </div>
 			                    <div class="post-info">
 			                        <h4 class="entry-title">

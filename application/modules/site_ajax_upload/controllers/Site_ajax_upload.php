@@ -20,7 +20,7 @@ public $upload_img_base ='';
 function __construct() {
     parent::__construct();
     // $this->_security_check();  
-    $this->upload_img_base ='./public/images/jkingsley/jdmed/products/';    
+    $this->upload_img_base ='./public/images/products/';    
 }
 
 

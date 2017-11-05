@@ -36,7 +36,7 @@ function manage($sub_cat_id)
     list($parent_dir, $parent_cat_title) = parent_cat_folder($sub_cat_id);
     $sub_cat_title = sub_cat_title($sub_cat_id);
 
-    $main_category_dir = "public/images/jkingsley/jdmed/products/".$parent_dir;
+    $main_category_dir = "public/images/products/".$parent_dir;
 
     $data['products'] = $this->get_where_custom('sub_cat_id', $sub_cat_id, 'short_desc');
     $data['main_category_dir'] = $main_category_dir;

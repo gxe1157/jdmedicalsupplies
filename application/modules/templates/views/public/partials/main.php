@@ -1,7 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
 <?php
-	$image_path = base_url()."public/images/jkingsley/jdmed/site_img/";
+	$image_path = base_url()."public/images/site_img/";
 	$this->load->view('html_carousel.php');
 ?>
 
@@ -44,7 +44,7 @@
 	</section><!-- About us end -->
 
 	<section id="product-area" class="product-area" style="background-image:url(
-	<?= base_url() ?>public/images/jkingsley/3706.jpg)">
+	<?= base_url() ?>public/images/site_img/3706.jpg)">
 	
 		<div class="container">
 			<div class="row text-center banner-text-shadow">
@@ -118,7 +118,7 @@
 				  <div class="item">
 				     <div class="testimonial-quote-item">
 				     		<img class="testimonial-thumb"
-src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial1.jpg" alt="testimonial">
+src="<?= base_url() ?>public/images/site_img/testimonial1.jpg" alt="testimonial">
 				         <span class="quote-text">
 				            <h4>SUPERIOR PRODUCT KNOWLEDGE</h4>
 
@@ -134,7 +134,7 @@ src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial1.jpg" a
 				  <div class="item">
 				     <div class="testimonial-quote-item">
 				     		<img class="testimonial-thumb"
-src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial2.jpg" alt="testimonial">
+src="<?= base_url() ?>public/images/site_img/testimonial1.jpg" alt="testimonial">
 				         <span class="quote-text">
 				            <h4>DONE RIGHT ALL THE TIME</h4>
 “JD Medical Supplies is the true meaning of customer service! They do what they say they are going to do and on time. The quality and the price of their products can’t be beat.”
@@ -152,7 +152,7 @@ I would highly recommend JD Medical Supplies for your medical Supplies needs
 				  <div class="item">
 				     <div class="testimonial-quote-item">
 				     		<img class="testimonial-thumb"
-src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial3.jpg" alt="testimonial">
+src="<?= base_url() ?>public/images/site_img/testimonial1.jpg" alt="testimonial">
 				            <h4> DEPENDABLE</h4>
 “We depend on JD Medical Supplies for quality products, excellent customer service and product availability. The JD Medical Supplies team is always willing to help and is very conscientious about taking care of the customer's needs. JD Medical Supplies has always been there and come through for us whenever we are in a pinch. We are very thankful to have such a great business partner to work and grow with year after year."
 <br><br>
@@ -169,7 +169,7 @@ Thank you,
 				  <div class="item">
 				     <div class="testimonial-quote-item">
 				     		<img class="testimonial-thumb"
-src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial4.jpg" alt="testimonial">
+src="<?= base_url() ?>public/images/site_img/testimonial1.jpg" alt="testimonial">
 				            <h4>JD Medical Supplies - The Best</h4>
 I have placed many orders with JD Medical Supplies. All have been handled with 100% accuracy, all shipped on time, the quality is unmatched. Thank you very much. I will continue to make JD Medical Supplies my primary supply source.
 <br><br>
@@ -184,7 +184,7 @@ I have placed many orders with JD Medical Supplies. All have been handled with 1
 				  <div class="item">
 				     <div class="testimonial-quote-item">
 				     		<img class="testimonial-thumb"
-src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial5.jpg" alt="testimonial">
+src="<?= base_url() ?>public/images/site_img/testimonial1.jpg" alt="testimonial">
 				            <h4>Great Experience</h4>
 It was my first time ordering from JD Medical Supplies and it was a great experience that it came on time as well as the product was so helpful. The item was exactly what I was expecting. Thank you and will shop again.
 <br><br>
@@ -198,7 +198,7 @@ It was my first time ordering from JD Medical Supplies and it was a great experi
 				  <div class="item">
 				     <div class="testimonial-quote-item">
 				     		<img class="testimonial-thumb"
-src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/testimonial6.jpg" alt="testimonial">
+src="<?= base_url() ?>public/images/site_img/testimonial1.jpg" alt="testimonial">
 				            <h4>Outstanding</h4>
 I love ordering from JD Medical Supplies. The prices are amazing it’s easy to order and your packages are always on time. I have never had any problems with anything I order. Thank you JD Medical Supplies I would recommend you to anyone.
 <br><br>
@@ -227,7 +227,7 @@ I love ordering from JD Medical Supplies. The prices are amazing it’s easy to 
 				</div><!-- Col end -->
 				<div class="col-md-6 fact-text">
     				<img class="img-responsive" 
-    					 src="<?= base_url() ?>public/images/jkingsley/usmap.png"
+    					 src="<?= base_url() ?>public/images/site_img/usmap.png"
     					 width="100%">
 
 				</div><!-- Col end -->

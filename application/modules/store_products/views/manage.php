@@ -66,7 +66,7 @@
 				    	 	$img_src = base_url().$main_category_dir."/".$img_name;
 			    	 	} else {
 			    	 		$img_name ="****";
-				    	 	$img_src = base_url()."public/images/jkingsley/jdmed/grid-default-thumb.png";
+				    	 	$img_src = base_url()."public/images/site_img/products/grid-default-thumb.png";
 			    	 	}
 			    	 ?> 	
 

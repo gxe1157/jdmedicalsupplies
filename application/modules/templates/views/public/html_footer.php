@@ -36,7 +36,7 @@
 				<div class="col-md-4 col-sm-12 footer-widget footer-about">
 					<div class="footer-logo">
 						<img class="img-responsive"
-						 src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/JDMedicalSupplies_VerticalLogo_white.png" width="340" height="120" alt="IFB_logo">
+						 src="<?= base_url() ?>public/images/site_img/JDMedicalSupplies_VerticalLogo_white.png" width="340" height="120" alt="IFB_logo">
 					</div>
 
 					<p>Our goal at J&D Medical Supplies is simply to work closely with you, our valued customer, in an effort to reduce your medical supply costs and enhance your knowledge of cost effective purchasing. A relationship with J & D Medical Supplies is a partnership that works, pure and simple.</p>

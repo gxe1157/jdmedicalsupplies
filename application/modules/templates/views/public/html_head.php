@@ -97,7 +97,7 @@
                 <div class="logo1 col-xs-12 col-sm-4">
                 <!-- "http://via.placeholder.com/388x120"                 -->
                 <a href="<?= base_url() ?>">
-                    <img class="img-responsive" src="<?= base_url() ?>public/images/jkingsley/jdmed/site_img/JDMedicalSupplies_VerticalLogo.png" width="220" height="86" alt="IFB_logo">
+                    <img class="img-responsive" src="<?= base_url() ?>public/images/site_img/JDMedicalSupplies_VerticalLogo.png" width="220" height="86" alt="IFB_logo">
                 </a>
             </div><!-- logo end -->
 

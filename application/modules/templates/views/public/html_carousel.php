@@ -17,8 +17,8 @@
 
 		<!-- Carousel inner -->
 		<div class="carousel-inner">
-		<!-- public/images/jkingsley/jdmed/site_img/ -->
-			<div class="item active" style="background-image:url(public/images/jkingsley/jdmed/site_img/20171007_220253.jpg)"> 
+		<!-- public/images/site_img/ -->
+			<div class="item active" style="background-image:url(public/images/site_img/20171007_220253.jpg)"> 
 				<!-- JD_Slide1.jpg -->
            	<div class="slider-content banner-text-shadow">
                <div class="col-md-12 text-center">
@@ -33,7 +33,7 @@
 		   </div><!--/ Carousel item end -->
 
 
-		   <div class="item" style="background-image:url(public/images/jkingsley/jdmed/site_img/JD_Slide2.jpg)">
+		   <div class="item" style="background-image:url(public/images/site_img/JD_Slide2.jpg)">
             <div class="slider-content banner-text-shadow">
               	<div class="col-md-12 text-center" style="font-size: 1em; color: #fff; text-shadow: #fff 0 0 10px;">
               		<!-- <div class="slider-text "> -->
