@@ -7,8 +7,6 @@ $(document).ready(function (e) {
 
     if( $('#current_img').val() ) {
       $('#previewImg').attr('src', $('#current_img').val());        
-    } else {
-      $( '#previewImg').attr('src', 'http://via.placeholder.com/250x250' );    
     }  
     $( '#confirm_upload').css("display", "none"); 
   }

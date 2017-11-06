@@ -5,6 +5,7 @@
     unset($_SESSION['item']);
   }
 	$form_location = base_url().$this->uri->segment(1)."/create/".$update_id;
+
 ?>
 
 <style>
@@ -37,7 +38,6 @@
  
 
             <div class="well">
-<div><?= $active_image ?></div>   
                <form id="myForm" method="post" action="<?= $form_location ?>" >
                 <input type="hidden"  id="current_img" name="current_img"  value="<?= $active_image ?>" >
                 <input type="hidden"  id="update_id" name="update_id"  value="<?= $update_id ?>" >              
@@ -46,7 +46,7 @@
 <!-- col-md-5 -->                  
                     <div class="col-md-5">
                       <div class="form-group">
-                        <label for="prd_name">Product Name</label>
+                        <label for="prd_name">Product Name [ <?= $update_id ?> ]</label>
                         <div>
                           <input type="text" id="prd_name" name="prd_name"
                                  value="<?= $columns['prd_name'] ?>"
@@ -93,7 +93,7 @@
                     </div>  
 <!-- col-md-3 -->                    
                     <div class="col-md-3">
-
+<?php if( is_numeric($update_id) ) { ?>
                           <!-- load site_ajax_upload view -->
                           <?=  $this->load->view('site_ajax_upload/site_ajax_upload') ?> 
                           <!-- load site_ajax_upload view -->
@@ -126,16 +126,16 @@
                                      <span>Inactive</span>
                             </div>
                           </div>
-
+<?php } ?>
                     </div>                    
 <!-- col-md-4 -->
                     <div class="col-md-4">
                       <div class="form-group">
-                        <label for="sub_cat_id">Assigned Category [ <?= $columns['parent_cat_id'] ?> ]</label>
+                        <label for="sub_cat_id">Assigned Category [ <?= $columns['sub_cat_id'] ?> ]</label>
                         <div>
                           <?php
                             $additional_opt =
-                              array( 'id' => 'sub_cat_id','class' =>'form-control' );
+                              array( 'id' => 'sub_cat_id','class' =>'form-control', 'disabled' => 'disabled' );
                               echo form_dropdown('sub_cat_id', $assigned_categories,
                                            $columns['sub_cat_id'], $additional_opt);
                           ?>
@@ -153,6 +153,7 @@
                                          $columns['manufacturer'], $additional_opt);
                           ?>                          
                           <p class="help-block btnSubmitForm" id="Manufacturer"><a>Manufacturer Quick Add</a></p>
+                          <span class="help-block color_red"><?php echo form_error('manufacturer'); ?></span>                        
                         </div>
                       </div>
                       <div class="row">                    

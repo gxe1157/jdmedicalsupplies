@@ -82,6 +82,7 @@ function manage()
 
 function create()
 {
+    $this->load->helper('store_items/store_prd_helper');    
 
     $update_id = $this->uri->segment(3);
     $submit = $this->input->post('submit', TRUE);
@@ -91,28 +92,43 @@ function create()
 
     if( $submit == "Submit" ) {
         if(is_numeric($update_id)) {
-           $this->column_rules[2] = array('field' => 'sub_cat_id', 'label' => 'Sub Category Id',
-                                          'rules' => 'required|numeric|greater_than[0]');
-           $this->form_validation->set_message('greater_than', 'The Assigned Category field is required.');
+            $this->column_rules[2] = array('field' => 'sub_cat_id', 'label' => 'Sub Category Id',
+                                           'rules' => 'required|numeric|greater_than[0]');
         }
+
+        $this->column_rules[3] = array('field' => 'manufacturer', 'label' => 'Manufacturer',
+                                       'rules' => 'required|numeric|greater_than[0]');
+
+        $this->form_validation->set_message('greater_than', 'The %s  field is required.');
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules( $this->column_rules );
 
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
-            unset($data['active_image']);  // image already uploaed through Site_ajax_upload.php
+            unset($data['active_image']);  // image already uploaded through Site_ajax_upload.php
             $data['part_num'] = trim($data['part_num']);
+            $data['userid'] = '1';
 
             /* make search friendly url */
             $data['prd_url'] = url_title( $data['prd_name'] );
+
             if(is_numeric($update_id)){
                 /* update the item details */
+                $data['modified_date'] = time();
+                list($parent_cat_name, $parent_cat_title, $data['parent_cat_id']) =
+                        parent_cat_folder($data['sub_cat_id']);                  
+
                 $this->_update($update_id, $data);
                 $this->_set_flash_msg("The item details were sucessfully updated");
             } else {
                 /* insert a new item and get new update Id */
+                $data['create_date'] = time();                
                 $data['parent_cat_id'] = 0;                
+                $data['sub_cat_id'] = 0;                                
+                $data['prd_status'] = 1;                                                
+                $data['prd_image_status'] = 1;
+
                 $update_id = $this->_insert($data); // get the ID of new item
                 $this->_set_flash_msg("The item was sucessfully added");
             }
@@ -125,12 +141,28 @@ function create()
         $data['columns'] = $this->fetch_data_from_db($update_id);
     } else {
         $data['columns'] = $this->fetch_data_from_post();
+        /* get image name from full path */
+        $get_img_name = explode("/",$_POST['current_img']);
+        $data['columns']['active_image'] = $get_img_name[count($get_img_name)-1];
     }
 
 
     $this->load->module('store_cat_assign');
-    list( $query, $data['assigned_categories'], $data['sub_categories'] )=
-         $this->store_cat_assign->get_category_info($update_id);
+    list( $query, $data['assigned_categories'], $data['sub_categories'] ) =
+          $this->store_cat_assign->get_category_info($update_id);
+
+    list($parent_cat_name, $parent_cat_title, $parent_cat_id) =
+            parent_cat_folder($data['columns']['sub_cat_id']);    
+
+    /* Set image name here */
+    if( empty($data['columns']['active_image']) ) {
+        $data['active_image'] = 
+               base_url().'public/images/site_img/no_image.jpg';
+    } else {
+        $data['active_image'] = 
+            base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
+    }
+
 
     $data['manufactures_list'] = $this->model_name->_get_manufacturer('company');
     $data['columns_not_allowed'] = $this->columns_not_allowed;
@@ -143,22 +175,11 @@ function create()
                                 'public/js/site_ajax_upload',                             
                                 'public/js/site_cleditor_loader',
                                 'public/js/store_items_details'                                      
-                                ];    
+                              ];    
 
     $data['page_url'] = "create";
     $data['view_module'] = 'store_items';
     $data['title'] = "Update User Details";
-
-    $this->load->helper('store_items/store_prd_helper');    
-    list($parent_cat_name, $parent_cat_title) =
-             parent_cat_folder($data['columns']['sub_cat_id']);    
-
-    /* Set image name here */
-    if( empty($data['columns']['active_image']) ) {
-        $data['active_image'] = "http://via.placeholder.com/350x250";
-    } else {
-      $data['active_image'] = base_url().$this->upload_img_base.$parent_cat_name.'/new_uploads/'.$data['columns']['active_image'];
-    }
 
     // $this->default['page_title'] = 'Update Product Details';
     $data['default'] =  $this->default;  

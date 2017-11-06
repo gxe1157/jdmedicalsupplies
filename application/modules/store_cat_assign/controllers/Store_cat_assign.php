@@ -35,15 +35,14 @@ function get_category_info( $item_id )
     // get an array of all assigned to item_id from store_cat_assign
     $query = $this->mdl_store_cat_assign->_get_assigned_categories('item_id', $item_id, $orderby = null);
 
+    $assigned_categories = ['0' => "Please Select ..."];
     foreach ($query->result() as $row) {
        list ($cat_title, $parent_cat_title) = $this->mdl_store_cat_assign->_get_parent_cat_title($row->cat_id);
        $assigned_categories[$row->cat_id] = $parent_cat_title." > ".$cat_title;
     }
 
-    if(!isset($assigned_categories)){
-       if( empty($sub_categories) ) {
-            $this->_set_flash_danger_msg("A <b>Sub Category</b> has not been assined.<br>Go to Manage Categories and click on \"Add Sub Category\" button.");
-        }
+    if( count($assigned_categories) == 1 ){
+        // $this->_set_flash_danger_msg("A <b>Sub Category</b> has not been assined.<br>Go to Manage Categories and click on \"Add Sub Category\" button.");
         $assigned_categories ="";
     } else {
         // Item has been assigned to at least one catergory

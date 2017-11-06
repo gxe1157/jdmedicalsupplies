@@ -145,9 +145,9 @@ function _delete_file($file_location)
 function _build_upload_folder($sub_cat_id)
 {
     $this->load->helper('store_items/store_prd_helper');    
-    list($parent_cat_name, $parent_cat_title) = parent_cat_folder($sub_cat_id);
+    list($parent_cat_name, $parent_cat_title, $parent_cat_id) = parent_cat_folder($sub_cat_id);
 
-    $prd_folder = $parent_cat_name.'/new_uploads/';
+    $prd_folder = $parent_cat_name;
     $upload_path = $this->upload_img_base.$prd_folder;
 
     return $upload_path;

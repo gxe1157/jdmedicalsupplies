@@ -41,12 +41,13 @@ function _insert_manufacturer($data){
 
 function _get_manufacturer($order_by){
     $table = 'store_manufacturer';
-    $this->db->select('company');    
+    $this->db->select('*');    
     $this->db->order_by($order_by);
     $query=$this->db->get($table);
-    $manu_list = [];
+
+    $manu_list = ['0' => 'Please Select ...'];
     foreach ($query->result() as $key => $value) {
-            $manu_list[$key] = $value->company;
+        $manu_list[$value->id] = $value->company;
     }
     return $manu_list;
 }

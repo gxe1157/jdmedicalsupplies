@@ -21,7 +21,6 @@ if ( ! function_exists('parent_cat_folder'))
 	function parent_cat_folder($sub_cat_id)
 	{
       	$ci =& get_instance();		
-      	
 	    /* get the parent category title which id folder for porduct images */
 	    $mysql_query = "SELECT * FROM `store_categories` WHERE id = (SELECT `parent_cat_id` FROM `store_categories` WHERE id = '".$sub_cat_id."')";
 
@@ -29,8 +28,8 @@ if ( ! function_exists('parent_cat_folder'))
 		$parent_cat_title = $results[0]->cat_title;
 	    $folder_name = explode(" ",$results[0]->cat_title);
 	    $folder_name = strtolower(join("_",$folder_name)); // will output medical_supplies from medical supplies
-
-	    return [ $folder_name, $parent_cat_title ];
+	    $parent_cat_id = $results[0]->id;
+	    return [ $folder_name, $parent_cat_title, $parent_cat_id ];
 	}
 }
 

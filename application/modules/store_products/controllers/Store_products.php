@@ -33,7 +33,7 @@ function __construct() {
 function manage($sub_cat_id)
 {
     $this->load->helper('store_items/store_prd_helper');    
-    list($parent_dir, $parent_cat_title) = parent_cat_folder($sub_cat_id);
+    list($parent_dir, $parent_cat_title, $parent_cat_id) = parent_cat_folder($sub_cat_id);
     $sub_cat_title = sub_cat_title($sub_cat_id);
 
     $main_category_dir = "public/images/products/".$parent_dir;

@@ -28,7 +28,7 @@ function add_data_ajax(){
       {
         console.log( 'Return Data:......  ', data);
         if( data == 1 ) {
-            myAlert('Success!','<b>Record has been to database.</b>');
+            myAlert('Success!','<b>Record has been added to database.</b>');
             console.log('Successfully added record to database.' );
         } else {
             myAlert('Error!','<b>Record failed to be added to database.</b>');
@@ -45,7 +45,12 @@ $(document).ready(function() {
     $('#myForm').on( 'focus', ':input', function(){
         $(this).attr( 'autocomplete', 'off' );
     });
-    
+
+    /* Assign Category state */
+    if ($('#update_id').val() != '') {
+       $('#sub_cat_id').removeAttr('disabled');
+    }    
+
     /* Save and continue */
     $('#myForm :input').change(function(e){
         // console.log($(e.target).attr('id'));

@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-echo $columns['active_name']."<br>";
+// echo $columns['active_image']."<br>";
 
 ?>
 <!--site_ajax_upload image -->
