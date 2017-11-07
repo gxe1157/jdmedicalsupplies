@@ -107,7 +107,7 @@ function _is_already_uploaded($update_id, $imagename, $img_path)
     $is_found = false;
 
     /* get image from database */ 
-    list($img_on_file)= $this->_get_image_name($update_id); 
+    $img_on_file = $this->_get_image_name($update_id); 
 
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
 

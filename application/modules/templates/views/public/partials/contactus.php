@@ -1,5 +1,5 @@
 
-	<div id="banner-area" class="banner-area" style="background-image:url(public/images/jkingsley/IFB_ContactUs.jpg)">
+	<div id="banner-area" class="banner-area" style="background-image:url(public/images/site_img/IFB_ContactUs.jpg)">
 		<!-- Subpage title start -->
 		<div class="banner-text text-center">
      		<div class="container">

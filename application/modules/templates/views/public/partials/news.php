@@ -8,7 +8,7 @@
 ?>
 
 	<div id="banner-area" class="banner-area"
-		 style="background-image:url(public/images/jkingsley/newspaper.jpg);">
+		 style="background-image:url(public/images/site_img/newspaper.jpg);">
 		<!-- Subpage title start -->
 		<div class="banner-text text-center banner-text-shadow">
      		<div class="container">

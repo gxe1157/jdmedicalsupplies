@@ -31,7 +31,7 @@ function index()
 		}
 
 	} else {
-		echo "<h1>Page Not Found 2 ".$first_bit."</h1>"; 
+		// echo "<h1>Page Not Found 2 ".$first_bit."</h1>"; 
 		$data['page_url'] = '404_page';
 		$this->load->module('site_settings');
 		$data['page_content'] = $this->site_settings->_get_page_not_found_msg();
@@ -59,6 +59,7 @@ function contact_form(){
 		// send email to jdmedical
 		$email 		 = 'info@jdmedicalsupplies.org';
 	    $admin_email = 'webmaster@411mysite.com';
+	    $admin_email2= 'jpkinsley@gmail.com';	    
 	    $from        = $_POST['email'];
 	    $subject     = 'JD Medical Supplies: '.$_POST['subject'];
 	    $message     = "Time Stamp : ".convert_timestamp( time(), 'full')."\n\n";
@@ -67,8 +68,8 @@ function contact_form(){
 	    $this->load->library('email');
 	    $this->email->from( $from);
 	    $this->email->to($email);
-	    $this->email->cc();
-		$this->email->bcc($admin_email);
+	    $this->email->cc($admin_email2);
+		$this->email->bcc($admin_email );
 
 	    $this->email->subject($subject);
 	    $this->email->message($message);
