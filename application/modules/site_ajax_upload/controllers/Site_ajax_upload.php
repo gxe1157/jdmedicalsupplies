@@ -46,7 +46,6 @@ function ajax_remove_one()
 }
 
 
-
 function ajax_upload_one()
 {
 
@@ -56,38 +55,48 @@ function ajax_upload_one()
     $part_num   = $this->input->post('part_num', TRUE);
     $sub_cat_id = $this->input->post('sub_cat_id', TRUE);
 
+    /* set image as part number and add ext name */
+    $uploaded_file = explode('.', $_FILES['file']['name'] );
+    $imagename = rtrim($part_num);
+    $imagename .= '.'.$uploaded_file[1];
+
     /* full upload path */
     $upload_path = $this->_build_upload_folder($sub_cat_id);
-
-    $this->load->library('upload', $config);
-    $config["upload_path"]   = $upload_path;
-    $config['allowed_types'] = 'jpeg|jpg|png|gif';
-    $config['max_size']      = '2048';
-    $config['overwrite']     = true;
-    $imagename = rtrim($part_num);
 
     /* check mysql for active_image */
     $is_uploaded = $this->_is_already_uploaded($update_id, $imagename, $upload_path);
 
-    $config['file_name'] = $imagename; // set the name here
-    $this->upload->initialize($config);
+    if( $is_uploaded == false ){
+        $this->load->library('upload', $config);
+        $config["upload_path"]   = $upload_path;
+        $config['allowed_types'] = 'jpeg|jpg|png|gif';
+        $config['max_size']      = '2048';
+        $config['overwrite']     = true;
+        $config['file_name'] = $imagename; // set the name here
+        $this->upload->initialize($config);
 
-    if( $this->upload->do_upload('file') ) {
-      $data = $this->upload->data();
-      $data['success'] = 1;
-      $imagename .=$data['file_ext'];  // add ext to filename
-      $orig_name = $data['client_name'];
+        if( $this->upload->do_upload('file') ) {
+          $data = $this->upload->data();
+          $data['success'] = 1;
+          // $imagename .=$data['file_ext'];  // add ext to filename
+          $orig_name = $data['client_name'];
 
-      $this->_update_img_data($imagename, $update_id, $orig_name, $upload_path);
+          $this->_update_img_data($imagename, $update_id, $orig_name, $upload_path);
+        } else {
+          // display errors 
+          $error_mmesage = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
+
+          $data['success'] = 0;
+          $data['error_mess'] = $error_mmesage;
+
+        }
     } else {
-      // display errors 
-      $error_mmesage = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
-
-      $data['success'] = 0;
-      $data['error_mess'] = $error_mmesage;
-
+          $error_mmesage = "<p>File is already uploaded.";
+          $data['success'] = 0;
+          $data['error_mess'] = $error_mmesage;
     }
 
+    $data['is_uploaded'] = $is_uploaded;
     $data['upload_path'] = $upload_path;    // use to debug
     echo json_encode($data);    
     return;      
@@ -104,11 +113,8 @@ function _update_img_data($imagename, $update_id, $orig_name)
 
 function _is_already_uploaded($update_id, $imagename, $img_path)
 {
-    $is_found = false;
 
-    /* get image from database */ 
     $img_on_file = $this->_get_image_name($update_id); 
-
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
 
     if( $is_found == false){
@@ -116,6 +122,7 @@ function _is_already_uploaded($update_id, $imagename, $img_path)
         $file_location  = $img_path.$img_on_file;
         $this->_delete_file($file_location);   
     }
+
     return $is_found;
 }
 
@@ -123,7 +130,7 @@ function _get_image_name($update_id)
 {
     $mysql_query = "SELECT active_image FROM `store_items` WHERE `id` =".$update_id;
     $result_set  = $this->model_name->_custom_query($mysql_query)->result();
-    $img_on_file = $result_set[0]->active_name;      
+    $img_on_file = $result_set[0]->active_image;      
 
     return $img_on_file;
 }

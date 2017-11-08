@@ -91,7 +91,7 @@ function create()
         redirect($this->main_controller.'/manage');
 
     if( $submit == "Submit" ) {
-        if(is_numeric($update_id)) {
+        if( is_numeric($update_id) ) {
             $this->column_rules[2] = array('field' => 'sub_cat_id', 'label' => 'Sub Category Id',
                                            'rules' => 'required|numeric|greater_than[0]');
         }
@@ -106,7 +106,7 @@ function create()
 
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
-            unset($data['active_image']);  // image already uploaded through Site_ajax_upload.php
+            // unset($data['active_image']);  // image already uploaded through Site_ajax_upload.php
             $data['part_num'] = trim($data['part_num']);
             $data['userid'] = '1';
 
@@ -117,7 +117,7 @@ function create()
                 /* update the item details */
                 $data['modified_date'] = time();
                 list($parent_cat_name, $parent_cat_title, $data['parent_cat_id']) =
-                        parent_cat_folder($data['sub_cat_id']);                  
+                     parent_cat_folder($data['sub_cat_id']);                  
 
                 $this->_update($update_id, $data);
                 $this->_set_flash_msg("The item details were sucessfully updated");
@@ -155,14 +155,16 @@ function create()
             parent_cat_folder($data['columns']['sub_cat_id']);    
 
     /* Set image name here */
-    if( empty($data['columns']['active_image']) ) {
+    $data['active_image'] = 
+        base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
+
+    if( !file_exists( $this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'] ) ||
+                      empty($data['columns']['active_image']) ) {
+
+        $data['columns']['prd_image_status'] = 0;
         $data['active_image'] = 
                base_url().'public/images/site_img/no_image.jpg';
-    } else {
-        $data['active_image'] = 
-            base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
     }
-
 
     $data['manufactures_list'] = $this->model_name->_get_manufacturer('company');
     $data['columns_not_allowed'] = $this->columns_not_allowed;

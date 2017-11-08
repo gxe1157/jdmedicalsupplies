@@ -77,23 +77,22 @@ $(document).ready(function (e) {
       {
        var imgData = JSON.parse( data );
        // console.log(imgData);
-
        if(imgData['success'] == 1){
           console.log( 'Return Data:......  ', imgData, imgData['file_name'] );        
-          // document.getElementById('active_image').value = imgData['full_path'];
-          $( '#upload-button').prop("disabled",false);
-          $( '#cancelImg').prop("disabled",false);
+          $('#current_img').val(imgData['full_path']);
+          $('#upload-button').prop("disabled",false);
+          $('#cancelImg').prop("disabled",false);
           $('#confirm_upload').css("display", "none"); 
 
           $( '#pre_upload').css("display", "block");         
           if( imgData['file_name'] == '' ) noPreview();
        } else{
           console.log(imgData,1);
-          $('#message').html( imgData['error_mess'] );
+          noPreview();
+          $('#message').html('<div class="alert alert-warning error_messages" role="alert">'+imgData['error_mess']+'</div>');
        }
 
       }
-
     });
 
   }
@@ -101,14 +100,20 @@ $(document).ready(function (e) {
 
   /* On change */
   $('input[type="file"]').change(function() {
-    /* assign to value to img obj */
-    var img_id = this.id;    
     $('#message').empty();
+    var file = this.files[0];
+
+    /* check for if already selected */
+    var filename = file.name;
+    var compare  = $('#current_img').val();
+    if( compare.indexOf(filename) != -1 ){
+      noPreview();
+      $('#message').html('<div class="alert alert-warning error_messages" role="alert">Image already selected...</div>');
+      return false;
+    }
 
     /* check for file attributes */
-    var file = this.files[0];
     var match = ["image/jpeg", "image/png", "image/jpg"];
-
     if ( !( (file.type == match[0]) || (file.type == match[1]) || (file.type == match[2]) ) )
     {
       noPreview();

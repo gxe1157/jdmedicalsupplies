@@ -5,7 +5,6 @@
     unset($_SESSION['item']);
   }
 	$form_location = base_url().$this->uri->segment(1)."/create/".$update_id;
-
 ?>
 
 <style>
