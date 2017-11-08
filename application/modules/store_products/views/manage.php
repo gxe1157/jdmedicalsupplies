@@ -61,7 +61,7 @@
 			    	 foreach( $products->result() as $row ){
 			    	 	if( $row->active_image != null ){
 				    	 	$img_name = strtolower($row->active_image);
-				    	 	$img_name = rtrim($img_name).".jpg";
+				    	 	$img_name = rtrim($img_name);
 
 				    	 	$img_src = base_url().$main_category_dir."/".$img_name;
 			    	 	} else {
