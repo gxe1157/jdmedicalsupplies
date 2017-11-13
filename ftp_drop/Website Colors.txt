@@ -1,6 +1,0 @@
-Website colors
-	Main Blue: #467091
-	Main Red: #d71820
-	Secondary Blue: #4baab7
-	Accent Gray: #f1f1f1
-	
