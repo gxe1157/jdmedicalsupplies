@@ -106,7 +106,7 @@ function create()
 
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
-            // unset($data['active_image']);  // image already uploaded through Site_ajax_upload.php
+            unset($data['active_image']);  // image already uploaded through Site_ajax_upload.php
             $data['part_num'] = trim($data['part_num']);
             $data['userid'] = '1';
 
@@ -127,6 +127,7 @@ function create()
                 $data['parent_cat_id'] = 0;                
                 $data['sub_cat_id'] = 0;                                
                 $data['prd_status'] = 1;                                                
+                $data['active_image'] = '';                                                                
                 $data['prd_image_status'] = 1;
 
                 $update_id = $this->_insert($data); // get the ID of new item
