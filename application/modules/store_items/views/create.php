@@ -33,9 +33,8 @@
  -->  			</div>
   	</div>
     <!-- end well -->
-<?php } ?>
- 
 
+<?php } ?>
             <div class="well">
                <form id="myForm" method="post" action="<?= $form_location ?>" >
                 <input type="hidden"  id="current_img" name="current_img"  value="<?= $active_image ?>" >
@@ -49,7 +48,8 @@
                         <div>
                           <input type="text" id="prd_name" name="prd_name"
                                  value="<?= $columns['prd_name'] ?>"
-                                 placeholder="" class="form-control prd_name">
+                                 placeholder="" 
+                                 class="form-control prd_name" disabled>
                         </div>
                       </div>
                        <div class="row">
@@ -78,7 +78,7 @@
                        </div>
 
                       <div class="form-group">
-                          <label for="short_desc"> Short Description </label>
+                          <label for="short_desc"> Product Name /Short Description </label>
                           <textarea name="short_desc" id="short_desc" class="form-control"
                                     rows="2" cols="25"
                                     placeholder="Enter a brief product description"><?= $columns['short_desc'] ?></textarea>
@@ -133,8 +133,8 @@
                         <label for="sub_cat_id">Assigned Category [ <?= $columns['sub_cat_id'] ?> ]</label>
                         <div>
                           <?php
-                            $additional_opt =
-                              array( 'id' => 'sub_cat_id','class' =>'form-control', 'disabled' => 'disabled' );
+                            $additional_opt = array( 'id' => 'sub_cat_id','class' =>'form-control');  //, 'disabled' => 'disabled' 
+
                               echo form_dropdown('sub_cat_id', $assigned_categories,
                                            $columns['sub_cat_id'], $additional_opt);
                           ?>

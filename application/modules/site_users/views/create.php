@@ -17,7 +17,7 @@
          style="width: 175px; height:150px;"
          alt="avatar"  
          id="previewImg">
-         <h3 style="margin-top: 0px; text-align:center;"><small><?= $default['username'].' - '.$update_id ?></small></h3>
+         <h3 style="margin-top: 0px; text-align:center;"><small><?= $columns['email'].' - '.$update_id ?></small></h3>
   </div>     
   <div class="col-md-10" style="border: 0px solid red; ">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.

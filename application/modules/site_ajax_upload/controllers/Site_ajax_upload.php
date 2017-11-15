@@ -58,7 +58,7 @@ function ajax_upload_one()
     /* set image as part number and add ext name */
     $uploaded_file = explode('.', $_FILES['file']['name'] );
     $imagename = rtrim($part_num);
-    $imagename .= '.'.$uploaded_file[1];
+    $imagename .= '.'. strtolower($uploaded_file[1]);
 
     /* full upload path */
     $upload_path = $this->_build_upload_folder($sub_cat_id);
@@ -130,7 +130,7 @@ function _get_image_name($update_id)
 {
     $mysql_query = "SELECT active_image FROM `store_items` WHERE `id` =".$update_id;
     $result_set  = $this->model_name->_custom_query($mysql_query)->result();
-    $img_on_file = $result_set[0]->active_image;      
+    $img_on_file = $result_set[0]->prd_img_org_name;      
 
     return $img_on_file;
 }

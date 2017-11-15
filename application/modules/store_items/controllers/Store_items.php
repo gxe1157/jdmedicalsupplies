@@ -11,7 +11,7 @@ public $main_controller = 'store_items';
 public $column_rules = array(
     array('field' => 'parent_cat_id', 'label' => 'Category', 'rules' => ''),        
     array('field' => 'prd_name', 'label' => 'Product Name', 'rules' => ''),        
-    array('field' => 'sub_cat_id', 'label' => 'Sub Category Id', 'rules' => ''),
+    array('field' => 'sub_cat_id', 'label' => 'Sub Category Id', 'rules' => 'required'),
     array('field' => 'manufacturer', 'label' => 'Manufacturer', 'rules' => ''),
     array('field' => 'short_desc', 'label' => 'Short Description', 'rules' => 'required'),
     array('field' => 'description', 'label' => 'Product Description', 'rules' => ''),
@@ -91,11 +91,8 @@ function create()
         redirect($this->main_controller.'/manage');
 
     if( $submit == "Submit" ) {
-        if( is_numeric($update_id) ) {
-            $this->column_rules[2] = array('field' => 'sub_cat_id', 'label' => 'Sub Category Id',
+        $this->column_rules[2] = array('field' => 'sub_cat_id', 'label' => 'Sub Category Id',
                                            'rules' => 'required|numeric|greater_than[0]');
-        }
-
         $this->column_rules[3] = array('field' => 'manufacturer', 'label' => 'Manufacturer',
                                        'rules' => 'required|numeric|greater_than[0]');
 
@@ -106,7 +103,7 @@ function create()
 
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
-            unset($data['active_image']);  // image already uploaded through Site_ajax_upload.php
+            unset($data['active_image']);  // image already uploaded
             $data['part_num'] = trim($data['part_num']);
             $data['userid'] = '1';
 
@@ -125,12 +122,16 @@ function create()
                 /* insert a new item and get new update Id */
                 $data['create_date'] = time();                
                 $data['parent_cat_id'] = 0;                
-                $data['sub_cat_id'] = 0;                                
                 $data['prd_status'] = 1;                                                
-                $data['active_image'] = '';                                                                
+                $data['active_image'] = '';
                 $data['prd_image_status'] = 1;
-
                 $update_id = $this->_insert($data); // get the ID of new item
+
+                /* insert assign cat id */                
+                $data_cat_id['item_id'] = $update_id;
+                $data_cat_id[ 'cat_id'] = $data['sub_cat_id'];
+                $this->model_name->_insert_cat_assign( $data_cat_id );
+
                 $this->_set_flash_msg("The item was sucessfully added");
             }
             redirect($this->main_controller.'/create/'.$update_id);
@@ -142,9 +143,7 @@ function create()
         $data['columns'] = $this->fetch_data_from_db($update_id);
     } else {
         $data['columns'] = $this->fetch_data_from_post();
-        /* get image name from full path */
-        $get_img_name = explode("/",$_POST['current_img']);
-        $data['columns']['active_image'] = $get_img_name[count($get_img_name)-1];
+        $data['columns']['active_image'] = basename($_POST['current_img']);
     }
 
 
@@ -152,14 +151,22 @@ function create()
     list( $query, $data['assigned_categories'], $data['sub_categories'] ) =
           $this->store_cat_assign->get_category_info($update_id);
 
+    if( !is_numeric($update_id) ) {
+        /* Add New Record to Items datbase */ 
+        $data['assigned_categories'] = ['0' => 'Please Select ...'];
+        foreach ($data['sub_categories'] as $key => $value) {
+            $data['assigned_categories'][$key] = $value;
+        }
+    }    
+
     list($parent_cat_name, $parent_cat_title, $parent_cat_id) =
             parent_cat_folder($data['columns']['sub_cat_id']);    
 
     /* Set image name here */
     $data['active_image'] = 
-        base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
+     base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
 
-    if( !file_exists( $this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'] ) ||
+    if( !file_exists( './'.$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'] ) ||
                       empty($data['columns']['active_image']) ) {
 
         $data['columns']['prd_image_status'] = 0;

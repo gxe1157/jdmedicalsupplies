@@ -27,17 +27,21 @@ function get_table() {
 //     return $data;    
 // }
 
-function _delete_for_item( $item_id, $store_db_table ){
+function _delete_for_item( $item_id, $store_db_table ) {
     // request is from Store_items.php to remove all item content
     $mysql_query = "delete from ".$store_db_table." where item_id=$item_id";
     $query = $this->_custom_query($mysql_query);
 }
 
-function _insert_manufacturer($data){
+function _insert_manufacturer($data) {
     $table = 'store_manufacturer';
-    $this->db->insert($table, $data);
+    $this->db->insert($table, $data); 
 }
 
+function _insert_cat_assign( $data_cat_id ) {
+    $table = 'store_cat_assign';
+    $this->db->insert($table, $data_cat_id);
+}
 
 function _get_manufacturer($order_by){
     $table = 'store_manufacturer';
