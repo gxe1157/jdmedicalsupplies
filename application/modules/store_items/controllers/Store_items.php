@@ -105,11 +105,11 @@ function create()
             $data = $this->fetch_data_from_post();
             unset($data['active_image']);  // image already uploaded
             $data['part_num'] = trim($data['part_num']);
-            $data['userid'] = '1';
 
             /* make search friendly url */
-            $data['prd_url'] = url_title( $data['prd_name'] );
-
+            // $data['prd_url'] = url_title( $data['prd_name'] );
+            $data['prd_name'] = '';
+            
             if(is_numeric($update_id)){
                 /* update the item details */
                 $data['modified_date'] = time();
@@ -164,9 +164,9 @@ function create()
 
     /* Set image name here */
     $data['active_image'] = 
-     base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
+        base_url().$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'];
 
-    if( !file_exists( './'.$this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'] ) ||
+    if( !file_exists( $this->upload_img_base.$parent_cat_name.'/'.$data['columns']['active_image'] ) ||
                       empty($data['columns']['active_image']) ) {
 
         $data['columns']['prd_image_status'] = 0;
