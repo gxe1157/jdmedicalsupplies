@@ -73,29 +73,35 @@
 					</style>
 
 					<div id="mc_embed_signup">
-						<!-- action="//ifbinsure.us16.list-manage.com/subscribe/post?u=5f706064be6c2d94e39d14147&amp;id=7bf1337c1a" -->
-					<form action="#" method="post"
-						 id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form"
-						 class="validate" target="_blank" novalidate>
+						<form action="https://jdmedicalsupplies.us17.list-manage.com/subscribe/post?u=1026684e3dfa0ce610c4d65d9&amp;id=d2b4d0ccfb"
+							  method="post" id="mc-embedded-subscribe-form"
+							  name="mc-embedded-subscribe-form" class="validate"
+							  target="_blank" novalidate>
+							<div id="mc_embed_signup_scroll">
+								<div class="mc-field-group">
+									<!-- <label for="mce-EMAIL">Email Address  <span class="asterisk">*</span></label> -->
+									<input type="email" value="" 
+										   name="EMAIL" class="required email" id="mce-EMAIL"
+										   placeholder="email address" required>
+								</div>
 
-					    <div id="mc_embed_signup_scroll">
-						<!-- <label for="mce-EMAIL">Subscribe to our mailing list</label> -->
-						<input type="email" value="" name="EMAIL"
-							   class="email" id="mce-EMAIL"
-							   placeholder="email address" required>
+								<div id="mce-responses" class="clear">
+									<div class="response" id="mce-error-response" style="display:none"></div>
+									<div class="response" id="mce-success-response" style="display:none"></div>
+								</div>
 
-					    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-					    <div style="position: absolute; left: -5000px;" aria-hidden="true">
-						    <input type="text" name="b_5f706064be6c2d94e39d14147_7bf1337c1a"
-						    	   tabindex="-1" value="">
-					    </div>
-					    <div class="clear"><br>
-					    	<input type="submit" value="Subscribe"
-					    	   name="subscribe" id="mc-embedded-subscribe" class="btn btn-primary">
-					    </div>
-					    </div>
-					</form>
+							    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+							    <div style="position: absolute; left: -5000px;" aria-hidden="true">
+							    	<input type="text" name="b_1026684e3dfa0ce610c4d65d9_d2b4d0ccfb"
+							    	       tabindex="-1" value=""></div>
+							    <div class="clear"><br>
+							    	<input type="submit" value="Subscribe"
+							    	       name="subscribe" id="mc-embedded-subscribe"
+							    	        class="btn btn-primary"></div>
+						    </div>
+						</form>
 					</div>
+
 					<div class="footer-social">
 						<h3 class="widget-title">Stay Connected</h3>
 						<ul>
