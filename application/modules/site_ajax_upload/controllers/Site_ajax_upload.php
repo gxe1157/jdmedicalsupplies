@@ -102,11 +102,14 @@ function ajax_upload_one()
     return;      
 }
 
-
-function _update_img_data($imagename, $update_id, $orig_name)
+function _update_img_data($imagename, $update_id, $orig_name, $upload_path=null)
 {
     /* Update database */
-    $table_data = ['active_image' => $imagename, 'prd_img_org_name' => $orig_name ];
+    $table_data = [ 'active_image' => $imagename,
+                    'prd_img_org_name' => $orig_name,
+                    'prd_image_status' => 1
+                 ];
+
     $this->model_name->update_data($update_id, 'store_items', $table_data );    
 }
 

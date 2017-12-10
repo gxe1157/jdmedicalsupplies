@@ -83,7 +83,7 @@ if(ENV == 'local' )
 		'username' => 'root',
 		'password' => '',
 		'database' => 'medicalsupplies',
-		'dbdriver' => 'MySQLi',
+		'dbdriver' => 'mysqli',
 
 		'dbprefix' => '',
 		'pconnect' => FALSE,
@@ -108,7 +108,7 @@ if(ENV == 'local' )
 		'username' => 'jdmedica_admin20',
 		'password' => 'Smokey{2012}',
 		'database' => 'jdmedica_medicalsupplies',
-		'dbdriver' => 'mysqli',	
+		'dbdriver' => 'mysql',	
 
 		'dbprefix' => '',
 		'pconnect' => FALSE,
