@@ -26,6 +26,8 @@
   				<a href="<?= base_url() ?>store_item_sizes/update/<?= $update_id ?>"><button type="button" class="btn btn-primary">Update Size</button></a>
   				<a href="<?= base_url() ?>store_cat_assign/update/<?= $update_id ?>"><button type="button" class="btn btn-primary">Update Categories</button></a>
 
+          <a href="<?= base_url() ?>store_item_assign/update/<?= $update_id ?>"><button type="button" class="btn btn-primary">Assign Item</button></a>
+
   				<a class ="btnConfirm" id="delete-danger" href="<?= base_url() ?>store_items/deleteconf/<?= $update_id ?>">
             <button type="button" class="btn btn-danger">Delete Product</button></a>
 

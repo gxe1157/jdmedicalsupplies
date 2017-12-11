@@ -21,14 +21,27 @@ function index()
 	$num_rows = $query->num_rows();
 
 	if($num_rows > 0) {
+		$items_query =[];
 		//we have found content... load page
 		foreach($query->result() as $row ){
+			$page_id = $row->id;
 			$data['page_url'] = strtolower($row->page_url);
 			$data['page_title'] = $row->page_title;
 			$data['page_keywords'] = $row->page_keywords;
 			$data['page_description'] = $row->page_description;
 			$data['page_content'] = $row->page_content;
 		}
+	    $items_query =
+	        $this->model_name->get_view_data_custom( 'webpage_id', $page_id, 'store_item_assign', $orderby = null);
+
+        if( count($items_query)>0 ){
+        	// checkArray($items_query->result(),1);
+			foreach ($items_query->result() as $key => $row) {
+				checkField('item_id: '.$row->item_id,1);
+
+			}
+
+        }
 
 	} else {
 		// echo "<h1>Page Not Found 2 ".$first_bit."</h1>"; 
