@@ -23,8 +23,15 @@ function get_login_byid($user_id)
     $this->db->where("user_login.id = '".$user_id."'" );    
     $query = $this->db->get();
     return $query;
-
 }   
+
+function get_with_many( $table_name, $ids = array() )
+{
+    $this->db->where_in('id', $ids);;    
+    $query=$this->db->get($table_name);    
+    return $query;
+}   
+
 
 function get_view_data_custom($col, $value, $table, $orderby) {
     $this->db->where($col, $value);

@@ -21,7 +21,9 @@ function index()
 	$num_rows = $query->num_rows();
 
 	if($num_rows > 0) {
-		$items_query =[];
+		$items_query = [];
+		$ids = [];
+		$parent_cat_dir = [];
 		//we have found content... load page
 		foreach($query->result() as $row ){
 			$page_id = $row->id;
@@ -31,17 +33,17 @@ function index()
 			$data['page_description'] = $row->page_description;
 			$data['page_content'] = $row->page_content;
 		}
-	    $items_query =
-	        $this->model_name->get_view_data_custom( 'webpage_id', $page_id, 'store_item_assign', $orderby = null);
 
-        if( count($items_query)>0 ){
-        	// checkArray($items_query->result(),1);
-			foreach ($items_query->result() as $key => $row) {
-				checkField('item_id: '.$row->item_id,1);
+		/* This will add product data to _html_aside_right of static pages */ 
+	    $items_query = $this->model_name->get_view_data_custom( 'webpage_id', $page_id, 'store_item_assign', $orderby = null);
+		$num_rows = $items_query->num_rows();
 
-			}
-
+        if( $num_rows > 0 ){
+        	foreach ($items_query->result() as $row )
+        			 $ids[] = $row->item_id;
+			$data['items_query'] = $this->model_name->get_with_many('store_items', $ids )->result();
         }
+		/* End - This will add product data to _html_aside_right of static pages */ 
 
 	} else {
 		// echo "<h1>Page Not Found 2 ".$first_bit."</h1>"; 

@@ -104,7 +104,7 @@ function create()
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
             unset($data['active_image']);  // image already uploaded
-            $data['part_num'] = trim($data['part_num']);
+            $data['part_num'] =  trim( strtoupper($data['part_num']) );
 
             /* make search friendly url */
             // $data['prd_url'] = url_title( $data['prd_name'] );

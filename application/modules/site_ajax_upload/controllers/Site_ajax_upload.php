@@ -58,8 +58,9 @@ function ajax_upload_one()
     /* set image as part number and add ext name */
     $uploaded_file = explode('.', $_FILES['file']['name'] );
     $imagename = rtrim($part_num);
-    $imagename .= '.'. strtolower($uploaded_file[1]);
-
+    $imagename .= '.'.$uploaded_file[1];
+    $imagename = strtoupper($imagename);
+    
     /* full upload path */
     $upload_path = $this->_build_upload_folder($sub_cat_id);
 
@@ -78,7 +79,6 @@ function ajax_upload_one()
         if( $this->upload->do_upload('file') ) {
           $data = $this->upload->data();
           $data['success'] = 1;
-          // $imagename .=$data['file_ext'];  // add ext to filename
           $orig_name = $data['client_name'];
 
           $this->_update_img_data($imagename, $update_id, $orig_name, $upload_path);
@@ -118,6 +118,7 @@ function _is_already_uploaded($update_id, $imagename, $img_path)
 {
 
     $img_on_file = $this->_get_image_name($update_id); 
+    $img_on_file = strtoupper($img_on_file);
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
 
     if( $is_found == false){
