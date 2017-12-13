@@ -103,11 +103,13 @@
                             <br>
                             <label>Show Image</label>
                             <div>
-                              <input type="radio" name="prd_image_status" value="1"
+                              <input type="radio" name="prd_image_status"
+                                     id="prd_image_status_1" value="1"
                                      class="input-xlarge"
                                      <?php if($columns['prd_image_status'] == 1) echo 'checked'; ?> >
                                      <span>Yes</span>
-                              <input type="radio" name="prd_image_status" value="0"
+                              <input type="radio" name="prd_image_status"
+                                     id="prd_image_status_0" value="0"
                                      class="input-xlarge"
                                      <?php if($columns['prd_image_status'] == 0) echo 'checked'; ?> >
                                      <span>No</span>
@@ -117,11 +119,13 @@
                           <div class="form-group">
                             <label>Product Status</label>
                             <div>
-                              <input type="radio"  name="prd_status" value="1"
+                              <input type="radio"  name="prd_status"
+                                     id="prd_status_1" value="1" value="1"
                                      class="input-xlarge"
                                      <?php if($columns['prd_status'] == 1) echo 'checked'; ?> >
                                      <span>Active</span>
-                              <input type="radio"  name="prd_status" value="0"
+                              <input type="radio"  name="prd_status"
+                                     id="prd_status_1" value="0" value="0"
                                      class="input-xlarge"
                                      <?php if($columns['prd_status'] == 0) echo 'checked'; ?> >
                                      <span>Inactive</span>

@@ -59,7 +59,7 @@ function ajax_upload_one()
     $uploaded_file = explode('.', $_FILES['file']['name'] );
     $imagename = rtrim($part_num);
     $imagename .= '.'.$uploaded_file[1];
-    $imagename = strtoupper($imagename);
+    $imagename = strtolower($imagename);
     
     /* full upload path */
     $upload_path = $this->_build_upload_folder($sub_cat_id);
@@ -118,7 +118,7 @@ function _is_already_uploaded($update_id, $imagename, $img_path)
 {
 
     $img_on_file = $this->_get_image_name($update_id); 
-    $img_on_file = strtoupper($img_on_file);
+    $img_on_file = strtolower($img_on_file);
     $is_found = ( $imagename == $img_on_file ) ? true : false; 
 
     if( $is_found == false){

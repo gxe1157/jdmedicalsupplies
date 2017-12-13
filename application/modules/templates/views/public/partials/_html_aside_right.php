@@ -8,8 +8,8 @@
 				   		parent_cat_folder($value->sub_cat_id);  ?>
 
 			               	<li>
-			                    <div class="posts-thumb pull-left"> 
-									<img src="<?= $image_products ?>/<?= $folder_name ?>/<?= $value->active_image ?>" alt="Image Not Available" class="img-responsive thumb" id="prd_img">
+			                    <div class="posts-thumb pull-left">
+									<img src="<?= $image_products ?>/<?= $folder_name ?>/<?= strtolower($value->active_image) ?>" alt="Image Not Available" class="img-responsive thumb" id="prd_img">
 			                    </div>
 			                    <div class="post-info">
 			                        <h4 class="entry-title">

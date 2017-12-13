@@ -86,9 +86,11 @@ $(document).ready(function (e) {
 
           $( '#pre_upload').css("display", "block");         
           if( imgData['file_name'] == '' ) noPreview();
+          $("#prd_image_status_1").prop("checked", true);
        } else{
           console.log(imgData,1);
           noPreview();
+          $("#prd_image_status_2").prop("checked", true);
           $('#message').html('<div class="alert alert-warning error_messages" role="alert">'+imgData['error_mess']+'</div>');
        }
 
