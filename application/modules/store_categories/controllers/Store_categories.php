@@ -21,7 +21,8 @@ var $column_rules = array(
 
 public $columns_not_allowed = [];
 public $default = [];
-public $parent_cat_img_base ='C:\xampp\htdocs\jdmedicalsupplies\public\images\products';
+public $parent_cat_img_base ='./public/images/products/';
+public $old_directory_name = '';
 
 function __construct() {
     parent::__construct();
@@ -34,11 +35,9 @@ function __construct() {
                                    "Manage Categories" : "Update Category Details";        
     $this->default['page_nav']   = "Categories"; 
     $this->default['flash'] = $this->session->flashdata('item');
-    $this->parent_cat_img_base ='./upload/';
     $this->site_security->_make_sure_logged_in();          
 
 }
-
 
 
 /* ===================================================
@@ -117,19 +116,28 @@ function create()
             $directory_name = $this->_build_upload_folder($data['category_url']);
 
             if(is_numeric($update_id)){
+                //Rename directory
+                if( ($old_directory_name != $directory_name) && $data['parent_cat_id'] == 0 ){
+                    // rename(oldname,newname,context)
+                    if( !is_dir($directory_name) && is_dir($this->old_directory_name) )
+                        rename( $old_directory_name, $directory_name);
+                }
+
                 //update the category details
                 $this->_update($update_id, $data);
                 $this->_set_flash_msg("The category details were sucessfully updated");
             } else {
-                //Check if the directory already exists.
-                if(!is_dir($directory_name)){
-                    //Directory does not exist, so lets create it.
-                    mkdir($directory_name, 0755, true);
-                }
+                //Check if the directory already exists. if not create directory
+                $dir_added = false;
+                if(!is_dir($directory_name) && $data['parent_cat_id'] == 0 )
+                   $dir_added =  mkdir($directory_name, 0755, true);
+
                 //insert a new category
                 $this->_insert($data);
                 $update_id = $this->get_max(); // get the ID of new category
-                $this->_set_flash_msg("The category was sucessfully added");
+                $flash_message = $dir_added ? "The category and directory were sucessfully created" : "The category was sucessfully added but directory failed to be created....";
+
+                $this->_set_flash_msg($flash_message);
             }
 
             // redirect( $redirect_posted_mode );
@@ -144,6 +152,8 @@ function create()
 
     if( ( is_numeric($update_id) ) && ($submit != "Submit") ) {
         $data['columns'] = $this->fetch_data_from_db($update_id);
+        if( $data['columns']['parent_cat_id'] == 0 )
+            $this->old_directory_name = $this->_build_upload_folder( $data['columns']['category_url'] );
     } else {
         $data['columns'] = $this->fetch_data_from_post();
     }
@@ -156,12 +166,6 @@ function create()
     $data['parent_cat_id'] =  $this->input->post('parent_cat_id', false) ? : $this->uri->segment(3);
 
     $data['button_options'] = "Update Customer Details";
-
-    // $data['headline']   = !is_numeric($update_id) ? "Add New Category" : "Update Category Details";
-    // $data['headtag']    = "Category Details";
-    // $data['page_url']  = "create";
-    // $data['update_id']  = $update_id;
-
     $this->default['headline']   =  !is_numeric($update_id) ?
                                     "Add New Category" : "Update Category Details";
 
@@ -313,12 +317,10 @@ function _generate_mysql_query($update_id, $use_limit )
 }
 
 
-function _build_upload_folder($user_id)
+function _build_upload_folder($parent_cat_folder)
 {
-    $prd_folder = ''; //$user_id;
-    $upload_path = $this->parent_cat_img_base.$prd_folder;
-
-    return $upload_path;
+    $dir_path = $this->parent_cat_img_base.strtolower($parent_cat_folder);
+    return $dir_path;
 }
 
 
