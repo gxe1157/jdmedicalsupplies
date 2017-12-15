@@ -375,7 +375,7 @@ ul.list-arrow li:before {
 /* Arrow bg */
 
 .down-arrow-transparent {
-  background: url(../images/jkingsley/jdmed/site_img/down-arrow-transparent.png) no-repeat center -1px transparent;
+  background: url(../images/site_img/down-arrow-transparent.png) no-repeat center -1px transparent;
   display: block;
   height: 22px;
   width: 100%;
@@ -388,7 +388,7 @@ ul.list-arrow li:before {
   bottom: 0%;
 }
 .down-arrow-white {
-  background: url(../images/jkingsley/jdmed/site_img/down-arrow-white.png) no-repeat top center;
+  background: url(../images/site_img/down-arrow-white.png) no-repeat top center;
   z-index: 100;
   margin-top: 0;
   min-height: 30px;
@@ -398,7 +398,7 @@ ul.list-arrow li:before {
   width: 100%;
 }
 .down-arrow-color {
-  background: url(../images/jkingsley/jdmed/site_img/down-arrow-color.png) no-repeat top center;
+  background: url(../images/site_img/down-arrow-color.png) no-repeat top center;
   z-index: 100;
   margin-top: 0;
   min-height: 30px;
@@ -1902,7 +1902,7 @@ ul.navbar-nav > li > a i{
 ================================================== */
 
 .news{
-   background: url(../images/jkingsley/jdmed/site_img/crossword.png);
+   background: url(../images/site_img/crossword.png);
    padding-bottom: 85px;
 }
 

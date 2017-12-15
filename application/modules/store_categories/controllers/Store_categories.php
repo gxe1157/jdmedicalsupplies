@@ -21,6 +21,7 @@ var $column_rules = array(
 
 public $columns_not_allowed = [];
 public $default = [];
+public $parent_cat_img_base ='C:\xampp\htdocs\jdmedicalsupplies\public\images\products';
 
 function __construct() {
     parent::__construct();
@@ -33,7 +34,8 @@ function __construct() {
                                    "Manage Categories" : "Update Category Details";        
     $this->default['page_nav']   = "Categories"; 
     $this->default['flash'] = $this->session->flashdata('item');
-    $this->site_security->_make_sure_logged_in();      
+    $this->parent_cat_img_base ='./upload/';
+    $this->site_security->_make_sure_logged_in();          
 
 }
 
@@ -111,13 +113,19 @@ function create()
 
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
-            // make search friendly url
             $data['category_url'] = url_title( $data['cat_title'] );
+            $directory_name = $this->_build_upload_folder($data['category_url']);
+
             if(is_numeric($update_id)){
                 //update the category details
                 $this->_update($update_id, $data);
                 $this->_set_flash_msg("The category details were sucessfully updated");
             } else {
+                //Check if the directory already exists.
+                if(!is_dir($directory_name)){
+                    //Directory does not exist, so lets create it.
+                    mkdir($directory_name, 0755, true);
+                }
                 //insert a new category
                 $this->_insert($data);
                 $update_id = $this->get_max(); // get the ID of new category
@@ -304,6 +312,14 @@ function _generate_mysql_query($update_id, $use_limit )
     return $mysql_query;
 }
 
+
+function _build_upload_folder($user_id)
+{
+    $prd_folder = ''; //$user_id;
+    $upload_path = $this->parent_cat_img_base.$prd_folder;
+
+    return $upload_path;
+}
 
 
 

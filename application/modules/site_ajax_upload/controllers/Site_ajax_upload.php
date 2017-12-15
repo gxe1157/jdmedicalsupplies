@@ -60,7 +60,7 @@ function ajax_upload_one()
     $imagename = rtrim($part_num);
     $imagename .= '.'.$uploaded_file[1];
     $imagename = strtolower($imagename);
-    
+
     /* full upload path */
     $upload_path = $this->_build_upload_folder($sub_cat_id);
 
@@ -71,7 +71,7 @@ function ajax_upload_one()
         $this->load->library('upload', $config);
         $config["upload_path"]   = $upload_path;
         $config['allowed_types'] = 'jpeg|jpg|png|gif';
-        $config['max_size']      = '2048';
+        $config['max_size']      = '5000';
         $config['overwrite']     = true;
         $config['file_name'] = $imagename; // set the name here
         $this->upload->initialize($config);
@@ -84,6 +84,8 @@ function ajax_upload_one()
           $this->_update_img_data($imagename, $update_id, $orig_name, $upload_path);
         } else {
           // display errors 
+          $data['data'] = $this->upload->data();
+
           $error_mmesage = "<p>The filetype/size you are attempting to upload is not allowed. The max-size for files is ".$config['max_size']." kb and accepted file formats are ".$config['allowed_types'].".</p>";
 
           $data['success'] = 0;
