@@ -26,9 +26,20 @@ if ( ! function_exists('parent_cat_folder'))
 	    $results =  $ci->model_name->_custom_query($mysql_query)->result();
 		$parent_cat_title = $results[0]->cat_title;
 	    $folder_name = explode(" ",$results[0]->cat_title);
-	    $folder_name = strtolower(join("_",$folder_name)); // will output medical_supplies from medical supplies
+	    $folder_name = strtolower(join("-",$folder_name)); // will output medical_supplies from medical supplies
 	    $parent_cat_id = $results[0]->id;
 	    return [ $folder_name, $parent_cat_title, $parent_cat_id ];
+	}
+}
+
+
+
+if ( ! function_exists('build_folder_name'))
+{
+	function build_folder_name($base_name, $content_folder)
+	{
+	    $dir_path = $base_name.strtolower($content_folder);
+	    return $dir_path;
 	}
 }
 
