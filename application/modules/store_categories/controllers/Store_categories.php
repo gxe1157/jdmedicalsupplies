@@ -22,7 +22,6 @@ var $column_rules = array(
 public $columns_not_allowed = [];
 public $default = [];
 public $parent_cat_img_base ='./public/images/products/';
-public $old_directory_name = '';
 
 function __construct() {
     parent::__construct();
@@ -90,6 +89,7 @@ function manage()
 function create()
 {
     $this->_security_check();
+    $this->load->helper('store_items/store_prd_helper');    
 
     $update_id = $this->uri->segment(3);
     $submit = $this->input->post('submit', TRUE);
@@ -113,25 +113,30 @@ function create()
         if($this->form_validation->run() == TRUE) {
             $data = $this->fetch_data_from_post();
             $data['category_url'] = url_title( $data['cat_title'] );
-            $directory_name = $this->_build_upload_folder($data['category_url']);
+            $active_dir_name = $this->input->post('active_dir_name', TRUE);            
+            $active_dir_name = build_folder_name($this->parent_cat_img_base, $active_dir_name);            
+            $directory_name  = build_folder_name($this->parent_cat_img_base, $data['category_url']);
 
             if(is_numeric($update_id)){
                 //Rename directory
-                if( ($old_directory_name != $directory_name) && $data['parent_cat_id'] == 0 ){
+                $dir_renamed = false;
+                if( ($active_dir_name != $directory_name) && $data['parent_cat_id'] == 0 ){
                     // rename(oldname,newname,context)
-                    if( !is_dir($directory_name) && is_dir($this->old_directory_name) )
-                        rename( $old_directory_name, $directory_name);
+                    if( is_dir($active_dir_name) && !is_dir($directory_name) )
+                        $dir_renamed = rename( $active_dir_name, $directory_name);
                 }
 
                 //update the category details
                 $this->_update($update_id, $data);
-                $this->_set_flash_msg("The category details were sucessfully updated");
+
+                $flash_message = $dir_renamed ? "The category and directory were sucessfully updated" : "The category details were sucessfully updated ";
+                $this->_set_flash_msg($flash_message);
+
             } else {
                 //Check if the directory already exists. if not create directory
                 $dir_added = false;
                 if(!is_dir($directory_name) && $data['parent_cat_id'] == 0 )
                    $dir_added =  mkdir($directory_name, 0755, true);
-
                 //insert a new category
                 $this->_insert($data);
                 $update_id = $this->get_max(); // get the ID of new category
@@ -150,10 +155,11 @@ function create()
 
     }
 
-    if( ( is_numeric($update_id) ) && ($submit != "Submit") ) {
+    if( is_numeric($update_id) && ($submit != "Submit") ) {
         $data['columns'] = $this->fetch_data_from_db($update_id);
         if( $data['columns']['parent_cat_id'] == 0 )
-            $this->old_directory_name = $this->_build_upload_folder( $data['columns']['category_url'] );
+            $data['active_dir_name'] =  url_title($data['columns']['cat_title']);
+
     } else {
         $data['columns'] = $this->fetch_data_from_post();
     }
@@ -162,7 +168,7 @@ function create()
     $data['redirect_base']= base_url().$this->uri->segment(1);
     $data['options'] = $this->_get_dropdown_options($update_id);
     $data['num_dropdown_options'] = count( $data['options'] );
-    $data['mode'] = $posted_mode ? : $this->uri->segment(4);
+    $data['mode'] = $posted_mode != null ? : $this->uri->segment(4);
     $data['parent_cat_id'] =  $this->input->post('parent_cat_id', false) ? : $this->uri->segment(3);
 
     $data['button_options'] = "Update Customer Details";
@@ -178,7 +184,10 @@ function create()
     $data['update_id'] = $update_id;
 
     $this->load->module('templates');
-    $this->templates->admin($data);    }
+    $this->templates->admin($data);
+
+}
+
 
 function _get_dropdown_options( $update_id )
 {
@@ -315,15 +324,6 @@ function _generate_mysql_query($update_id, $use_limit )
     }
     return $mysql_query;
 }
-
-
-function _build_upload_folder($parent_cat_folder)
-{
-    $dir_path = $this->parent_cat_img_base.strtolower($parent_cat_folder);
-    return $dir_path;
-}
-
-
 
 function get_limit()
 {

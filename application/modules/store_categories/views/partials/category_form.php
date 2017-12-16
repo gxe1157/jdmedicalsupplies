@@ -1,7 +1,7 @@
 
 <?php
 		$show_parent_id = '';
-		$Category_Title = 'Category Title';
+		$Category_Title = 'Category Title 1';
 		$Category_button = 'Cancel';
 
 		if( $parent_cat_id > 0 && $mode ){
@@ -17,6 +17,7 @@
 		<form class="form-horizontal" method="post" action="<?= $form_location ?>" >
 		  <fieldset>
 			<?= form_hidden('parent_cat_id', $parent_cat_id); ?>
+			<?= form_hidden('active_dir_name', $active_dir_name); ?>			
 			<?= form_hidden('mode', $mode); ?>
 			<?= $show_parent_id ?>
 

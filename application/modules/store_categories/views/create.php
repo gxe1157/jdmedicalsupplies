@@ -1,5 +1,5 @@
-<h2 style="margin-top: 10px; ma">
-					<small><?= $default['page_title'] ?></small></h2>	
+<h2 style="margin-top: 10px;">
+<small><?= $default['page_title'] ?></small></h2>	
 
 <?= validation_errors("<p style='color: red;'>", "</p>") ?>
 
@@ -8,6 +8,7 @@
 
 	$data['form_location'] = $redirect_base."/create/".$update_id;
 	$data['site_controller'] = $site_controller;
+checkField($mode,1);
 
 	if( $mode == ''){
 		$data['parent_cat_id'] = 0;
