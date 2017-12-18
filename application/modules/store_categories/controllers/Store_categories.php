@@ -52,8 +52,8 @@ function manage()
     $data['site_controller'] = $this->site_controller;
 
     /* get form fields structure */
-    $data['columns']      = $this->get_where_custom('parent_cat_id', $parent_cat_id);
-    $data['sub_cats']     = $this->_count_sub_cats();
+    $data['columns']  = $this->get_where_custom('parent_cat_id', $parent_cat_id);
+    $data['sub_cats'] = $this->_count_sub_cats();
 
     $data['redirect_base']= base_url().$this->uri->segment(1);
     $data['add_button'] = $this->uri->segment(4) != null ? "Add Sub Category" : "Add New Category";
