@@ -137,12 +137,16 @@ function _update($id, $data){
     $table = $this->get_table();
     $this->db->where('id', $id);
     $this->db->update($table, $data);
+    $rows_updated = $this->db->affected_rows();
+    return $rows_updated;    
 }
 
-function _delete($id){
-    $table = $this->get_table();
+function _delete($id, $data_table = null ){
+    $table = $data_table == null ?  $this->get_table() : $data_table;
     $this->db->where('id', $id);
     $this->db->delete($table);
+    $rows_deleted = $this->db->affected_rows();
+    return $rows_deleted;
 }
 
 function count_where($column, $value) {

@@ -3,41 +3,7 @@
 		echo $this->session->flashdata('item');
 		unset($_SESSION['item']);
 	}
-
-	if( is_numeric($this->uri->segment(3))) {
-		$default['page_title'] = "Manage Sub Categories";
-    	$add_button = "Add Sub Category";		
-	}
-
 ?>
-
-<style>
-	.btn-manage { width:75px; font-size: 12px; padding: 0px 4px 0px 4px; }	
-
-.cd-popup {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s 0s, visibility 0s 0.3s;
-}
- 
-.cd-popup.is-visible {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s 0s, visibility 0s 0s;
-}
- 
-.cd-popup-container {
-  transform: translateY(-40px);
-  transition-property: transform;
-  transition-duration: 0.3s;
-}
- 
-.is-visible .cd-popup-container {
-  transform: translateY(0);
-}
-
-</style>
-
 
 <h2 style="margin-top: -5px;"><small><?= $default['page_title'] ?></small></h2>
 
@@ -50,7 +16,7 @@
 		<button type="button" class="btn btn-primary">'.$add_button.'</button></a> ';
 
 		$parent_cat_title = '';
-		if( is_numeric($this->uri->segment(3))){
+		if( $mode == 'sub-category'){
 			echo '<a href="'.$cancel_button_url.'" >
 			<button type="button" class="btn btn-default">Manage Categories</button></a>';
 
@@ -78,29 +44,21 @@
 			  <tbody>
 
 			    <?php
-//			    checkArray($columns->result(),0);
 			    	foreach( $columns->result() as $row ){
 					  	$num_sub_cats = isset($sub_cats[$row->id]) ? $sub_cats[$row->id] : 0;
-			    	 	$edit_url =
-			    	 	$redirect_base."/create/".$row->id.$extend;
-			    	 	$delete_url = $redirect_base."/delete/".$row->id."-".$row->parent_cat_id;
+			    	 	$edit_url = $redirect_base."/create/".$row->id;
+			    	 	$view_url = $redirect_base."/create/".$row->id;
 
-
-				        $entity = $num_sub_cats == 1 ? "Category" : "Categories";
-				    	$sub_cat_url = $redirect_base.'/manage/'.$row->id.'/add_sub-category';
-				    	$add_cat_url = $redirect_base.'/create/'.$row->id.'/add_sub-category';			    		
 			    	 	if($row->parent_cat_id==0) {
 			    	 	 	$parent_cat_title='--';
-							$delete_btn = '';			    	 	 	
 			    	 	} else {
 							if( $parent_cat_title =='' ) $parent_cat_title = $row->cat_title;
-							$extend = '/add_sub-category';
-
-							$delete_btn = '<a class="btn btn-danger btn-sm btn-manage"
-									href="'.$delete_url.'"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</a>';
 				    	}
-			    ?>
 
+				        $entity = $num_sub_cats == 1 ? "Category" : "Categories";
+				    	$sub_cat_url = $redirect_base.'/manage/'.$row->id.'/sub-category';
+				    	$add_cat_url = $redirect_base.'/create/'.$row->id.'/add_sub-category';
+			    ?>
 						<tr>
 							<td class="right"><?= $row->cat_title ?></td>
 							<td class="right"><?= $parent_cat_title ?></td>
@@ -120,9 +78,15 @@
 								    } ?>
 					        </td>
 							<td class="text-center">
-								<?= $delete_btn ?>
-								<a class="btn btn-info btn-sm btn-manage"
-								   href="<?= $edit_url ?>"><i class="fa fa-pencil fa-fw"></i> Edit
+								<a class="btn btn-success btn-sm"
+								   style="font-size: 12px; padding: 0px 5px 0px 0px;"
+								   href="<?= $view_url ?>">
+									<i class="fa fa-eye fa-fw"></i> View 
+								</a>
+								<a class="btn btn-info btn-sm"
+								   style="font-size: 12px; padding: 0px 5px 0px 0px;"
+								   href="<?= $edit_url ?>">
+								   <i class="fa fa-pencil fa-fw"></i> Edit
 								</a>
 							</td>
 						</tr>

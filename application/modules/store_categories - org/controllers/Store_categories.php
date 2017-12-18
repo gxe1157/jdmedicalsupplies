@@ -46,22 +46,31 @@ function __construct() {
 
 function manage()
 {
-    $parent_cat_id = is_numeric($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+
+    $parent_cat_id = $this->uri->segment(3);
+    if( !is_numeric($parent_cat_id)){
+      $parent_cat_id = 0;
+    }
+
+    $redirect_base =  base_url().$this->uri->segment(1);
+    $mode = $this->uri->segment(4);
 
     /* get form fields structure */
+    $data['mode'] = $mode;
     $data['site_controller'] = $this->site_controller;
 
     /* get form fields structure */
     $data['columns']      = $this->get_where_custom('parent_cat_id', $parent_cat_id);
     $data['sub_cats']     = $this->_count_sub_cats();
 
-    $data['redirect_base']= base_url().$this->uri->segment(1);
-    $data['add_button'] = $this->uri->segment(4) != null ? "Add Sub Category" : "Add New Category";
+    $data['redirect_base']= $redirect_base;
 
-    $data['cancel_button_url'] = $data['redirect_base']."/manage";
+    $data['add_button']   = $mode ? "Add Sub Category" : "Add New Category";
+
+    $data['cancel_button_url'] = $redirect_base."/manage";
 
     $data['add_button_url']=
-         $data['redirect_base'].'/create/'.$this->uri->segment(3).'/add_sub-category';
+         $redirect_base.'/create/'.$this->uri->segment(3).'/add_sub-category';
 
     $data['custom_jscript'] = [ 'public/js/datatables.min',
                                 'public/js/site_datatable_loader',
@@ -76,22 +85,6 @@ function manage()
     $this->templates->admin($data); 
 }
 
-function delete() {
-    $this->_security_check();
-    $update_id = $this->uri->segment(3);
-    list($item_id, $parent_cat_id) = explode('-',$update_id);
-    $items_deleted = $this->_delete($item_id);
-
-    if( $items_deleted > 0 ) {
-        $data_table = 'store_cat_assign';
-       // $rows_deleted = $this->_delete($item_id, $data_table);
-    }    
-
-    $flash_message = "You have sucessfully removed ".$items_deleted." <b>Sub Category</b> item(s).";
-
-    $this->_set_flash_msg($flash_message);
-    redirect($this->site_controller.'/manage/'.$parent_cat_id );
-}
 
 function create()
 {
@@ -99,15 +92,18 @@ function create()
     $this->load->helper('store_items/store_prd_helper');    
 
     $update_id = $this->uri->segment(3);
-
     $submit = $this->input->post('submit', TRUE);
     $posted_mode   = $this->input->post('mode', true);
+    $redirect_posted_mode = $this->site_controller.'/manage/'.$this->input->post('parent_cat_id', TRUE).'/sub-category';
 
-    $redirect_posted_mode =
-        $this->site_controller.'/manage/'.$this->input->post('parent_cat_id', TRUE);
+    if( $submit == "Cancel" )
+        redirect($this->site_controller.'/manage');
 
-    if( $submit == "Finish" || $submit == "Return" || $submit == "Cancel" )
+    if( $submit == "Finish" || $submit == "Return")
         redirect( $redirect_posted_mode );
+
+    if( $this->uri->segment(4) == 'add_sub-category'  )
+        $update_id = '';
 
     if( $submit == "Submit" ) {
         // process changes
@@ -121,42 +117,40 @@ function create()
             $active_dir_name = build_folder_name($this->parent_cat_img_base, $active_dir_name);            
             $directory_name  = build_folder_name($this->parent_cat_img_base, $data['category_url']);
 
-// checkField('update: '.$update,1);
-// checkArray($data,0);
-            $flash_message = '';
             if(is_numeric($update_id)){
-                //update the category details
-                $update_rec = $this->_update($update_id, $data);
-                if( $update_rec > 0 )
-                    $flash_message = "The category details were successfully updated ";
-
                 //Rename directory
+                $dir_renamed = false;
                 if( ($active_dir_name != $directory_name) && $data['parent_cat_id'] == 0 ){
                     // rename(oldname,newname,context)
                     if( is_dir($active_dir_name) && !is_dir($directory_name) )
                         $dir_renamed = rename( $active_dir_name, $directory_name);
-
-                   if( $dir_renamed == false )
-                       $flash_message .= "<br> System error:  Directory rename failed ....";
                 }
+
+                //update the category details
+                $this->_update($update_id, $data);
+
+                $flash_message = $dir_renamed ? "The category and directory were sucessfully updated" : "The category details were sucessfully updated ";
+                $this->_set_flash_msg($flash_message);
+
             } else {
+                //Check if the directory already exists. if not create directory
+                $dir_added = false;
+                if(!is_dir($directory_name) && $data['parent_cat_id'] == 0 )
+                   $dir_added =  mkdir($directory_name, 0755, true);
                 //insert a new category
                 $this->_insert($data);
                 $update_id = $this->get_max(); // get the ID of new category
-                $flash_message = $update_id > 0 ? "The category has been successfully added to database. " : "Add New Category record to database has <b>failed</b>. ";
+                $flash_message = $dir_added ? "The category and directory were sucessfully created" : "The category was sucessfully added but directory failed to be created....";
 
-                //Check if the directory already exists. if not create directory
-                if(!is_dir($directory_name) && $data['parent_cat_id'] == 0 ) {
-                   $dir_added =  mkdir($directory_name, 0755, true);
-                   if( $dir_added == false )
-                       $flash_message .= "<br> System error:  Directory failed to be created....";
-                }
-
+                $this->_set_flash_msg($flash_message);
             }
-            if($flash_message)
-               $this->_set_flash_msg($flash_message);
 
-            redirect( $redirect_posted_mode );
+            // redirect( $redirect_posted_mode );
+            if( $posted_mode == 'add_sub-category'){
+                redirect( $redirect_posted_mode );
+            } else {
+                redirect($this->site_controller.'/manage');
+            }
         }
 
     }
@@ -172,23 +166,20 @@ function create()
 
     $data['site_controller'] = $this->site_controller;
     $data['redirect_base']= base_url().$this->uri->segment(1);
-
     $data['options'] = $this->_get_dropdown_options($update_id);
     $data['num_dropdown_options'] = count( $data['options'] );
-    $data['sub_cats']     = $this->_count_sub_cats();
-
     $data['mode'] = $posted_mode != null ? : $this->uri->segment(4);
-// $data['parent_cat_id'] = $this->input->post('parent_cat_id', false) ? : $this->uri->segment(3);
+    $data['parent_cat_id'] =  $this->input->post('parent_cat_id', false) ? : $this->uri->segment(3);
 
     $data['button_options'] = "Update Customer Details";
     $this->default['headline']   =  !is_numeric($update_id) ?
                                     "Add New Category" : "Update Category Details";
 
-
     $data['default'] = $this->default;  
     $data['columns_not_allowed'] = $this->columns_not_allowed;
     $data['labels'] = $this->_get_column_names('label');
     $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min'];    
+
     $data['page_url'] = "create";
     $data['update_id'] = $update_id;
 
@@ -243,19 +234,6 @@ function _get_cat_id_from_cat_url( $category_url ) {
     $cat_id = _get_first_record( $query, 'id');
     return $cat_id;
 }
-
-/* ===============================================
-    Call backs go here...
-  =============================================== */
-
-
-
-
-/* ===============================================
-    David Connelly's work from perfectcontroller
-    is in applications/core/My_Controller.php which
-    is extened here.
-  =============================================== */
 
 function _draw_top_nav()
 {
@@ -378,6 +356,19 @@ function test2($target_array)
    }
    return $key_with_highest_value;
 }
+
+/* ===============================================
+    Call backs go here...
+  =============================================== */
+
+
+
+
+/* ===============================================
+    David Connelly's work from perfectcontroller
+    is in applications/core/My_Controller.php which
+    is extened here.
+  =============================================== */
 
 
 } // End class Controller

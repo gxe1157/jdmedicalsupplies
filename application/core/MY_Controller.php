@@ -168,7 +168,8 @@ function _update($id, $data)
         die('Non-numeric variable!');
     }
 
-    $this->model_name->_update($id, $data);
+    $rows_updated = $this->model_name->_update($id, $data);
+    return $rows_updated;
 }
 
 function _delete($id)
@@ -177,7 +178,8 @@ function _delete($id)
         die('Non-numeric variable!');
     }
 
-    $this->model_name->_delete($id);
+    $rows_deleted = $this->model_name->_delete($id);
+    return $rows_deleted;
 }
 
 function count_where($column, $value)
