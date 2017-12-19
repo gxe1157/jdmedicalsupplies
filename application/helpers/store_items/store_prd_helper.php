@@ -7,9 +7,10 @@ if ( ! function_exists('sub_cat_title'))
 	{
       	$ci =& get_instance();		
 	    /* get the parent category title which id folder for porduct images */
-	    $mysql_query = "SELECT cat_title FROM `store_categories` WHERE id ='".$sub_cat_id."'";
-	    $results =  $ci->model_name->_custom_query($mysql_query)->result();
+	    $mysql_query = "SELECT cat_title FROM `store_categories`
+	    				WHERE id ='".$sub_cat_id."'";
 
+	    $results =  $ci->model_name->_custom_query($mysql_query)->result();
 		return $results[0]->cat_title;
 	}
 }

@@ -8,41 +8,16 @@
 		$default['page_title'] = "Manage Sub Categories";
     	$add_button = "Add Sub Category";		
 	}
-
 ?>
 
 <style>
 	.btn-manage { width:75px; font-size: 12px; padding: 0px 4px 0px 4px; }	
-
-.cd-popup {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s 0s, visibility 0s 0.3s;
-}
- 
-.cd-popup.is-visible {
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s 0s, visibility 0s 0s;
-}
- 
-.cd-popup-container {
-  transform: translateY(-40px);
-  transition-property: transform;
-  transition-duration: 0.3s;
-}
- 
-.is-visible .cd-popup-container {
-  transform: translateY(0);
-}
-
+	.btn-manage-sub { width:150px; font-size: 1.1em; padding: 0px 5px 0px 5px; }	
 </style>
 
 
 <h2 style="margin-top: -5px;"><small><?= $default['page_title'] ?></small></h2>
-
 <p style="margin-top: 30px,">
-
 	<?php
     	$this->load->module($site_controller);
 
@@ -81,20 +56,18 @@
 //			    checkArray($columns->result(),0);
 			    	foreach( $columns->result() as $row ){
 					  	$num_sub_cats = isset($sub_cats[$row->id]) ? $sub_cats[$row->id] : 0;
-			    	 	$edit_url =
-			    	 	$redirect_base."/create/".$row->id.$extend;
+			    	 	$edit_url = $redirect_base."/create/".$row->id;
 			    	 	$delete_url = $redirect_base."/delete/".$row->id."-".$row->parent_cat_id;
-
 
 				        $entity = $num_sub_cats == 1 ? "Category" : "Categories";
 				    	$sub_cat_url = $redirect_base.'/manage/'.$row->id.'/add_sub-category';
-				    	$add_cat_url = $redirect_base.'/create/'.$row->id.'/add_sub-category';			    		
+				    	$add_cat_url = $redirect_base.'/create/'.$row->id.'/add_sub-category';		
+
 			    	 	if($row->parent_cat_id==0) {
 			    	 	 	$parent_cat_title='--';
 							$delete_btn = '';			    	 	 	
 			    	 	} else {
 							if( $parent_cat_title =='' ) $parent_cat_title = $row->cat_title;
-							$extend = '/add_sub-category';
 
 							$delete_btn = '<a class="btn btn-danger btn-sm btn-manage"
 									href="'.$delete_url.'"><i class="fa fa-trash-o" aria-hidden="true"></i> Remove</a>';
@@ -109,12 +82,16 @@
 								    	if( $row->parent_cat_id !=0 ){
 								            echo '-';
 								    	}else{
-									       	echo '<a class="btn btn-small btn-primary" href="'.$add_cat_url.'">Add Sub Category</a>';
+									       	echo '<a class="btn btn-small btn-primary btn-manage-sub" href="'.$add_cat_url.'">Add Sub Category</a> ';
+
+											echo '<a class="btn btn-small btn-danger btn-manage-sub"
+												href="'.$delete_url.'">
+												<i class="fa fa-trash-o" aria-hidden="true"></i> Remove</a>';
 										}
 
 							        } else {
-										echo '<a class="btn btn-default"
-											 style="font-size: 1.1em; padding: 0px 5px 0px 5px;"
+
+										echo '<a class="btn btn-small btn-default btn-manage-sub"
 										 	 href="'.$sub_cat_url.'">
 										<i class="fa fa-eye" aria-hidden="true"></i> '.$num_sub_cats." ".$entity.'</a>';
 								    } ?>

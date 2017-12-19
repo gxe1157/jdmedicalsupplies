@@ -78,18 +78,29 @@ function manage()
 
 function delete() {
     $this->_security_check();
+    $this->load->helper('store_items/store_prd_helper');    
+
     $update_id = $this->uri->segment(3);
     list($item_id, $parent_cat_id) = explode('-',$update_id);
+
+    if( $parent_cat_id == 0 ) {
+        $category_url = url_title(sub_cat_title($item_id));
+        $directory_name  = build_folder_name($this->parent_cat_img_base, $category_url);
+        $dir_deleted = rmdir($directory_name);
+    }
+
     $items_deleted = $this->_delete($item_id);
-
     if( $items_deleted > 0 ) {
-        $data_table = 'store_cat_assign';
-       // $rows_deleted = $this->_delete($item_id, $data_table);
+        $cat_type = $parent_cat_id == 0 ? 'Category' : 'Sub Category';
+        /* remove sub cat from store_cat_assign */
+        // $data_table = 'store_cat_assign';
+        // $rows_deleted = $this->_delete($item_id, $data_table);
+
+        $item = $items_deleted == 1 ? 'Item.' : 'Items.';
+        $flash_message = "You have sucessfully removed ".$items_deleted." <b>".$cat_type."</b> ".$item;
+        $this->_set_flash_msg($flash_message);
+
     }    
-
-    $flash_message = "You have sucessfully removed ".$items_deleted." <b>Sub Category</b> item(s).";
-
-    $this->_set_flash_msg($flash_message);
     redirect($this->site_controller.'/manage/'.$parent_cat_id );
 }
 
