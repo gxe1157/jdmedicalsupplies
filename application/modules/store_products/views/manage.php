@@ -86,17 +86,26 @@
 									UPC : <?= $row->upc ?>
 								</p>
 							</div>
-							<div class="col-md-7" 
+<div class="col-md-8"> 
+	<dir class="row">
+							<div class="col-md-9" 
 								 style="padding: 20px; border: 0px red solid">
 								<h5>Description:</h5>
 								<div class="description"><?= $row->description ?></div>
 							</div>
-							<div class="col-md-1"
+							<div class="col-md-3"
 							     style="padding: 0px; margin-left: -5px; border: 0px red solid"> 
 								<p><b>Price</b><br><span class="price">$<?= $row->price ?></span></p>
 								<p><b>Sale Price</b><br><span class="sale_price">$<?= $row->sale_price ?></span></p>
 
-							</div>
+								<p>
+<img src="<?= base_url() ?>public/images/site_img/jdmedical_onlineorders_comingsoon.svg"
+									 style="width: 90%; height: auto; "
+									 alt="Shopping Cart - Coming Soon!"
+									 id="cart_img"></p>
+ 							</div>
+</dir> 							
+</div>
 						</td></tr>
 
 
