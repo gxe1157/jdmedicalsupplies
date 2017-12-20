@@ -91,7 +91,11 @@
 							<div class="col-md-9" 
 								 style="padding: 20px; border: 0px red solid">
 								<h5>Description:</h5>
-								<div class="description"><?= $row->description ?></div>
+								<div class="description">
+									<?= $row->description ?>
+									<!-- <?= nl2br($row->description) ?> -->
+										
+								</div>
 							</div>
 							<div class="col-md-3"
 							     style="padding: 0px; margin-left: -5px; border: 0px red solid"> 
