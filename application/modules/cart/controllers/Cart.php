@@ -33,6 +33,8 @@ function index()
     //count the number of items in the cart
     $data['num_rows'] = $data['query']->num_rows();
     $data['showing_statement'] = $this->_get_showing_statement($data['num_rows']);
+    
+    $data['view_module'] = 'users_upload';    
     $data['page_url'] = 'cart';
 
     $this->load->module('templates');
