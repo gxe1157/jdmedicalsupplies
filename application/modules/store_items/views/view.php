@@ -1,16 +1,17 @@
 <?php
-  echo Modules::run('templates/_draw_breadcrumbs', $breadcrumbs_data);
+ // echo Modules::run('templates/_draw_breadcrumbs', $breadcrumbs_data);
+echo "<h1>Add to Basket</h1>";
+
 ?>
 
 <div class="row">
   <div class="col-md-3" style="margin-top: 24px;">
-  	<img src="<?= base_url() ?>public/big_pic/<?= $big_pic ?> " class="img-responsive" alt="<?= $item_title ?>">
+  	<img src="<?= base_url() ?>public/images/<?= $active_image ?> " class="img-responsive" alt="<?= $item_title ?>">
   </div>
   <div class="col-md-6">
   		<h2><?= $item_title ?></h2>
   		<div style="clear:both;"></div>
-		  <?= nl2br($item_description) ?>
-
+      <?= $item_description ?>
     <!-- Add table data here cart/_draw_price_table_to_cart -->
     <div class="row">
       <?php

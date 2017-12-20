@@ -1,7 +1,10 @@
 <h1>Your Shopping Basket</h1>
 <?php
 if ($num_rows<1) {
-    echo "<p>You currently have no items in your shopping basket.</p>";
+
+    echo '<div style="display: block; min-height: 350px;">
+		<p>You currently have no items in your shopping basket.</p>
+    </div>';
 } else {
     echo "<p>".$showing_statement."</p>";
     $user_type = 'public';

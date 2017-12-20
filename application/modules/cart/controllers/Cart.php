@@ -33,8 +33,8 @@ function index()
     //count the number of items in the cart
     $data['num_rows'] = $data['query']->num_rows();
     $data['showing_statement'] = $this->_get_showing_statement($data['num_rows']);
-    
-    $data['view_module'] = 'users_upload';    
+
+    $data['view_module'] = 'cart';    
     $data['page_url'] = 'cart';
 
     $this->load->module('templates');
@@ -203,7 +203,7 @@ function _draw_add_to_cart($item_id)
         $colour_options[''] = "Select...";
     }
 
-    $this->load->module('store_item_colours');
+    $this->load->module('store_item_colors');
     $query = $this->store_item_colours->get_where_custom('item_id', $item_id);
     $data['num_colours'] = $query->num_rows();
     foreach ($query->result() as $row) {
