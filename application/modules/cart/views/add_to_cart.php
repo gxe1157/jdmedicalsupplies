@@ -24,6 +24,11 @@ echo form_open('store_basket/add_to_basket');
         }
         ?>
 
+
+
+
+
+
         <?php
         if ($num_sizes>0) { ?>
         <tr>
@@ -40,6 +45,8 @@ echo form_open('store_basket/add_to_basket');
         <?php
         }
         ?>
+
+
 
         <tr>
             <td>Qty: </td>
