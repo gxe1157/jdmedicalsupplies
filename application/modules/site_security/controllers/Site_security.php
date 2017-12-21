@@ -25,6 +25,16 @@ function is_logged_in()
     return (!is_numeric($user_id)) ? true : false;
 }
 
+function _make_sure_is_admin() 
+{
+    $is_admin = $this->session->userdata('is_admin');
+    if ($is_admin==1) {
+    //     return TRUE;
+    // } else {
+    //    redirect('site_security/not_allowed');
+    }
+}
+
 function _make_sure_logged_in()
 {
     //make sure the customer (member) is logged
@@ -85,16 +95,6 @@ function _decrypt_string($str)
     $this->load->library('encryption');
     $decrypted_string = $this->encryption->decrypt($str);
     return $decrypted_string;
-}
-
-function _make_sure_is_admin() 
-{
-    $is_admin = $this->session->userdata('is_admin');
-    if ($is_admin==1) {
-    //     return TRUE;
-    // } else {
-    //    redirect('site_security/not_allowed');
-    }
 }
 
 function not_allowed() 

@@ -56,9 +56,6 @@ function view($item_id)
 {
     $results_set = $this->model_name->get_view_data_custom( 'id', $item_id, 'store_items', null)->result();
 
-// checkArray( $results_set,1);
-// checkField( $results_set[0]->id,0);
-
     $data['update_id'] = $item_id;
     $data['active_image'] = $results_set[0]->active_image;
     $data['item_description'] = $results_set[0]->description;

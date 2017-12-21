@@ -12,8 +12,8 @@ function __construct()
   $this->form_validation->CI =& $this;
 
   /* ===============================================================
-    model name is assigned from $this->mdl_name to  'model_name' which is a constant
-   =============================================================== */
+     model name is assigned from $this->mdl_name to  'model_name' which is a constant
+     =============================================================== */
    if( $this->mdl_name != 'mdl_' ) $this->load->model( $this->mdl_name, 'model_name');
 
 }
@@ -51,8 +51,6 @@ function send_mail($from, $subject, $message)
 
 function _security_check()
 {
-    $this->load->library('session');
-    $this->load->module('site_security');
     $this->site_security->_make_sure_is_admin();
 }
 

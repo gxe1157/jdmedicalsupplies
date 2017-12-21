@@ -1,4 +1,4 @@
-<div style="background-color: #ddd; border-radius: 7px; margin-top: 24px; padding: 7px;">
+<div style="margin: 0 auto; background-color: #ddd; border-radius: 7px; margin-top: 24px; padding: 7px; width: 325px;">
 <?php
 echo form_open('store_basket/add_to_basket');
 ?>
@@ -8,14 +8,14 @@ echo form_open('store_basket/add_to_basket');
         </tr>
 
         <?php
-        if ($num_colours>0) { ?>
+        if ($num_colors>0) { ?>
         <tr>
-            <td>Colour: </td>
+            <td>color: </td>
             <td>
                 
                 <?php
                 $additional_dd_code = 'class="form-control"';
-                echo form_dropdown('item_colour', $colour_options, $submitted_colour, $additional_dd_code);
+                echo form_dropdown('item_color', $color_options, $submitted_color, $additional_dd_code);
                 ?>
 
             </td>

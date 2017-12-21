@@ -32,7 +32,7 @@ function add_to_basket()
     if ($submit=="Submit") {
         //process the form
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('item_colour', 'Item Colour', 'numeric');
+        $this->form_validation->set_rules('item_color', 'Item color', 'numeric');
         $this->form_validation->set_rules('item_size', 'Item Size', 'numeric');
         $this->form_validation->set_rules('item_qty', 'Item Quantity', 'required|numeric');
         $this->form_validation->set_rules('item_id', 'Item ID', 'required|numeric');
@@ -63,7 +63,7 @@ function _fetch_the_data()
     $item_price = $item_data['item_price'];
     $item_qty = $this->input->post('item_qty', TRUE);
     $item_size = $this->input->post('item_size', TRUE);
-    $item_colour = $this->input->post('item_colour', TRUE);
+    $item_color = $this->input->post('item_color', TRUE);
     $shopper_id = $this->site_security->_get_user_id();
 
     if (!is_numeric($shopper_id)) {
@@ -77,7 +77,7 @@ function _fetch_the_data()
     $data['item_id'] = $item_id;
     $data['item_size'] = $this->_get_value('size', $item_size);
     $data['item_qty'] = $item_qty;
-    $data['item_colour'] = $this->_get_value('colour', $item_colour);
+    $data['item_color'] = $this->_get_value('color', $item_color);
     $data['date_added'] = time();
     $data['shopper_id'] = $shopper_id;
     $data['ip_address'] = $this->input->ip_address();
@@ -86,7 +86,7 @@ function _fetch_the_data()
 
 function _get_value($value_type, $update_id)
 {
-    //NOTE: value_type can be 'colour' or 'size'
+    //NOTE: value_type can be 'color' or 'size'
     if ($value_type=='size') {
         $this->load->module('store_item_sizes');
         $query = $this->store_item_sizes->get_where($update_id);
@@ -98,16 +98,16 @@ function _get_value($value_type, $update_id)
         }
         $value = $item_size;
     } else {
-        //fetch the name of the colour
-        $this->load->module('store_item_colours');
-        $query = $this->store_item_colours->get_where($update_id);
+        //fetch the name of the color
+        $this->load->module('store_item_colors');
+        $query = $this->store_item_colors->get_where($update_id);
         foreach($query->result() as $row) {
-            $item_colour = $row->colour;
+            $item_color = $row->color;
         }
-        if (!isset($item_colour)) {
-            $item_colour = '';
+        if (!isset($item_color)) {
+            $item_color = '';
         }
-        $value = $item_colour;        
+        $value = $item_color;        
     }
     return $value;
 }

@@ -18,8 +18,7 @@ function __construct( )
 
     $this->default['flash'] = $this->session->flashdata('item');
     $this->default['page_header'] = "Update Item Sizes";
-    $this->site_security->_make_sure_logged_in(); 
-
+   
 }
 
 /* ===================================================
@@ -30,6 +29,7 @@ function __construct( )
 function update( $update_id )
 {
     $this->_numeric_check($update_id);    
+    $this->_security_check();    
 
     // get item color from store_items_color table
     list ($item_title, $small_img) = $this->model_name->_get_item_title_byid($update_id);
@@ -58,7 +58,6 @@ function update( $update_id )
 
     $this->load->module('templates');
     $this->templates->admin($data);        
-
 }
 
 
@@ -84,7 +83,6 @@ function submit( $update_id )
             $this->_set_flash_msg("The new option was sucessfully added.");          
         }
         redirect($this->uri->segment(1).'/update/'.$update_id);        
-        // $this->update($update_id);
     }
 }
 
@@ -96,7 +94,6 @@ function delete( $update_id )
     $item_id = $this->model_name->_get_item_id($update_id);
     $this->_delete($update_id);
     redirect($this->uri->segment(1).'/update/'.$item_id);
-    // $this->update($item_id);    
 }
 
 
