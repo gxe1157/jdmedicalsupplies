@@ -103,10 +103,10 @@
 									<p><b>Sale Price</b><br><span class="sale_price">$<?= $row->sale_price ?></span></p>
 
 									<p>
-										<a href="<?= base_url() ?>store_products/view/<?= $item_id ?>"><img src="<?= base_url() ?>public/images/site_img/jdmedical_onlineorders_comingsoon.svg"
+										<img src="<?= base_url() ?>public/images/site_img/jdmedical_onlineorders_comingsoon.svg"
 										 style="width: 90%; height: auto; "
 										 alt="Shopping Cart - Coming Soon!"
-										 id="cart_img"></a>
+										 id="cart_img">
 									</p>
 	 							</div>
 							</div> 							
