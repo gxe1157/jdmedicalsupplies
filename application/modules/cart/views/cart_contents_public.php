@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-10 col-md-offset-1" style="padding-bottom: 50px;">
         <table class="table table-striped table-bordered" style="margin-top: 36px;">
             <?php
             $grand_total = 0;

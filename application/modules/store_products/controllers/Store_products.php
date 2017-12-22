@@ -20,7 +20,8 @@ function __construct() {
 
     /* get product data */
     $update_id = $this->uri->segment(3);
-    $this->default['flash'] = $this->session->flashdata('item');   
+    $this->default['flash'] = $this->session->flashdata('item'); 
+    $this->load->helper('store_items/store_prd_helper');      
 }
 
 
@@ -32,7 +33,6 @@ function __construct() {
 
 function manage($sub_cat_id)
 {
-    $this->load->helper('store_items/store_prd_helper');    
     list($parent_dir, $parent_cat_title, $parent_cat_id) = parent_cat_folder($sub_cat_id);
     $sub_cat_title = sub_cat_title($sub_cat_id);
 
@@ -56,21 +56,28 @@ function view($item_id)
 {
     $results_set = $this->model_name->get_view_data_custom( 'id', $item_id, 'store_items', null)->result();
 
+    $sub_cat_id = strtolower($results_set[0]->sub_cat_id);    
+    $image_name = strtolower($results_set[0]->active_image);
+    list($parent_dir, $parent_cat_title, $parent_cat_id) = parent_cat_folder($sub_cat_id);
+    $image_name = $parent_dir."/".$image_name;
+
+
     $data['update_id'] = $item_id;
-    $data['active_image'] = $results_set[0]->active_image;
+    $data['active_image'] = $image_name;
     $data['item_description'] = $results_set[0]->description;
-    $data['item_title'] = $short_desc;
+    $data['item_title'] = $results_set[0]->short_desc;
 
     $data['custom_jscript'] = [];
     $data['page_url'] = "view";
     $data['view_module'] = 'store_items';
-    $data['title'] = "Add to Basket";
+    // $data['title'] = "Add to Basket";
 
     $this->load->module('templates');
     $this->templates->public_main($data);           
 
 
 }
+
 
 /* ===============================================
     Call backs go here...

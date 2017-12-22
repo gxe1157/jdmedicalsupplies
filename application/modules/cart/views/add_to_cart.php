@@ -1,4 +1,5 @@
-<div style="margin: 0 auto; background-color: #ddd; border-radius: 7px; margin-top: 24px; padding: 7px; width: 325px;">
+<div style="margin: 0 auto; background-color: #ddd; border-radius: 7px; margin-top: 24px; padding: 7px; width: 90%;">
+
 <?php
 echo form_open('store_basket/add_to_basket');
 ?>
@@ -45,14 +46,21 @@ echo form_open('store_basket/add_to_basket');
             <td>Qty: </td>
             <td>
                 <div class="col-sm-5" style="padding-left: 0px;">
-                <input name="item_qty" type="text" class="form-control">
+                <input name="item_qty"
+                       type="text"
+                       style="border: 1px #000 solid; background-color: #fff;"
+                       class="form-control">
                 </div>
             </td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;">
                 
-                    <button class="btn btn-primary" name="submit" value="Submit" type="submit"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
+                    <button class="btn btn-primary"
+                            name="submit"
+                            value="Submit"
+                            type="submit">
+                            <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
                     Add To Basket</button>
                 
             </td>

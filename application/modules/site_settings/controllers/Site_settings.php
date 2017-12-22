@@ -65,13 +65,13 @@ function _get_cookie_name()
 
 function _get_currency_symbol()
 {
-    $symbol = "&pound;";
+    $symbol = "&#36;";
     return $symbol;
 }
 
 function _get_currency_code()
 {
-    $code = "GBP";
+    $code = "USD";
     return $code;
 }
 

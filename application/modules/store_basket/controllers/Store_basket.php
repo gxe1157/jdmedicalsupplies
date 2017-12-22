@@ -5,7 +5,7 @@ class Store_basket  extends MY_Controller
 
 /* model name goes here */
 var $mdl_name = 'Mdl_store_basket';
-var $store_controller = 'store_basket ';
+var $store_controller = 'store_basket';
 
 var $column_rules = array(
     array('field' => '---', 'label' => '---', 'rules' => '---')        
@@ -28,6 +28,9 @@ function __construct() {
 
 function add_to_basket()
 {
+
+checkArray($_POST, 1);
+
     $submit = $this->input->post('submit', TRUE);
     if ($submit=="Submit") {
         //process the form
@@ -55,12 +58,10 @@ function add_to_basket()
 function _fetch_the_data()
 {
     //gathers together all of the data, so that we can do a table insert
-    $this->load->module('site_security');
-    $this->load->module('store_items');
-
     $item_id = $this->input->post('item_id', TRUE);
-    $item_data = $this->store_items->fetch_data_from_db($item_id);
-    $item_price = $item_data['item_price'];
+    $item_data = $this->_get_item_data($item_id);
+
+    $item_price = $item_data['price'];
     $item_qty = $this->input->post('item_qty', TRUE);
     $item_size = $this->input->post('item_size', TRUE);
     $item_color = $this->input->post('item_color', TRUE);
@@ -71,7 +72,7 @@ function _fetch_the_data()
     }
 
     $data['session_id'] = $this->session->session_id;
-    $data['item_title'] = $item_data['item_title'];
+    $data['item_title'] = $item_data['short_desc'];
     $data['price'] = $item_price;
     $data['tax'] = '0';
     $data['item_id'] = $item_id;
@@ -84,30 +85,25 @@ function _fetch_the_data()
     return $data;
 }
 
+function _get_item_data($item_id){
+    $query = $this->model_name->get_view_data_custom('id', $item_id, 'store_items', null);        
+
+    foreach($query->result() as $row) {
+        $data_results['short_desc'] = $row->short_desc;
+        $data_results['price'] = $row->price;
+    }
+    return $data_results;
+}
+
 function _get_value($value_type, $update_id)
 {
     //NOTE: value_type can be 'color' or 'size'
-    if ($value_type=='size') {
-        $this->load->module('store_item_sizes');
-        $query = $this->store_item_sizes->get_where($update_id);
-        foreach($query->result() as $row) {
-            $item_size = $row->size;
-        }
-        if (!isset($item_size)) {
-            $item_size = '';
-        }
-        $value = $item_size;
-    } else {
-        //fetch the name of the color
-        $this->load->module('store_item_colors');
-        $query = $this->store_item_colors->get_where($update_id);
-        foreach($query->result() as $row) {
-            $item_color = $row->color;
-        }
-        if (!isset($item_color)) {
-            $item_color = '';
-        }
-        $value = $item_color;        
+    $value = '';
+    $table =  $value_type =='size' ? 'store_item_sizes' : 'store_item_colors';
+    $query = $this->model_name->get_view_data_custom('item_id', $item_id, $table, null);        
+
+    foreach($query->result() as $row) {
+        $value = $row->$value_type;
     }
     return $value;
 }

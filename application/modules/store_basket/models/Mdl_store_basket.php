@@ -6,7 +6,6 @@ class Mdl_store_basket extends MY_Model
 
 function __construct( ) {
     parent::__construct();
-
 }
 
 function get_table() {

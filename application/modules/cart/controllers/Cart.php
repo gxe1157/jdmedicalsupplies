@@ -133,7 +133,6 @@ function _draw_checkout_btn_fake($query)
     foreach($query->result() as $row) {
         $session_id = $row->session_id;
     }
-
     $data['checkout_token'] = $this->_create_checkout_token($session_id);
     $this->load->view('checkout_btn_fake', $data);
 }
@@ -158,7 +157,7 @@ function _draw_cart_contents($query, $user_type)
         $view_file = 'cart_contents_admin';
     }
 
-    $data['shipping'] = $this->shipping->_get_shipping();
+    $data['shipping'] = '';//$this->shipping->_get_shipping();
     $data['query'] = $query;
     $this->load->view($view_file, $data);
 }
