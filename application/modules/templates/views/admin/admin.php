@@ -69,6 +69,11 @@
             <li><a href="<?= base_url() ?>store_items/manage">
                     <i class="fa fa-folder fa-lg"></i> Products</a></li>
 
+  <!-- Manage Customers -->
+            <li><a href="<?= base_url() ?>store_accounts/manage">
+                    <i class="fa fa-folder fa-lg"></i> Customers</a></li>
+
+
           </ul>
  <?php endif; ?>
 <!-- end of leftside nav -->

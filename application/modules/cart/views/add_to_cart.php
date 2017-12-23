@@ -5,7 +5,7 @@ echo form_open('store_basket/add_to_basket');
 ?>
     <table class="table">
         <tr>
-            <td colspan="2">Item ID: <?= $item_id ?></td>
+            <td colspan="2">Add to Cart</br>Item ID: <?= $item_id ?></td>
         </tr>
 
         <?php

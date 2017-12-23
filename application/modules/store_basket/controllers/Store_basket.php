@@ -29,8 +29,6 @@ function __construct() {
 function add_to_basket()
 {
 
-checkArray($_POST, 1);
-
     $submit = $this->input->post('submit', TRUE);
     if ($submit=="Submit") {
         //process the form

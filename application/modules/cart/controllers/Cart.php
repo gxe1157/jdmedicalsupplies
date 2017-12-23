@@ -4,7 +4,7 @@ class Cart extends MX_Controller
 
 function __construct() {
     parent::__construct();
-
+    $this->load->module('site_security');    
 }
 
 
@@ -21,7 +21,6 @@ function index()
         $session_id = $this->session->session_id;
     }
 
-    $this->load->module('site_security');
     $shopper_id = $this->site_security->_get_user_id();
 
     if (!is_numeric($shopper_id)) {
@@ -52,7 +51,7 @@ function _check_and_get_session_id($checkout_token)
 
     //check to see if this session ID appears on store_basket table
     $this->load->module('store_basket');
-    $query = $this->store_basket->get_where_custom('session_id', $session_id);
+    $query = $this->model_name->get_view_data_custom('session_id', $session_id, 'store_basket', null);    
     $num_rows = $query->num_rows();
 
     if ($num_rows<1) {
@@ -64,8 +63,7 @@ function _check_and_get_session_id($checkout_token)
 
 function _create_checkout_token($session_id)
 {
-    $this->load->module('site_security');
-    $encrypted_string = $this->site_security->_encrypt_string($session_id);
+     $encrypted_string = $this->site_security->_encrypt_string($session_id);
     //remove dodgy characters
     $checkout_token = str_replace('+', '-plus-', $encrypted_string);
     $checkout_token = str_replace('/', '-fwrd-', $checkout_token);
@@ -75,7 +73,6 @@ function _create_checkout_token($session_id)
 
 function _get_session_id_from_token($checkout_token)
 {
-    $this->load->module('site_security');
     //remove dodgy characters
     $session_id = str_replace('-plus-', '+', $checkout_token);
     $session_id = str_replace('-fwrd-', '/', $session_id);
@@ -88,7 +85,6 @@ function submit_choice()
 {
     $submit = $this->input->post('submit', TRUE);
     if ($submit=="No Thanks") {
-
         $checkout_token = $this->input->post('checkout_token', TRUE);
         redirect('cart/index/'.$checkout_token);
 
@@ -99,8 +95,6 @@ function submit_choice()
 
 function go_to_checkout()
 {
-
-    $this->load->module('site_security');
     $shopper_id = $this->site_security->_get_user_id();
 
     if (is_numeric($shopper_id)) {
@@ -109,15 +103,16 @@ function go_to_checkout()
 
     $data['checkout_token'] = $this->uri->segment(3);
     $data['flash'] = $this->session->flashdata('item');
-    $data['view_file'] = "go_to_checkout";
+    $data['view_module'] = 'cart';    
+    $data['page_url'] = "go_to_checkout";
+
     $this->load->module('templates');
-    $this->templates->public_bootstrap($data); 
+    $this->templates->public_main($data);
 }
 
 function _attempt_draw_checkout_btn($query)
 {
     $data['query'] = $query;
-    $this->load->module('site_security');
     $shopper_id = $this->site_security->_get_user_id();
     $third_bit = $this->uri->segment(3);
 
@@ -233,7 +228,6 @@ function _draw_add_to_cart($item_id)
 function test()
 {
     $string = "Hello blue sky";
-    $this->load->module('site_security');
     $encrypted_string = $this->site_security->_encrypt_string($string);
     $decrypted_string = $this->site_security->_decrypt_string($encrypted_string);
 
@@ -244,7 +238,6 @@ function test()
 
 function test2()
 {
-    $this->load->module('site_security');
     $string = "Hello blue sky";
 
     $third_bit = $this->uri->segment(3);

@@ -1,7 +1,9 @@
-<div class="col-md-10 col-md-offset-1" style="text-align: center;">
-    <a href="<?php echo base_url().'cart/go_to_checkout/'.$checkout_token; ?>">
+<div class ="row">
+<div class="col-md-10 col-md-offset-1" style="margin-bottom: 15px; text-align: center;">
+    <a href="<?= base_url().'cart/go_to_checkout/'.$checkout_token; ?>">
     <button class="btn btn-danger" name="submit" value="Submit" type="button">
-        <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> 
+        <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
         Go To Checkout
     </button></a>
+</div>
 </div>

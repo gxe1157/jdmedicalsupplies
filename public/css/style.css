@@ -879,8 +879,8 @@ ul.navbar-nav > li > a i{
 
 
 /* Dropdown */
-
 .dropdown-submenu {
+    /* Use this for sub-menu to move down with selection */
     position: relative;
 }
 

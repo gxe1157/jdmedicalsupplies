@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-10 col-md-offset-1" style="padding-bottom: 50px;">
+    <div class="col-md-10 col-md-offset-1">
         <table class="table table-striped table-bordered" style="margin-top: 36px;">
             <?php
             $grand_total = 0;
@@ -20,7 +20,6 @@
                     ?>
                     </td>
                 <td class="col-md-8">
-                    
                     Item Number: <?= $row->item_id ?><br>
                     <b><?= $row->item_title ?></b><br>
                     Item Price: <?= $currency_symbol.$row->price ?><br><br>
@@ -28,13 +27,11 @@
                     <?php
                     echo anchor('store_basket/remove/'.$row->id, 'Remove');
                     ?>
-                </td>
+                    </td>
                 <td class="col-md-2"><?= $currency_symbol.$sub_total_desc ?></td>
             </tr>
-            <?php
-            }
-            ?>
-            <tr>
+            <?php } ?>
+
             <tr>
                 <td class="col-md-2">
                     &nbsp;    
