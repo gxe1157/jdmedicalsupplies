@@ -83,7 +83,6 @@ function _get_column_names( $key_value )  // we will use for $key_value only "fi
             $data[$field] = $this->column_rules[$key]['label'];
         }
     }
-    // $this->lib->checkArray($data, 1);
     return $data;
 }
 

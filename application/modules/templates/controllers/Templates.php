@@ -30,19 +30,10 @@ function admin( $data = array() )
 {
     // $this->load->module('site_security');
     // $this->site_security->_make_sure_is_admin();
-
     if( !isset( $data['view_module'] ) )
         $data['view_module']= $this->uri->segment(1);
 
     $this->load->view('admin/admin', $data);
-}
-
-function public_bootstrap($data = null)
-{
-  if( !isset( $data['view_module'] ) )
-        $data['view_module']= $this->uri->segment(1);
-
-    $this->load->view('public_bootstrap/public_bootstrap', $data);
 }
 
 

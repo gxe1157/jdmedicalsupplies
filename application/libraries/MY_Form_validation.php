@@ -11,10 +11,11 @@ public function is_unique($str, $field)
 		sscanf($field, '%[^.].%[^.]', $table, $field);
 
 		$result_set = $this->CI->db->limit(1)->get_where($table, array($field => $str))->num_rows() === 0;
+
 		if( $result_set === true ) {
-			return true;
+			return 1;
 		} else {
-			return false;			
+			return 0;			
 		}
 
 		/* Not working: $this->CI->db always reads false. */

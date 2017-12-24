@@ -441,7 +441,6 @@ function test3()
     Call backs go here...
   =============================================== */
 
-
 function username_check($str) 
 {
     $this->load->helper('site_users/form_flds_helper');    

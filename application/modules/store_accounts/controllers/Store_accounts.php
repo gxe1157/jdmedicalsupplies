@@ -1,47 +1,94 @@
-<?php
-class Store_accounts extends MX_Controller 
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+// Rename Perfectcontroller to [Name]
+class Store_accounts extends MY_Controller 
 {
 
-function __construct() {
-parent::__construct();
+/* model name goes here */
+public $mdl_name = 'Mdl_store_accounts';
+public $main_controller = 'store_accounts';
 
+public $column_rules = [];
+public $column_pword_rules  = array(
+        array('field' => 'password', 'label' => 'Password',
+              'rules' => 'required|min_length[6]|max_length[35]'),
+        array('field' => 'confirm_password', 'label' => 'Confirm Password',
+              'rules' => 'required|matches[password]')
+);
+
+// used like this.. in_array($key, $columns_not_allowed ) === false )
+public $columns_not_allowed = array( 'create_date' );
+public $default = array();
+
+function __construct() {
+    parent::__construct();
+
+    /* is user logged in */
+    $this->default = login_init();    
+
+    /* get user data */
+    $update_id = $this->uri->segment(3);
+    $results_set = $this->model_name->get_view_data_custom('id', $update_id,'user_login', null)->result();
+
+    $this->load->helper('store_accounts/form_flds_helper');
+    $this->column_rules = get_fields();
+
+    $this->default['page_nav'] = "Customer Accounts";     
+    $this->default['username'] = count($results_set) > 0 ? $results_set[0]->username : '';
+
+    /* user status */
+    $this->default['user_status'] = count($results_set) > 0 ? $results_set[0]->status : '';   
+    $this->default['user_is_delete'] = count($results_set) > 0 ? $results_set[0]->is_delete : 0;        
+
+    /* page settings */
+    $this->default['headline']    = !is_numeric($update_id) ? "Manage Customers" : "Update Customer Details";
+    $this->default['page_header'] = !is_numeric($update_id) ? "Add New Customer" : "Update Customer Details";
+    $this->default['add_button']  = "Add New Customer";
+    $this->default['flash'] = $this->session->flashdata('item');
+
+    $this->site_security->_make_sure_is_admin();
 }
+
+
+/* ===================================================
+    Controller functions goes here. Put all DRY
+    functions in applications/core/My_Controller.php
+   ==================================================== */
 
 function manage() 
 {
-    // $this->load->module('site_security');
-    // $this->site_security->_make_sure_is_admin();
-
-    $data['flash'] = $this->session->flashdata('item');
 
     $data['query'] = $this->get('username');
-    // $data['view_module'] = "store_account";    
+    // $data['columns'] = $this->model_name->get_login_data();
+
+    $data['custom_jscript'] = [ 'public/js/datatables.min',
+                                'public/js/site_datatable_loader',
+                                'public/js/format_flds'];
+
     $data['page_url'] = "manage";
+    $data['view_module'] = "store_accounts";    
+    $data['title'] = "Manage Customer Accounts";
+    $this->default['page_title'] = "Manage Customer Accounts";
+    $data['default'] =  $this->default;  
+
     $this->load->module('templates');
-    $this->templates->admin($data);
+    $this->templates->admin($data);        
 
 }
 
 
 function create() 
 {
-quit(0);
-    // $this->load->library('session');
-    // $this->load->module('site_security');
-    // $this->site_security->_make_sure_is_admin();
-
     $update_id = $this->uri->segment(3);
     $submit = $this->input->post('submit', TRUE);
 
-    if ($submit=="Cancel") {
+    if ($submit=="Cancel")
         redirect('store_accounts/manage');
-    }
 
     if ($submit=="Submit") {
         //process the form
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('username', 'Username', 'required');
-        $this->form_validation->set_rules('firstname', 'First Name', 'required');
+        $this->form_validation->set_rules( $this->column_rules );
 
         if ($this->form_validation->run() == TRUE) {
             //get the variables
@@ -56,34 +103,68 @@ quit(0);
                 redirect('store_accounts/create/'.$update_id);
             } else {
                 //insert a new item
-                $data['date_made'] = time();
-                $this->_insert($data);
-                $update_id = $this->get_max(); //get the ID of the new item
-                $flash_msg = "The account was successfully added.";
-                $value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
+                list( $username_num, $email_num) = $this->model_name->confirm_userid_email_unique( 'username', $data['username'], 'email', $data['email'] );
+                if( $username_num == 0 && $email_num == 0 ) { 
+                    /* Success! Create New Record */
+                    $data['date_made'] = time();
+                    // $update_id = $this->_insert($data); //get the ID of the new item
+                    $flash_msg = "The account was successfully added.";
+                    $value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
+                } else {
+                    if( $username_num > 0 )
+                        $flash_msg = "The username ".$data['username']." is already taken.<br>Please select another username<br><br>";                        
+                    if( $email_num > 0 )
+                        $flash_msg .= "The email ".$data['email']." is already taken.<br>Please select another email.";                        
+
+                    $value = '<div class="alert alert-danger" role="alert">'.$flash_msg.'</div>';
+
+                }
+
                 $this->session->set_flashdata('item', $value);
                 redirect('store_accounts/create/'.$update_id);
             }
         }
     }
 
-    if ((is_numeric($update_id)) && ($submit!="Submit")) {
-        $data = $this->fetch_data_from_db($update_id);
+    if( ( is_numeric($update_id) ) && ($submit != "Submit") ) {
+        $data['columns'] = $this->fetch_data_from_db($update_id);
     } else {
-        $data = $this->fetch_data_from_post();
+        $data['columns'] = $this->fetch_data_from_post();
     }
 
-    if (!is_numeric($update_id)) {
-        $data['headline'] = "Add New Account";
-    } else {
-        $data['headline'] = "Update Account Details";
-    }
+    $data['columns_not_allowed'] = $this->columns_not_allowed;
+    // $data['labels'] = $this->_get_column_names('label');
+    $data['fld_data'] = $this->_build_flds();
 
     $data['update_id'] = $update_id;
-    $data['flash'] = $this->session->flashdata('item');
-    $data['view_file'] = "create";
+    $data['page_url'] = "create";
+
+    $this->default['page_title'] = "Manage Customer Accounts";
+    $data['default'] =  $this->default;  
+
+
     $this->load->module('templates');
     $this->templates->admin($data);
+
+}
+
+function _build_flds()
+{
+    foreach ($this->column_rules as $key => $value) {
+        $is_required = substr($this->column_rules[$key]['rules'],0,8 );
+        $is_req_output ='<i class="fa fa-asterisk"
+                         style="font-size: .6em;color:red;"
+                         aria-hidden="true"></i>';
+
+
+        $field  = $this->column_rules[$key]['field'];
+        $fld_data[$field] = [
+            'label' => $this->column_rules[$key]['label'],
+            'required' => $is_required == 'required' ? $is_req_output : '',
+            'icon' => $this->column_rules[$key]['icon']
+        ];
+    }
+    return $fld_data;
 }
 
 function _generate_token($update_id)
@@ -200,193 +281,19 @@ function update_pword()
     $this->templates->admin($data);
 }
 
-function fetch_data_from_post() 
-{
-    $data['username'] = $this->input->post('username', TRUE);
-    $data['firstname'] = $this->input->post('firstname', TRUE);
-    $data['lastname'] = $this->input->post('lastname', TRUE);
-    $data['company'] = $this->input->post('company', TRUE);
-    $data['address1'] = $this->input->post('address1', TRUE);
-    $data['address2'] = $this->input->post('address2', TRUE);
-    $data['town'] = $this->input->post('town', TRUE);
-    $data['country'] = $this->input->post('country', TRUE);
-    $data['postcode'] = $this->input->post('postcode', TRUE);
-    $data['telnum'] = $this->input->post('telnum', TRUE);
-    $data['email'] = $this->input->post('email', TRUE);
-    return $data;
-}
-
-function fetch_data_from_db($update_id) 
-{
-
-    if (!is_numeric($update_id)) {
-        redirect('site_security/not_allowed');
-    }
-
-    $query = $this->get_where($update_id);
-    foreach($query->result() as $row) {
-        $data['username'] = $row->username;
-        $data['firstname'] = $row->firstname;
-        $data['lastname'] = $row->lastname;
-        $data['company'] = $row->company;
-        $data['address1'] = $row->address1;
-        $data['address2'] = $row->address2;
-        $data['town'] = $row->town;
-        $data['country'] = $row->country;
-        $data['postcode'] = $row->postcode;
-        $data['telnum'] = $row->telnum;
-        $data['email'] = $row->email;
-        $data['date_made'] = $row->date_made;
-        $data['pword'] = $row->pword;
-        $data['last_login'] = $row->last_login;
-    }
-
-    if (!isset($data)) {
-        $data = "";
-    }
-
-    return $data;
-}
+/* ===============================================
+    Callbacks go here
+  =============================================== */
 
 
 
-// remove
-function get($order_by)
-{
-    $this->load->model('mdl_store_accounts');
-    $query = $this->mdl_store_accounts->get($order_by);
-    return $query;
-}
-
-function get_with_limit($limit, $offset, $order_by) 
-{
-    if ((!is_numeric($limit)) || (!is_numeric($offset))) {
-        die('Non-numeric variable!');
-    }
-
-    $this->load->model('mdl_store_accounts');
-    $query = $this->mdl_store_accounts->get_with_limit($limit, $offset, $order_by);
-    return $query;
-}
-
-function get_where($id)
-{
-    if (!is_numeric($id)) {
-        die('Non-numeric variable!');
-    }
-
-    $this->load->model('mdl_store_accounts');
-    $query = $this->mdl_store_accounts->get_where($id);
-    return $query;
-}
-
-function get_where_custom($col, $value) 
-{
-    $this->load->model('mdl_store_accounts');
-    $query = $this->mdl_store_accounts->get_where_custom($col, $value);
-    return $query;
-}
-
-function get_with_double_condition($col1, $value1, $col2, $value2) 
-{
-    $this->load->model('mdl_store_accounts');
-    $query = $this->mdl_store_accounts->get_with_double_condition($col1, $value1, $col2, $value2);
-    return $query;
-}
-
-function _insert($data)
-{
-    $this->load->model('mdl_store_accounts');
-    $this->mdl_store_accounts->_insert($data);
-}
-
-function _update($id, $data)
-{
-    if (!is_numeric($id)) {
-        die('Non-numeric variable!');
-    }
-
-    $this->load->model('mdl_store_accounts');
-    $this->mdl_store_accounts->_update($id, $data);
-}
-
-function _delete($id)
-{
-    if (!is_numeric($id)) {
-        die('Non-numeric variable!');
-    }
-
-    $this->load->model('mdl_store_accounts');
-    $this->mdl_store_accounts->_delete($id);
-}
-
-function count_where($column, $value) 
-{
-    $this->load->model('mdl_store_accounts');
-    $count = $this->mdl_store_accounts->count_where($column, $value);
-    return $count;
-}
-
-function get_max() 
-{
-    $this->load->model('mdl_store_accounts');
-    $max_id = $this->mdl_store_accounts->get_max();
-    return $max_id;
-}
-
-function _custom_query($mysql_query) 
-{
-    $this->load->model('mdl_store_accounts');
-    $query = $this->mdl_store_accounts->_custom_query($mysql_query);
-    return $query;
-}
-
-function autogen()
-{
-
-    $mysql_query = "show columns from store_accounts";
-    $query = $this->_custom_query($mysql_query);
-
-/*
-    foreach($query->result() as $row) {
-        $column_name = $row->Field;
-
-        if ($column_name!="id") {
-            echo '$data[\''.$column_name.'\'] = $this->input->post(\''.$column_name.'\', TRUE);<br>';
-        }
-    }
-
-    echo "<hr>";
-
-    foreach($query->result() as $row) {
-        $column_name = $row->Field;
-
-        if ($column_name!="id") {
-            echo '$data[\''.$column_name.'\'] = $row->'.$column_name.';<br>';
-        }
-    }
-
-echo "<hr>";
 
 
-    foreach($query->result() as $row) {
-        $column_name = $row->Field;
+/* ===============================================
+    David Connelly's work from perfectcontroller
+    is in applications/core/My_Controller.php which
+    is extened here.
+  =============================================== */
 
-        if ($column_name!="id") {
-            
-$var = '<div class="control-group">
-  <label class="control-label" for="typeahead">'.ucfirst($column_name).' </label>
-  <div class="controls">
-    <input type="text" class="span6" name="'.$column_name.'" value="<?= $'.$column_name.' ?>">
-  </div>
-</div>';
 
-echo htmlentities($var);
-echo "<br>";
-
-        }
-    }
-*/
-}
-
-}
+} // End class Controller

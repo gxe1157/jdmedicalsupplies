@@ -43,7 +43,7 @@
                   <div class="col-sm-6 col-md-5 inputGroupContainer">
                       <div class="input-group">
                         <span class="input-group-addon">
-                          <i class="glyphicon glyphicon-<?= $fld_data[$key]['icon'] ?>"></i>
+                            <i class="glyphicon glyphicon-<?= $fld_data[$key]['icon'] ?>"></i>
                         </span>
 
                         <input  name="<?= $key ?>" 
@@ -82,18 +82,6 @@
  
 <?php if( is_numeric($update_id) && $show_buttons): ?>
   <!-- use bootstrap alert codes: warning, danger etc. -->
-  <a class ="btnConfirm" id="reset_pswrd-warning"
-     href="<?= base_url().$this->uri->segment(1) ?>/update_pword/<?= $update_id ?>">
-    <button type="button" class="btn btn-primary">Reset Password</button></a>
- 
-    <?php if($default['user_status'] == 2): ?>
-      <a href="<?= base_url().$this->uri->segment(1) ?>/change_account_status/<?= $update_id ?>/1">      
-        <button type="button" class="btn btn-primary">Re-activate Account</button></a>
-    <?php else: ?>    
-      <a href="<?= base_url().$this->uri->segment(1) ?>/change_account_status/<?= $update_id ?>/2">      
-        <button type="button" class="btn btn-primary">Suspend Account</button></a>
-    <?php endif; ?>    
-
 
   <a class ="btnConfirm " id="delete-danger"
      href="<?= base_url().$this->uri->segment(1) ?>/delete/<?= $update_id ?>/<?= $default['username'] ?>">

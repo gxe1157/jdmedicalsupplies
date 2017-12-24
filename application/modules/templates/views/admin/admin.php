@@ -73,6 +73,10 @@
             <li><a href="<?= base_url() ?>store_accounts/manage">
                     <i class="fa fa-folder fa-lg"></i> Customers</a></li>
 
+  <!-- Manage Vendors -->
+            <li><a href="<?= base_url() ?>store_vendors/manage">
+                    <i class="fa fa-folder fa-lg"></i> Vendors</a></li>
+
 
           </ul>
  <?php endif; ?>

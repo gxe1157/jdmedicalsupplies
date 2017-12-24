@@ -16,7 +16,8 @@
 
 <div class="row">   
   <div class="col-md-12">
-    <table class="table table-striped table-bordered bootstrap-datatable datatable">
+      <table id="example"  class="table table-striped table-bordered">
+
                           <thead>
                               <tr>
                                   <th>Username</th>
@@ -31,9 +32,9 @@
                             <?php
                             $this->load->module('timedate');
                             foreach($query->result() as $row) { 
-                                $edit_account_url = base_url()."store_accounts/create/".$row->id;
-                                $view_accounts_url = base_url()."store_accounts/view/".$row->id;
-                                $date_created = $this->timedate->get_nice_date($row->date_made, 'cool');
+                                $edit_url = base_url().$this->uri->segment(1)."/create/".$row->id;
+                                $date_created = convert_timestamp($row->create_date, 'datepicker_us');
+
                             ?>
                             <tr>
                                 <td><?= $row->username ?></td>
@@ -44,9 +45,9 @@
                                     <?= $date_created ?>
                                 </td>
                                 <td class="center">
-                                    <a class="btn btn-info" href="<?= $edit_account_url ?>">
-                                        <i class="halflings-icon white edit"></i>  
-                                    </a>
+                                    <a class="btn btn-info btn-sm" style="font-size: 12px; padding: 0px 5px 0px 0px;" href="<?= $edit_url ?>">
+                  <i class="fa fa-pencil fa-fw"></i> Edit
+                </a>
                                   
                                 </td>
                             </tr>

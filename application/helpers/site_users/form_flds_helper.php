@@ -57,7 +57,7 @@ if ( ! function_exists('get_fields'))
             array(
               'field' => 'email',
               'label' => 'Email',
-              'rules' => 'required|valid_email|max_length[200]|callback_email',
+              'rules' => 'required|valid_email|max_length[200]|is_unique[store_accounts.email]',
               'icon'  => 'envelope',
               'placeholder'=>'',
               'input_type' =>'text'

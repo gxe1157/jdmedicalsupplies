@@ -3,9 +3,11 @@ class Youraccount extends MX_Controller
 {
 
 function __construct() {
-parent::__construct();
-$this->load->library('form_validation');
-$this->form_validation->CI =& $this;
+    parent::__construct();
+    $this->load->library('form_validation');
+    $this->form_validation->CI =& $this;
+
+    $this->load->helper('site_users/form_flds_helper');
 }
 
 function logout()
@@ -191,39 +193,39 @@ function fetch_data_from_post()
 }
 
 
-function username_check($str) 
-{
+// function username_check($str) 
+// {
 
-    $this->load->module('store_accounts');
-    $this->load->module('site_security');
+//     $this->load->module('store_accounts');
+//     $this->load->module('site_security');
 
-    $error_msg = "You did not enter a correct username and/or password.";
+//     $error_msg = "You did not enter a correct username and/or password.";
 
-    $col1 = 'username';
-    $value1 = $str;
-    $col2 = 'email';
-    $value2 = $str;
-    $query = $this->store_accounts->get_with_double_condition($col1, $value1, $col2, $value2);
-    $num_rows = $query->num_rows();
-    if ($num_rows<1) {
-        $this->form_validation->set_message('username_check', $error_msg);
-        return FALSE;        
-    }
+//     $col1 = 'username';
+//     $value1 = $str;
+//     $col2 = 'email';
+//     $value2 = $str;
+//     $query = $this->store_accounts->get_with_double_condition($col1, $value1, $col2, $value2);
+//     $num_rows = $query->num_rows();
+//     if ($num_rows<1) {
+//         $this->form_validation->set_message('username_check', $error_msg);
+//         return FALSE;        
+//     }
 
-    foreach($query->result() as $row) {
-        $pword_on_table = $row->pword;
-    }
+//     foreach($query->result() as $row) {
+//         $pword_on_table = $row->pword;
+//     }
 
-    $pword = $this->input->post('pword', TRUE);
-    $result = $this->site_security->_verify_hash($pword, $pword_on_table);
+//     $pword = $this->input->post('pword', TRUE);
+//     $result = $this->site_security->_verify_hash($pword, $pword_on_table);
 
-    if ($result==TRUE) {
-        return TRUE;
-    } else {
-        $this->form_validation->set_message('username_check', $error_msg);
-        return FALSE;         
-    }
-}
+//     if ($result==TRUE) {
+//         return TRUE;
+//     } else {
+//         $this->form_validation->set_message('username_check', $error_msg);
+//         return FALSE;         
+//     }
+// }
 
 
 
