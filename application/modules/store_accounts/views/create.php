@@ -79,11 +79,11 @@
 <div class="row">
 <div class="col-md-12 ">
 <div class="well">
- 
+
 <?php if( is_numeric($update_id) && $show_buttons): ?>
   <!-- use bootstrap alert codes: warning, danger etc. -->
   <a class ="btnConfirm" id="reset_pswrd-warning"
-     href="<?= base_url().$this->uri->segment(1) ?>/update_pword/<?= $update_id ?>">
+     href="<?= base_url().$this->uri->segment(1) ?>/update_password/<?= $update_id ?>">
     <button type="button" class="btn btn-primary">Reset Password</button></a>
  
     <?php if($default['user_status'] == 2): ?>

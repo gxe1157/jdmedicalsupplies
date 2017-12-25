@@ -16,7 +16,8 @@ $(document).ready(function (e) {
   });  
 
   function selectImage(e) {
-    $( '#previewImg').attr('src', e.target.result).css("height","250").css("width","250");
+    // $( '#previewImg').attr('src', e.target.result).css("height","250").css("width","250");
+    $( '#previewImg').attr('src', e.target.result);    
     $( '#confirm_upload' ).css("display", "block");
     $( '#pre_upload' ).css("display", "none");        
   }

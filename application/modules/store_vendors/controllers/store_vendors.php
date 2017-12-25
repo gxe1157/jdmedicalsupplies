@@ -40,7 +40,7 @@ function __construct() {
     $this->default['add_button']  = "Add New Vendor";
     $this->default['flash'] = $this->session->flashdata('item');
 
-    $this->site_security->_make_sure_is_admin();
+    $this->site_security->_make_sure_logged_in();
 }
 
 

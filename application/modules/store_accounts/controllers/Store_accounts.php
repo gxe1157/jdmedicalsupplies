@@ -27,8 +27,9 @@ function __construct() {
     $this->default = login_init();    
 
     /* get user data */
+    $table_name = 'store_accounts';
     $update_id = $this->uri->segment(3);
-    $results_set = $this->model_name->get_view_data_custom('id', $update_id,'user_login', null)->result();
+    $results_set = $this->model_name->get_view_data_custom('id', $update_id,$table_name, null)->result();
 
     $this->load->helper('store_accounts/form_flds_helper');
     $this->column_rules = get_fields();
@@ -37,7 +38,7 @@ function __construct() {
     $this->default['username'] = count($results_set) > 0 ? $results_set[0]->username : '';
 
     /* user status */
-    $this->default['user_status'] = count($results_set) > 0 ? $results_set[0]->status : '';   
+    $this->default['user_status'] = count($results_set) > 0 ? $results_set[0]->status : '';
     $this->default['user_is_delete'] = count($results_set) > 0 ? $results_set[0]->is_delete : 0;        
 
     /* page settings */
@@ -46,7 +47,7 @@ function __construct() {
     $this->default['add_button']  = "Add New Customer";
     $this->default['flash'] = $this->session->flashdata('item');
 
-    $this->site_security->_make_sure_is_admin();
+    $this->site_security->_make_sure_logged_in();
 }
 
 
@@ -137,26 +138,29 @@ function create()
     $data['fld_data'] = $this->_build_flds();
 
     $data['update_id'] = $update_id;
-    $data['page_url'] = "create";
 
+    $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min',
+                                'public/js/format_flds',
+                                'public/js/model_js',                                  
+                                'public/js/site_user_details'
+                                ];    
+
+    $data['page_url'] = "create";
     $this->default['page_title'] = "Manage Customer Accounts";
     $data['default'] =  $this->default;  
 
-
     $this->load->module('templates');
     $this->templates->admin($data);
-
 }
 
 function _build_flds()
 {
+    $is_req_output ='<i class="fa fa-asterisk"
+                     style="font-size: .6em;color:red;" 
+                     aria-hidden="true"></i>';
+
     foreach ($this->column_rules as $key => $value) {
         $is_required = substr($this->column_rules[$key]['rules'],0,8 );
-        $is_req_output ='<i class="fa fa-asterisk"
-                         style="font-size: .6em;color:red;"
-                         aria-hidden="true"></i>';
-
-
         $field  = $this->column_rules[$key]['field'];
         $fld_data[$field] = [
             'label' => $this->column_rules[$key]['label'],
@@ -167,8 +171,108 @@ function _build_flds()
     return $fld_data;
 }
 
+function update_password()
+{
+    $update_id = $this->uri->segment(3);
+    $submit = $this->input->post('submit', TRUE);
+
+    if( !is_numeric($update_id) ){
+        redirect( $this->main_controller.'/manage');
+    } elseif( $submit == "Cancel" ) {
+        redirect( $this->main_controller.'/create/'.$update_id);
+    } 
+
+    if( $submit == "Submit" ) {
+        // process changes
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules( $this->column_pword_rules );
+
+        if($this->form_validation->run() == TRUE) {
+            $password = $this->input->post('password', TRUE);
+            $this->load->module('site_security');
+            $table_data = ['pword' => $this->site_security->_hash_string($password)];
+
+            //update the account details
+            $this->model_name->update_data( 'store_accounts', $table_data, $update_id );
+            $this->_set_flash_msg("The password was sucessfully updated.");
+            redirect( $this->main_controller.'/create/'.$update_id);
+        }
+    }
+
+    $data['columns']  = $this->fetch_data_from_post();    
+    $data['page_url'] = "update_password";
+    $data['update_id']= $update_id;
+
+    $data['custom_jscript'] = [];    
+    $data['page_url'] = "update_password";
+    $data['view_module'] = 'site_users';
+    $data['title'] = "Update Password";
+
+    $this->default['page_title'] = 'Update Password';
+    $data['default'] =  $this->default;  
+
+    $this->load->module('templates');
+    $this->templates->admin($data);        
+
+
+}
+
+// 
+function change_account_status( $update_id, $status )
+{
+    /* unsuspend = 1, suspend = 2 */
+    $this->_numeric_check($update_id);    
+    $this->_security_check();    
+
+    $table_data = ['status' => $status];
+    $this->model_name->update_data( 'store_accounts', $table_data, $update_id );  
+    if( $status == 1)
+        $this->_set_flash_msg("The user account was sucessfully re-activated");
+
+    redirect( $this->main_controller.'/create/'.$update_id);
+}
+
+// 
+function delete( $update_id, $username )
+{
+    $this->_numeric_check($update_id);    
+    $this->_security_check();    
+    $this->_process_delete($update_id);
+    $this->_set_flash_msg("The user account ".$username.", was sucessfully deleted");
+    redirect( $this->main_controller.'/manage');
+}
+
+// 
+function _process_delete( $update_id )
+{
+    /* delete related table */
+
+    /* remove the images */
+
+    /* delete account */
+    // $this->_delete( $update_id );
+    $table_data = [ 'is_delete' => time() ];
+    $this->model_name->update_data( 'store_accounts', $table_data, $update_id );  
+}
+
+
+/* ===============================================
+    Callbacks go here
+  =============================================== */
+
+
+
+
+
+/* ===============================================
+    David Connelly's work from perfectcontroller
+    is in applications/core/My_Controller.php which
+    is extened here.
+  =============================================== */
 function _generate_token($update_id)
 {
+quit('_generate_token');
+
     $data = $this->fetch_data_from_db($update_id);
     $date_made = $data['date_made'];
     $last_login = $data['last_login'];
@@ -189,6 +293,7 @@ function _generate_token($update_id)
 
 function _get_customer_id_from_token($token)
 {
+quit('_get_customer_id_from_token');    
     $last_six_chars = substr($token, 0, 6); //last six from stored (hashed) pword
     $date_made = substr($token, 6, 10);
     $last_login = substr($token, 16, 10);
@@ -208,6 +313,7 @@ function _get_customer_id_from_token($token)
 
 function _get_customer_name($update_id, $optional_customer_data=NULL)
 {
+quit('_get_customer_id_from_token');
 
     if (!isset($optional_customer_data)) {
         $data = $this->fetch_data_from_db($update_id);
@@ -235,65 +341,23 @@ function _get_customer_name($update_id, $optional_customer_data=NULL)
     return $customer_name;
 }
 
-function update_pword() 
-{
-
-    $this->load->library('session');
-    $this->load->module('site_security');
-    $this->site_security->_make_sure_is_admin();
-
-    $update_id = $this->uri->segment(3);
-    $submit = $this->input->post('submit', TRUE);
-
-    if (!is_numeric($update_id)) {
-        redirect('store_accounts/manage');
-    } elseif ($submit=="Cancel") {
-        redirect('store_accounts/create/'.$update_id);
-    }
-
-    if ($submit=="Submit") {
-        //process the form
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('pword', 'Password', 'required|min_length[7]|max_length[35]');
-        $this->form_validation->set_rules('repeat_pword', 'Repeat Password', 'required|matches[pword]');
-
-        if ($this->form_validation->run() == TRUE) {
-            //get the variables
-            $pword = $this->input->post('pword', TRUE);
-            $this->load->module('site_security');
-            $data['pword'] = $this->site_security->_hash_string($pword);
-     
-            //update the item details
-            $this->_update($update_id, $data);
-            $flash_msg = "The account password was successfully updated.";
-            $value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
-            $this->session->set_flashdata('item', $value);
-            redirect('store_accounts/create/'.$update_id);
-            
-        }
-    }
-
-    $data['headline'] = "Update Account Password";
-    $data['update_id'] = $update_id;
-    $data['flash'] = $this->session->flashdata('item');
-    $data['view_file'] = "update_pword";
-    $this->load->module('templates');
-    $this->templates->admin($data);
-}
-
-/* ===============================================
-    Callbacks go here
-  =============================================== */
 
 
 
 
 
-/* ===============================================
-    David Connelly's work from perfectcontroller
-    is in applications/core/My_Controller.php which
-    is extened here.
-  =============================================== */
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 } // End class Controller

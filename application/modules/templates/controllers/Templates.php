@@ -28,8 +28,6 @@ function public_main( $data = array() )
 
 function admin( $data = array() )
 {
-    // $this->load->module('site_security');
-    // $this->site_security->_make_sure_is_admin();
     if( !isset( $data['view_module'] ) )
         $data['view_module']= $this->uri->segment(1);
 
