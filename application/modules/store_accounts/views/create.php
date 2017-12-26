@@ -1,4 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+// checkArray( $default,0);
+
   if( isset( $default['flash']) ) {
     echo $this->session->flashdata('item');
     unset($_SESSION['item']);
@@ -6,13 +8,13 @@
   $show_buttons = true;
   $form_location = base_url().$this->uri->segment(1)."/create/".$update_id;
 ?>
-<h2 style="margin-top: -10px;"><small><?= $default['page_header'] ?></small></h2>
 
+<h2 style="margin-top: -10px;"><small><?= $default['page_header'] ?></small></h2>
 <div class="row">
 <?php
     if( $default['user_is_delete'] > 0 ){
       echo '<div class="col-sm-4 col-md-4 alert alert-danger">
-                <strong>Alert!</strong> This user account has been Deleted.
+                <strong>Alert!</strong> This account has been Deleted.
             </div>';      
       $show_buttons = false;
             
@@ -62,8 +64,13 @@
    
           <div class="form-actions">
             <div class="col-sm-6 col-sm-offset-4 col-md-6 col-md-offset-4">
-                <button type="submit" class="btn btn-primary"
-                        name="submit" value="Submit">Submit</button>
+              <?php  if( $default['user_is_delete'] == 0 ) {?>
+                  <button type="submit" class="btn btn-primary"
+                          name="submit" value="Submit">Submit</button>
+              <?php } else { ?>
+                  <button type="submit" class="btn btn-danger"
+                          name="submit" value="un-delete">Un-delete</button>
+              <?php } ?>
 
               <button type="submit" class="btn" 
                       name="submit" value="Cancel">Cancel</button>

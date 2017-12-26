@@ -7,12 +7,12 @@ if ( ! function_exists('login_init'))
 	    $ci->load->module('site_security');     
 
 	    $userid = $ci->site_security->_get_user_id();	    
-	    $userid = is_numeric( $userid ) ? $userid : 0; // This will return userid not a true or false
+	    $userid = is_numeric( $userid ) ? $userid : 0; // This will return userid
 
 	    $login_data = $ci->model_name->get_login_byid($userid)->result();
 
+		$default['admin_id'] = $userid;	    /* this user is logged */
 	    $default['status']= $userid > 0 ? 1 : 0;
-		$default['admin_id'] = $userid;	    /* tis user is logged */
 	    $default['admin_name']= $userid>0 ? $login_data[0]->username : '';
 	    $default['avatar_admin']= $userid>0 ? $login_data[0]->avatar_name : '';
  	    $default['is_admin']= $userid>0 ? $login_data[0]->is_admin : '';
@@ -137,3 +137,24 @@ if ( ! function_exists('required_fields'))
 	    return $req_flds;
 	}
 }
+
+if ( ! function_exists('validation_errors'))
+{
+	function validation_errors($column_rules){
+	    //$row as each individual field array 
+	    foreach($column_rules as $row){
+	        $field = $row['field'];         //getting field name
+	        $error = form_error($field);    //getting error for field name
+	                                        //form_error() is inbuilt function
+
+	        //if error is their for field then only add in $errors_array array
+	        if($error)
+	        $errors_array[$field] = $error;
+	     
+	    }
+	    // return $errors_array;
+	    $data['errors_array'] = $errors_array;
+	    return $errors_array;
+	}
+
+}                        

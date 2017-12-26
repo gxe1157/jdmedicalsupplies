@@ -81,7 +81,6 @@ function create()
 
     if ($submit=="Submit") {
         //process the form
-        $this->load->library('form_validation');
         $this->form_validation->set_rules( $this->column_rules );
 
         if ($this->form_validation->run() == TRUE) {
@@ -113,12 +112,16 @@ function create()
     }
 
     $data['columns_not_allowed'] = $this->columns_not_allowed;
-    // $data['labels'] = $this->_get_column_names('label');
     $data['fld_data'] = $this->_build_flds();
 
     $data['update_id'] = $update_id;
-    $data['page_url'] = "create";
 
+    $data['custom_jscript'] = [ 'public/js/format_flds',
+                                'public/js/model_js',                                  
+                                'public/js/store_model_messages'
+                                ];    
+
+    $data['page_url'] = "create";
     $this->default['page_title'] = "Manage Vendor Accounts";
     $data['default'] =  $this->default;  
 
@@ -136,7 +139,6 @@ function _build_flds()
                          style="font-size: .6em;color:red;"
                          aria-hidden="true"></i>';
 
-
         $field  = $this->column_rules[$key]['field'];
         $fld_data[$field] = [
             'label' => $this->column_rules[$key]['label'],
@@ -145,6 +147,27 @@ function _build_flds()
         ];
     }
     return $fld_data;
+}
+
+
+function delete( $update_id, $username )
+{
+    $this->_numeric_check($update_id);    
+    // $this->_security_check();    
+    $this->_process_delete($update_id);
+    $this->_set_flash_msg("The account ".urldecode($username)." was sucessfully deleted");
+    redirect( $this->main_controller.'/manage');
+}
+
+ 
+function _process_delete( $update_id )
+{
+    /* delete related table */
+
+    /* remove the images */
+
+    /* delete account */
+    $this->_delete( $update_id );
 }
 
 

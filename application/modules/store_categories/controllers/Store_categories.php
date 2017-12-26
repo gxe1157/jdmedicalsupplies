@@ -13,7 +13,6 @@ var $items_mysql_table = 'store_items';
 /* set assign category mysql table name here  */
 var $cat_assign_mysql_table = 'store_cat_assign';
 
-
 var $column_rules = array(
         array('field' => 'cat_title', 'label' => 'Category Title', 'rules' => 'required'),
         array('field' => 'parent_cat_id', 'label' => 'Parent Catergory', 'rules' => '')
@@ -56,7 +55,8 @@ function manage()
     $data['sub_cats'] = $this->_count_sub_cats();
 
     $data['redirect_base']= base_url().$this->uri->segment(1);
-    $data['add_button'] = $this->uri->segment(4) != null ? "Add Sub Category" : "Add New Category";
+    $data['add_button'] =
+         $this->uri->segment(4) != null ? "Add Sub Category" : "Add New Category";
 
     $data['cancel_button_url'] = $data['redirect_base']."/manage";
 
@@ -74,34 +74,6 @@ function manage()
 
     $this->load->module('templates');
     $this->templates->admin($data); 
-}
-
-function delete() {
-    $this->_security_check();
-    $this->load->helper('store_items/store_prd_helper');    
-
-    $update_id = $this->uri->segment(3);
-    list($item_id, $parent_cat_id) = explode('-',$update_id);
-
-    if( $parent_cat_id == 0 ) {
-        $category_url = url_title(sub_cat_title($item_id));
-        $directory_name  = build_folder_name($this->parent_cat_img_base, $category_url);
-        $dir_deleted = rmdir($directory_name);
-    }
-
-    $items_deleted = $this->_delete($item_id);
-    if( $items_deleted > 0 ) {
-        $cat_type = $parent_cat_id == 0 ? 'Category' : 'Sub Category';
-        /* remove sub cat from store_cat_assign */
-        // $data_table = 'store_cat_assign';
-        // $rows_deleted = $this->_delete($item_id, $data_table);
-
-        $item = $items_deleted == 1 ? 'Item.' : 'Items.';
-        $flash_message = "You have sucessfully removed ".$items_deleted." <b>".$cat_type."</b> ".$item;
-        $this->_set_flash_msg($flash_message);
-
-    }    
-    redirect($this->site_controller.'/manage/'.$parent_cat_id );
 }
 
 function create()
@@ -129,11 +101,10 @@ function create()
             $data = $this->fetch_data_from_post();
             $data['category_url'] = url_title( $data['cat_title'] );
             $active_dir_name = $this->input->post('active_dir_name', TRUE);            
-            $active_dir_name = build_folder_name($this->parent_cat_img_base, $active_dir_name);            
-            $directory_name  = build_folder_name($this->parent_cat_img_base, $data['category_url']);
+            $active_dir_name = build_folder_name($this->parent_cat_img_base, $active_dir_name);
+            $directory_name  = 
+                build_folder_name($this->parent_cat_img_base, $data['category_url']);
 
-// checkField('update: '.$update,1);
-// checkArray($data,0);
             $flash_message = '';
             if(is_numeric($update_id)){
                 //update the category details
@@ -147,8 +118,8 @@ function create()
                     if( is_dir($active_dir_name) && !is_dir($directory_name) )
                         $dir_renamed = rename( $active_dir_name, $directory_name);
 
-                   if( $dir_renamed == false )
-                       $flash_message .= "<br> System error:  Directory rename failed ....";
+                    if( $dir_renamed == false )
+                        $flash_message .= "<br> System error:  Directory rename failed ....";
                 }
             } else {
                 //insert a new category
@@ -186,19 +157,18 @@ function create()
 
     $data['options'] = $this->_get_dropdown_options($update_id);
     $data['num_dropdown_options'] = count( $data['options'] );
-    $data['sub_cats']     = $this->_count_sub_cats();
+    $data['sub_cats'] = $this->_count_sub_cats();
 
     $data['mode'] = $posted_mode != null ? : $this->uri->segment(4);
-// $data['parent_cat_id'] = $this->input->post('parent_cat_id', false) ? : $this->uri->segment(3);
-
     $data['button_options'] = "Update Customer Details";
-    $this->default['headline']   =  !is_numeric($update_id) ?
-                                    "Add New Category" : "Update Category Details";
 
+    $this->default['headline'] = !is_numeric($update_id) ?
+                                    "Add New Category" : "Update Category Details";
 
     $data['default'] = $this->default;  
     $data['columns_not_allowed'] = $this->columns_not_allowed;
     $data['labels'] = $this->_get_column_names('label');
+
     $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min'];    
     $data['page_url'] = "create";
     $data['update_id'] = $update_id;
@@ -208,6 +178,34 @@ function create()
 
 }
 
+
+function delete() {
+    $this->_security_check();
+    $this->load->helper('store_items/store_prd_helper');    
+
+    $update_id = $this->uri->segment(3);
+    list($item_id, $parent_cat_id) = explode('-',$update_id);
+
+    if( $parent_cat_id == 0 ) {
+        $category_url = url_title(sub_cat_title($item_id));
+        $directory_name  = build_folder_name($this->parent_cat_img_base, $category_url);
+        $dir_deleted = rmdir($directory_name);
+    }
+
+    $items_deleted = $this->_delete($item_id);
+    if( $items_deleted > 0 ) {
+        $cat_type = $parent_cat_id == 0 ? 'Category' : 'Sub Category';
+        /* remove sub cat from store_cat_assign */
+        // $data_table = 'store_cat_assign';
+        // $rows_deleted = $this->_delete($item_id, $data_table);
+
+        $item = $items_deleted == 1 ? 'Item.' : 'Items.';
+        $flash_message = "You have sucessfully removed ".$items_deleted." <b>".$cat_type."</b> ".$item;
+        $this->_set_flash_msg($flash_message);
+
+    }    
+    redirect($this->site_controller.'/manage/'.$parent_cat_id );
+}
 
 function _get_dropdown_options( $update_id )
 {

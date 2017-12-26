@@ -84,7 +84,7 @@
   <!-- use bootstrap alert codes: warning, danger etc. -->
 
   <a class ="btnConfirm " id="delete-danger"
-     href="<?= base_url().$this->uri->segment(1) ?>/delete/<?= $update_id ?>/<?= $default['username'] ?>">
+     href="<?= base_url().$this->uri->segment(1) ?>/delete/<?= $update_id ?>/<?= $columns['company'] ?>">
     <button type="button" class="btn btn-danger">Delete Account</button></a>
 <?php endif ?>   
 

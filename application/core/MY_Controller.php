@@ -51,7 +51,7 @@ function send_mail($from, $subject, $message)
 
 function _security_check()
 {
-    $this->site_security->_make_sure_is_admin();
+    //$this->site_security->_make_sure_is_admin();
 }
 
 function _numeric_check($update_id)
@@ -99,7 +99,7 @@ function fetch_data_from_db($update_id)
     $field_names = $this->_get_column_names('field');
     $data = $this->model_name->_fetch_data_from_db($update_id, $field_names);
 
-//    $this->lib->checkArray($data,0);
+//  checkArray($data,0);
     if( !isset($data) ) {
         // No records found send to manage item page
         redirect( 'store_items/manage');

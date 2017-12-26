@@ -39,7 +39,7 @@ function __construct() {
 
     /* user status */
     $this->default['user_status'] = count($results_set) > 0 ? $results_set[0]->status : '';
-    $this->default['user_is_delete'] = count($results_set) > 0 ? $results_set[0]->is_delete : 0;        
+    $this->default['user_is_delete'] = count($results_set) > 0 ? $results_set[0]->is_deleted : 0;        
 
     /* page settings */
     $this->default['headline']    = !is_numeric($update_id) ? "Manage Customers" : "Update Customer Details";
@@ -82,18 +82,23 @@ function create()
 {
     $update_id = $this->uri->segment(3);
     $submit = $this->input->post('submit', TRUE);
+    $username = $this->input->post('username', TRUE);
 
     if ($submit=="Cancel")
         redirect('store_accounts/manage');
 
+    if( $submit=="un-delete")
+        redirect('store_accounts/un_delete/'.$update_id.'/'.$username );
+
     if ($submit=="Submit") {
         //process the form
-        $this->load->library('form_validation');
         $this->form_validation->set_rules( $this->column_rules );
 
         if ($this->form_validation->run() == TRUE) {
             //get the variables
             $data = $this->fetch_data_from_post();
+            $data['modified_date'] = time();
+            $data['admin_id'] = time();
 
             if (is_numeric($update_id)) {
                 //update the item details
@@ -102,30 +107,33 @@ function create()
                 $value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
                 $this->session->set_flashdata('item', $value);
                 redirect('store_accounts/create/'.$update_id);
+
             } else {
                 //insert a new item
                 list( $username_num, $email_num) = $this->model_name->confirm_userid_email_unique( 'username', $data['username'], 'email', $data['email'] );
                 if( $username_num == 0 && $email_num == 0 ) { 
                     /* Success! Create New Record */
-                    $data['date_made'] = time();
-                    // $update_id = $this->_insert($data); //get the ID of the new item
+                    $data['create_date'] = time();
+                    $update_id = $this->_insert($data); //get the ID of the new item
                     $flash_msg = "The account was successfully added.";
                     $value = '<div class="alert alert-success" role="alert">'.$flash_msg.'</div>';
+
+                    $this->session->set_flashdata('item', $value);
+                    redirect('store_accounts/create/'.$update_id);
                 } else {
                     if( $username_num > 0 )
-                        $flash_msg = "The username ".$data['username']." is already taken.<br>Please select another username<br><br>";                        
+                        $flash_msg = "The username <b>".$data['username']."</b> is already taken. Please select another <b>username</b><br><br>";                        
                     if( $email_num > 0 )
-                        $flash_msg .= "The email ".$data['email']." is already taken.<br>Please select another email.";                        
+                        $flash_msg .= "The email <b>".$data['email']."</b> is already taken. Please select another <b>email</b>.";                        
 
                     $value = '<div class="alert alert-danger" role="alert">'.$flash_msg.'</div>';
-
+                    $this->default['flash'] = 1;
+                    $this->session->set_flashdata('item', $value);
                 }
-
-                $this->session->set_flashdata('item', $value);
-                redirect('store_accounts/create/'.$update_id);
             }
-        }
-    }
+
+        } // end $this->form_validation
+    } // end Submit
 
     if( ( is_numeric($update_id) ) && ($submit != "Submit") ) {
         $data['columns'] = $this->fetch_data_from_db($update_id);
@@ -134,16 +142,14 @@ function create()
     }
 
     $data['columns_not_allowed'] = $this->columns_not_allowed;
-    // $data['labels'] = $this->_get_column_names('label');
     $data['fld_data'] = $this->_build_flds();
 
     $data['update_id'] = $update_id;
 
-    $data['custom_jscript'] = [ 'sb-admin/js/jquery.cleditor.min',
-                                'public/js/format_flds',
+    $data['custom_jscript'] = [ 'public/js/format_flds',
                                 'public/js/model_js',                                  
-                                'public/js/site_user_details'
-                                ];    
+                                'public/js/store_model_messages'
+                              ];    
 
     $data['page_url'] = "create";
     $this->default['page_title'] = "Manage Customer Accounts";
@@ -200,12 +206,11 @@ function update_password()
     }
 
     $data['columns']  = $this->fetch_data_from_post();    
-    $data['page_url'] = "update_password";
     $data['update_id']= $update_id;
 
     $data['custom_jscript'] = [];    
+    $data['view_module'] = 'store_accounts';    
     $data['page_url'] = "update_password";
-    $data['view_module'] = 'site_users';
     $data['title'] = "Update Password";
 
     $this->default['page_title'] = 'Update Password';
@@ -222,7 +227,7 @@ function change_account_status( $update_id, $status )
 {
     /* unsuspend = 1, suspend = 2 */
     $this->_numeric_check($update_id);    
-    $this->_security_check();    
+    // $this->_security_check();    
 
     $table_data = ['status' => $status];
     $this->model_name->update_data( 'store_accounts', $table_data, $update_id );  
@@ -236,9 +241,9 @@ function change_account_status( $update_id, $status )
 function delete( $update_id, $username )
 {
     $this->_numeric_check($update_id);    
-    $this->_security_check();    
+    // $this->_security_check();    
     $this->_process_delete($update_id);
-    $this->_set_flash_msg("The user account ".$username.", was sucessfully deleted");
+    $this->_set_flash_msg("The account for ".urldecode($username).", was sucessfully deleted");
     redirect( $this->main_controller.'/manage');
 }
 
@@ -251,7 +256,30 @@ function _process_delete( $update_id )
 
     /* delete account */
     // $this->_delete( $update_id );
-    $table_data = [ 'is_delete' => time() ];
+    $table_data = [ 'is_deleted' => time() ];
+    $this->model_name->update_data( 'store_accounts', $table_data, $update_id );  
+}
+
+// 
+function un_delete( $update_id, $username )
+{
+    $this->_numeric_check($update_id);    
+    // $this->_security_check();    
+    $this->_process_un_delete($update_id);
+    $this->_set_flash_msg("The account for ".urldecode($username).", was sucessfully restored");
+    redirect( $this->main_controller.'/manage');
+}
+
+// 
+function _process_un_delete( $update_id )
+{
+    /* delete related table */
+
+    /* remove the images */
+
+    /* delete account */
+    // $this->_delete( $update_id );
+    $table_data = [ 'is_deleted' => 0 ];
     $this->model_name->update_data( 'store_accounts', $table_data, $update_id );  
 }
 

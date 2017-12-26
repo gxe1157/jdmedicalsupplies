@@ -20,8 +20,6 @@ function get_table() {
    =================================================== */
 
 function confirm_userid_email_unique($col1, $value1, $col2, $value2){
-    echo  $col1." - ".$value1." - ".$col2." - ".$value2;
-
     $table = $this->get_table();
     $this->db->where($col1, $value1);
     $query_usename=$this->db->get($table)->num_rows();
@@ -72,18 +70,18 @@ function update_data( $table_name, $table_data, $user_id )
   /*-*/    
 }
 
-function get_login_data()
-{
+// function get_login_data()
+// {
 
-    $this->db->select('*');
-    $this->db->from('user_login');
-    $this->db->join('user_main', 'user_main.id = user_login.id');
-    $this->db->order_by("user_main.last_name", "asc");    
-    $query = $this->db->get();
+//     $this->db->select('*');
+//     $this->db->from('user_login');
+//     $this->db->join('user_main', 'user_main.id = user_login.id');
+//     $this->db->order_by("user_main.last_name", "asc");    
+//     $query = $this->db->get();
 
-    return $query;
+//     return $query;
 
-}
+// }
 
 
 /* ===============================================

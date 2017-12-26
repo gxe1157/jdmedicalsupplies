@@ -23,7 +23,6 @@ function get_table() {
 
 function get_with_double_condition($col1, $value1, $col2, $value2) {
     $table = $this->get_table();
-    // $table = 'user_login';
     $this->db->where($col1, $value1);
     $this->db->or_where($col2, $value2);
     $query=$this->db->get($table);

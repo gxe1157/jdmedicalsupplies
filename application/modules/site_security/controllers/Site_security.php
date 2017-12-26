@@ -7,18 +7,6 @@ parent::__construct();
 }
 
 
-function _check_admin_login_details($username, $pword)
-{
-    $target_username = "admin";
-    $target_pass = "password";
-
-    if (($username==$target_username) && ($pword==$target_pass)) {
-        return TRUE;
-    } else {
-        return FALSE;
-    }
-}
-
 function is_logged_in()
 {
     $user_id = $this->_get_user_id();
@@ -29,9 +17,10 @@ function _make_sure_is_admin()
 {
     $is_admin = $this->session->userdata('is_admin');
     if ($is_admin==1) {
-    //     return TRUE;
-    // } else {
-    //    redirect('site_security/not_allowed');
+        return TRUE;
+    } else {
+       quit('Only admin user allowed here...........'); 
+       redirect('site_security/not_allowed');
     }
 }
 
@@ -42,22 +31,33 @@ function _make_sure_logged_in()
     if (!is_numeric($user_id)) {
         redirect('site_dashboard/login');
     }
+    return $user_id;    
 }
 
 function _get_user_id()
 {
     //attempt to get the ID of the user
-
     //start by checking for a session variable
     $user_id = $this->session->userdata('user_id');
-
     if (!is_numeric($user_id)) {
         //check for a valid cookie
         $this->load->module('site_cookies');
         $user_id = $this->site_cookies->_attempt_get_user_id();
     }
-
     return $user_id;
+}
+
+
+function _check_admin_login_details($username, $pword)
+{
+    $target_username = "admin";
+    $target_pass = "password";
+
+    if (($username==$target_username) && ($pword==$target_pass)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 function generate_random_string($length) {
