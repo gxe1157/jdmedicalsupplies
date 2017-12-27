@@ -20,10 +20,12 @@ function get_table() {
     Add custom model functions here
    =================================================== */
 
-function get_where_many( $item_id, $session_id ) {
+function get_where_many( $item_id, $item_color, $item_size, $session_id ) {
     $table = $this->get_table();
     $this->db->where('item_id', $item_id);
-    $this->db->where('session_id', $session_id);    
+    $this->db->where('item_color', $item_color);  
+    $this->db->where('item_size', $item_size);  
+    $this->db->where('session_id', $session_id);            
     $query = $this->db->get($table);
 
     return $query;

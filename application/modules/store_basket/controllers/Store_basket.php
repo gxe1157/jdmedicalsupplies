@@ -43,8 +43,10 @@ function add_to_basket()
             $data = $this->_fetch_the_data();
 
             // check basket to see if item_id already exist
-            $results_set =
-                $this->model_name->get_where_many( $data['item_id'], $data['session_id'] );
+            $results_set = $this->model_name->get_where_many(
+              $data['item_id'], $data['session_id'], $data['item_id'], $data['item_color']
+            );
+
             $num_rows = $results_set->num_rows();
             if( $num_rows > 0 ) {
                 $basket_data = $results_set->result()[0];
@@ -75,6 +77,7 @@ function _fetch_the_data()
     $item_qty = $this->input->post('item_qty', TRUE);
     $item_size = $this->input->post('item_size', TRUE);
     $item_color = $this->input->post('item_color', TRUE);
+    $image_path = $this->input->post('image_path', TRUE);        
     $shopper_id = $this->site_security->_get_user_id();
 
     if (!is_numeric($shopper_id)) {
@@ -90,7 +93,7 @@ function _fetch_the_data()
     $data['item_size'] = $this->_get_value('size', $item_size);
     $data['item_qty'] = $item_qty;
     $data['item_color'] = $this->_get_value('color', $item_color);
-    $data['image_path'] = $this->input->post('image_path', TRUE);    
+    $data['image_path'] = $image_path;
     $data['date_added'] = time();
     $data['shopper_id'] = $shopper_id;
     $data['ip_address'] = $this->input->ip_address();
