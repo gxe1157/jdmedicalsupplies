@@ -6,18 +6,19 @@
   .showborder{ border: 0px red solid; }
   .min_row_ht{ min-height: 475px; }
   .pad-bott{ padding-bottom: 20px; }
-  img {
+
+  #img-prd {
     display: block;
     margin: auto;
     width: 70%;
+    padding: 15px 0px 10px 0px;
   }
-
 </style>
 
 <div class="row min_row_ht">
 
-  <div class="col-md-3 showborder">
-  	<img src="<?= base_url() ?>public/images/products/<?= $active_image ?>"
+  <div class="col-md-3 showborder ">
+  	<img id="img-prd" src="<?= base_url() ?>public/images/products/<?= $active_image ?>"
          class="img-responsive"
          alt="<?= $item_title ?>">
   </div>

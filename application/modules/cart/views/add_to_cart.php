@@ -3,9 +3,10 @@
 <?php
 echo form_open('store_basket/add_to_basket');
 ?>
+
     <table class="table">
         <tr>
-            <td colspan="2">Add to Cart</br>Item ID: <?= $item_id ?></td>
+            <td colspan="2">Cart</br>Item ID: <?= $item_id ?></td>
         </tr>
 
         <?php
@@ -68,6 +69,7 @@ echo form_open('store_basket/add_to_basket');
     </table>
 <?php
 echo form_hidden('item_id', $item_id);
+echo form_hidden('image_path', $active_image);
 echo form_close();
 ?>  
 </div>

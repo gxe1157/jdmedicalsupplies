@@ -1,12 +1,12 @@
-<h1>Your Shopping Basket</h1>
+
+<h2 style="padding-left:50px;">Shopping Cart</h2>
 <?php
 if ($num_rows<1) {
-
-    echo '<div style="display: block; min-height: 350px;">
+    echo '<div style="display: block; min-height: 350px; padding-left:50px;">
 		<p>You currently have no items in your shopping basket.</p>
     </div>';
 } else {
-    echo "<p>".$showing_statement."</p>";
+    echo "<p style='padding-left:50px;'>".$showing_statement."</p>";
     $user_type = 'public';
     echo Modules::run('cart/_draw_cart_contents', $query, $user_type);
     echo Modules::run('cart/_attempt_draw_checkout_btn', $query);

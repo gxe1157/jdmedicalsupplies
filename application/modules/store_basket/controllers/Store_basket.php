@@ -41,8 +41,20 @@ function add_to_basket()
         if ($this->form_validation->run() == TRUE) {
             //cool
             $data = $this->_fetch_the_data();
-            $this->_insert($data);
+
+            // check basket to see if item_id already exist
+            $results_set =
+                $this->model_name->get_where_many( $data['item_id'], $data['session_id'] );
+            $num_rows = $results_set->num_rows();
+            if( $num_rows > 0 ) {
+                $basket_data = $results_set->result()[0];
+                $data['item_qty'] = $basket_data->item_qty + $data['item_qty'];
+                $this->_update($basket_data->id, $data);
+            } else {
+                $this->_insert($data);
+            }
             redirect('cart');
+
         } else {
             //uncool
             $refer_url = $_SERVER['HTTP_REFERER'];
@@ -71,12 +83,14 @@ function _fetch_the_data()
 
     $data['session_id'] = $this->session->session_id;
     $data['item_title'] = $item_data['short_desc'];
+
     $data['price'] = $item_price;
     $data['tax'] = '0';
     $data['item_id'] = $item_id;
     $data['item_size'] = $this->_get_value('size', $item_size);
     $data['item_qty'] = $item_qty;
     $data['item_color'] = $this->_get_value('color', $item_color);
+    $data['image_path'] = $this->input->post('image_path', TRUE);    
     $data['date_added'] = time();
     $data['shopper_id'] = $shopper_id;
     $data['ip_address'] = $this->input->ip_address();
@@ -84,8 +98,7 @@ function _fetch_the_data()
 }
 
 function _get_item_data($item_id){
-    $query = $this->model_name->get_view_data_custom('id', $item_id, 'store_items', null);        
-
+    $query = $this->model_name->get_view_data_custom('id', $item_id, 'store_items', null);
     foreach($query->result() as $row) {
         $data_results['short_desc'] = $row->short_desc;
         $data_results['price'] = $row->price;
@@ -148,7 +161,6 @@ function test()
     $session_id = $this->session->session_id;
     echo $session_id;
     echo "<hr>";
-    $this->load->module('site_security');
     $shopper_id = $this->site_security->_get_user_id();
     echo "You are shopper ID ".$shopper_id;
 }

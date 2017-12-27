@@ -7,11 +7,10 @@ function __construct() {
     $this->load->module('site_security');    
 }
 
-
 function index()
 {
     $data['flash'] = $this->session->flashdata('item');
-    $data['view_file'] = "cart";
+    // $data['view_file'] = "cart";
 
     $third_bit = $this->uri->segment(3);
     if ($third_bit!='') {
@@ -48,7 +47,6 @@ function _check_and_get_session_id($checkout_token)
     if ($session_id=='') {
         redirect(base_url());
     }
-
     //check to see if this session ID appears on store_basket table
     $this->load->module('store_basket');
     $query = $this->model_name->get_view_data_custom('session_id', $session_id, 'store_basket', null);    
@@ -57,7 +55,6 @@ function _check_and_get_session_id($checkout_token)
     if ($num_rows<1) {
         redirect(base_url());
     }
-
     return $session_id;
 }
 
@@ -216,6 +213,7 @@ function _draw_add_to_cart($item_id)
     foreach ($query->result() as $row) {
         $size_options[$row->id] = $row->size;
     }
+
 
     $data['submitted_color'] = $submitted_color;
     $data['submitted_size'] = $submitted_size;
