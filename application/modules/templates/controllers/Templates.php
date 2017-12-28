@@ -14,8 +14,9 @@ function public_main( $data = array() )
 {
     $this->load->helper('store_items/store_prd_helper');    
     $data['menu_prd_drop_down']  = get_all_prd_cats_for_dropdown();
-    $data['title']       = $data['page_title'];
-    $data['contents']    = $data['page_url']  ? :'main';
+    $data['title']      = $data['page_title'];
+    $data['contents']   = $data['page_url']  ? :'main';
+    // $data['cart_info']  = 
 
 
     if( !isset($data['view_module']) ){

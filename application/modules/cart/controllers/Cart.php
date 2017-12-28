@@ -10,14 +10,14 @@ function __construct() {
 function index()
 {
     $data['flash'] = $this->session->flashdata('item');
-    // $data['view_file'] = "cart";
 
     $third_bit = $this->uri->segment(3);
     if ($third_bit!='') {
         //check that the token is cool, then get the session ID
         $session_id = $this->_check_and_get_session_id($third_bit);
     } else {
-        $session_id = $this->session->session_id;
+        // checkArray($this->session->userdata(),0);
+        $session_id = $this->session->cart_id;
     }
 
     $shopper_id = $this->site_security->_get_user_id();

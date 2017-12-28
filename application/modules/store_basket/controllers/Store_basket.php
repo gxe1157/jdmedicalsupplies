@@ -44,12 +44,18 @@ function add_to_basket()
             );
 
             $num_rows = $results_set->num_rows();
+
             if( $num_rows > 0 ) {
                 $basket_data = $results_set->result()[0];
                 $data['item_qty'] = $basket_data->item_qty + $data['item_qty'];
                 $this->_update($basket_data->id, $data);
             } else {
-                $this->_insert($data);
+                $next_id = $this->_insert($data);
+                if($next_id<1){
+                   die('Error: Record was not added to database'); 
+                   $error_msg = validation_errors("<p style='color: red;'>Error: Did save to database</p>");
+                   $this->session->set_flashdata('item', $error_msg);
+                }
             }
             redirect('cart');
 
@@ -68,7 +74,7 @@ function _fetch_the_data()
     $item_id = $this->input->post('item_id', TRUE);
     $item_data = $this->_get_item_data($item_id);
 
-    $item_price = $item_data['price'];
+    $item_price = $item_data['sale_price'] > 0 ?  $item_data['sale_price'] : $item_data['price'];
     $item_qty = $this->input->post('item_qty', TRUE);
     $item_size = $this->input->post('item_size', TRUE);
     $item_color = $this->input->post('item_color', TRUE);
@@ -79,24 +85,17 @@ function _fetch_the_data()
         $shopper_id = 0;
     }
 
-    // Is there alreay a cookien for this cart
-    // Is there alreay a session for this ip address
-    // 
-
-    // set array of items in session
-    if( $this->session->userdata('cart_id') ) {
-        $arraydata = array(
-                'cart_id'  => $this->session->session_id,
-                'user_id'  => 0,
-                'twitter_id' => '@sajalsoni',
+    // set cart_id session here
+    if( empty($this->session->userdata('cart_id')) ) {
+        $cart_data = array(
+                'cart_id'  => $this->session->session_id
         );
-        $this->session->set_userdata($arraydata);
+        $this->session->set_userdata($cart_data);
     }
-        
 
-    $data['session_id'] = $this->session->session_id;
+    $data['session_id'] = $this->session->cart_id;
+
     $data['item_title'] = $item_data['short_desc'];
-
     $data['price'] = $item_price;
     $data['tax'] = '0';
     $data['item_id'] = $item_id;
@@ -115,6 +114,7 @@ function _get_item_data($item_id){
     foreach($query->result() as $row) {
         $data_results['short_desc'] = $row->short_desc;
         $data_results['price'] = $row->price;
+        $data_results['sale_price'] = $row->sale_price;
     }
     return $data_results;
 }
@@ -136,6 +136,7 @@ function remove()
 {
     $update_id = $this->uri->segment(3);
     $allowed = $this->_make_sure_remove_allowed($update_id);
+
     if ($allowed==FALSE) {
         redirect('cart');
     }
@@ -167,7 +168,7 @@ function _make_sure_remove_allowed($update_id)
         return FALSE;
     }
 
-    $customer_session_id = $this->session->session_id;
+    $customer_session_id = $this->session->cart_id;
     $this->load->module('site_security');
     $customer_shopper_id = $this->site_security->_get_user_id();
 
