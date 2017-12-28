@@ -15,12 +15,12 @@ function get_table() {
 }
 
 
-
 /* ===================================================
     Add custom model functions here
    =================================================== */
 
 function get_where_many( $item_id, $item_color, $item_size, $session_id ) {
+// checkField( $item_id.' | '.$item_color.' | '.$item_size.' | '.$session_id, 0);
     $table = $this->get_table();
     $this->db->where('item_id', $item_id);
     $this->db->where('item_color', $item_color);  

@@ -65,6 +65,9 @@ function _attempt_get_user_id()
     //check to see if the user has a valid cookie and if so, figure out the user_id from the cookie
     $this->load->module('site_settings');
     $cookie_name = $this->site_settings->_get_cookie_name();
+// checkField($cookie_name,1);
+// checkArray($_COOKIE,1);
+// checkArray($_SESSION,0);
 
     //check for cookie
     if (isset($_COOKIE[$cookie_name])) {

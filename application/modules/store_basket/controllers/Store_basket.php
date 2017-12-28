@@ -20,7 +20,6 @@ function __construct() {
 }
 
 
-
 /* ===================================================
     Controller functions goes here. Put all DRY
     functions in applications/core/My_Controller.php
@@ -28,7 +27,6 @@ function __construct() {
 
 function add_to_basket()
 {
-
     $submit = $this->input->post('submit', TRUE);
     if ($submit=="Submit") {
         //process the form
@@ -39,12 +37,10 @@ function add_to_basket()
         $this->form_validation->set_rules('item_id', 'Item ID', 'required|numeric');
 
         if ($this->form_validation->run() == TRUE) {
-            //cool
             $data = $this->_fetch_the_data();
-
             // check basket to see if item_id already exist
             $results_set = $this->model_name->get_where_many(
-              $data['item_id'], $data['session_id'], $data['item_id'], $data['item_color']
+              $data['item_id'], $data['item_color'], $data['item_size'],$data['session_id']
             );
 
             $num_rows = $results_set->num_rows();
@@ -58,7 +54,6 @@ function add_to_basket()
             redirect('cart');
 
         } else {
-            //uncool
             $refer_url = $_SERVER['HTTP_REFERER'];
             $error_msg = validation_errors("<p style='color: red;'>", "</p>");
             $this->session->set_flashdata('item', $error_msg);
@@ -84,15 +79,30 @@ function _fetch_the_data()
         $shopper_id = 0;
     }
 
+    // Is there alreay a cookien for this cart
+    // Is there alreay a session for this ip address
+    // 
+
+    // set array of items in session
+    if( $this->session->userdata('cart_id') ) {
+        $arraydata = array(
+                'cart_id'  => $this->session->session_id,
+                'user_id'  => 0,
+                'twitter_id' => '@sajalsoni',
+        );
+        $this->session->set_userdata($arraydata);
+    }
+        
+
     $data['session_id'] = $this->session->session_id;
     $data['item_title'] = $item_data['short_desc'];
 
     $data['price'] = $item_price;
     $data['tax'] = '0';
     $data['item_id'] = $item_id;
-    $data['item_size'] = $this->_get_value('size', $item_size);
+    $data['item_size'] = $this->_get_dropdown_data('size', $item_size);
     $data['item_qty'] = $item_qty;
-    $data['item_color'] = $this->_get_value('color', $item_color);
+    $data['item_color'] = $this->_get_dropdown_data('color', $item_color);
     $data['image_path'] = $image_path;
     $data['date_added'] = time();
     $data['shopper_id'] = $shopper_id;
@@ -109,16 +119,15 @@ function _get_item_data($item_id){
     return $data_results;
 }
 
-function _get_value($value_type, $update_id)
+function _get_dropdown_data($value_type, $update_id)
 {
     //NOTE: value_type can be 'color' or 'size'
-    $value = '';
+    $value = 0;
     $table =  $value_type =='size' ? 'store_item_sizes' : 'store_item_colors';
-    $query = $this->model_name->get_view_data_custom('item_id', $item_id, $table, null);        
+    $query = $this->model_name->get_view_data_custom('item_id', $item_id, $table, null);
 
-    foreach($query->result() as $row) {
-        $value = $row->$value_type;
-    }
+    foreach($query->result() as $row)
+            $value = $row->$value_type;
     return $value;
 }
 
@@ -135,6 +144,16 @@ function remove()
     $this->_delete($update_id);
     redirect('cart');
 }
+
+
+function ajax_update_qty()
+{
+    $data['item_id'] = $this->input->post('item_id', TRUE);
+    $data['item_qty'] = $this->input->post('item_qty', TRUE);
+    $data['rows_updated'] = $this->_update($data['item_id'], $data);
+    echo json_encode($data);
+}
+
 
 function _make_sure_remove_allowed($update_id)
 {

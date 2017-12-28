@@ -30,13 +30,18 @@
     </div>
     <div class="product-price"><?= $row->price ?></div>
     <div class="product-quantity">
-      <input type="number" value="<?= $row->item_qty ?>" min="1" style="width: 40px; text-align: right;">
+      <input type="number" value="<?= $row->item_qty ?>"
+             id="<?= $row->id ?>"
+             min="1">
     </div>
     <div class="product-removal">
-      <button class="remove-product">
-        Remove
-      </button>
+      <a href="<?= base_url() ?>store_basket/remove/<?= $row->id ?>" >
+        <button class="remove-product">
+          Remove
+        </button>
+      </a>
     </div>
+
     <div class="product-line-price"><?= $sub_total ?></div>
   </div>
 <?php } ?>

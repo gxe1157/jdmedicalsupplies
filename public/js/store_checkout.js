@@ -1,21 +1,46 @@
 
 $(document).ready(function(){
-
 	/* Set rates + misc */
 	var taxRate = 0.05;
 	var shippingRate = 15.00; 
 	var fadeTime = 300;
 	recalculateCart();
-	
 
 	/* Assign actions */
 	$('.product-quantity input').change( function() {
-	  updateQuantity(this);
+		var obj = this;
+	    var item_id = obj.id;
+	    var item_qty= obj.value;
+		// console.log( 'Id: '+item_id, 'Qty: '+item_qty );
+
+	    var formData = new FormData(obj);
+    	formData.append('item_id', item_id );            
+    	formData.append('item_qty', item_qty );                	
+
+		$.ajax({
+		  url: './store_basket/ajax_update_qty', 
+		  method:"POST",
+		  data: formData,
+		  contentType: false,
+		  cache: false,
+		  processData:false,
+		  success:function(data)
+		  {
+		    var response = JSON.parse( data );
+		    console.log('response', response)
+		    if( response['rows_updated'] > 0 ) {
+		    	updateQuantity(obj);	
+	    		recalculateCart();
+		    }
+		  }
+
+		});
+
 	});
 
-	$('.product-removal button').click( function() {
-	  removeItem(this);
-	});
+	// $('.product-removal button').click( function() {
+	//   removeItem(this);
+	// });
 
 
 	/* Recalculate cart */
@@ -52,12 +77,14 @@ $(document).ready(function(){
 	/* Update quantity */
 	function updateQuantity(quantityInput)
 	{
+
 	  /* Calculate line price */
 	  var productRow = $(quantityInput).parent().parent();
 	  var price = parseFloat(productRow.children('.product-price').text());
 	  var quantity = $(quantityInput).val();
 	  var linePrice = price * quantity;
-	  
+	  var line_id = quantityInput.id;
+
 	  /* Update line price display and recalc cart totals */
 	  productRow.children('.product-line-price').each(function () {
 	    $(this).fadeOut(fadeTime, function() {
@@ -79,5 +106,4 @@ $(document).ready(function(){
 	    recalculateCart();
 	  });
 	}
-
 });
