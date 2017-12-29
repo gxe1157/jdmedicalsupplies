@@ -7,6 +7,20 @@
   .min_row_ht{ min-height: 475px; }
   .pad-bott{ padding-bottom: 20px; }
 
+  .price{
+    text-decoration: line-through;    
+    margin: 0px 0px 0px 10px;
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  .sale_price{
+    margin: 0px 0px 0px 10px;
+    color: red;
+    font-size: 1.4em;
+    font-weight: bold;
+  }  
+
   #img-prd {
     display: block;
     margin: auto;
@@ -26,6 +40,9 @@
   <div class="col-md-6 showborder pad-bott">
     <div class ="container">
   		<h3><?= $item_title ?></h3>
+      <p><b>Price</b><span class="price">$<?= $price ?></span><br><b>Sale Price</b><span class="sale_price">$<?= $sale_price ?></span>
+      </p>
+
   		<div style="clear:both;"></div>
       <?= $item_description ?>
 

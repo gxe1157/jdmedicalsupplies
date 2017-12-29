@@ -60,13 +60,13 @@ function view($item_id)
     $image_name = strtolower($results_set[0]->active_image);
     list($parent_dir, $parent_cat_title, $parent_cat_id) = parent_cat_folder($sub_cat_id);
     $image_name = $parent_dir."/".$image_name;
-
-
+    
     $data['update_id'] = $item_id;
     $data['active_image'] = $image_name;
     $data['item_description'] = $results_set[0]->description;
     $data['item_title'] = $results_set[0]->short_desc;
-
+    $data['price'] = $results_set[0]->price;
+    $data['sale_price'] = $results_set[0]->sale_price;    
     $data['custom_jscript'] = [];
     $data['page_url'] = "view";
     $data['view_module'] = 'store_items';

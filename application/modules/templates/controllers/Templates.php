@@ -10,7 +10,7 @@ function __construct()
 
     $this->load->module('store_basket');    
     $this->items_in_cart = $this->store_basket->items_in_cart();
-        // $this->model_name->get_view_data_custom( 'session_id', $_SESSION['cart_id'], 'store_basket', null)->num_rows();
+
 }
 
 
