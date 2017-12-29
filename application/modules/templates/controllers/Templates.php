@@ -2,11 +2,15 @@
 class Templates extends MX_Controller
 {
 
+public $items_in_cart;
 
 function __construct()
 {
     parent::__construct();
 
+    $this->load->module('store_basket');    
+    $this->items_in_cart = $this->store_basket->items_in_cart();
+        // $this->model_name->get_view_data_custom( 'session_id', $_SESSION['cart_id'], 'store_basket', null)->num_rows();
 }
 
 
@@ -16,8 +20,10 @@ function public_main( $data = array() )
     $data['menu_prd_drop_down']  = get_all_prd_cats_for_dropdown();
     $data['title']      = $data['page_title'];
     $data['contents']   = $data['page_url']  ? :'main';
-    // $data['cart_info']  = 
 
+    /* Shopping Cart Data */
+    $item = $this->items_in_cart == 1 ? ' Item' : ' Items';
+    $data['cart_info'] = $this->items_in_cart.$item;
 
     if( !isset($data['view_module']) ){
         $data['view_module']= $this->uri->segment(2) =='' ?

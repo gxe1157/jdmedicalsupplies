@@ -137,15 +137,30 @@ function remove()
     $update_id = $this->uri->segment(3);
     $allowed = $this->_make_sure_remove_allowed($update_id);
 
-    if ($allowed==FALSE) {
-        redirect('cart');
-    }
-
-    $update_id = $this->uri->segment(3);
+    if ($allowed==FALSE) redirect('cart');
     $this->_delete($update_id);
+    $items_in_cart = $this->items_in_cart();
     redirect('cart');
 }
 
+function clear_cart()
+{
+    $cart_id =  $this->session->cart_id;
+    $rows_deleted = $this->model_name->_delete_cart($cart_id);
+    if($rows_deleted > 0)
+        unset($_SESSION['cart_id']);
+    
+    redirect('cart');
+
+}
+
+function items_in_cart()
+{
+        $count = $this->model_name->get_view_data_custom( 'session_id', $_SESSION['cart_id'], 'store_basket', null)->num_rows();
+
+        if( $count<1 ) unset($_SESSION['cart_id']);
+        return $count;
+}
 
 function ajax_update_qty()
 {

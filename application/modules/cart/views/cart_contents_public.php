@@ -64,7 +64,7 @@
       <div class="totals-value" id="cart-total"></div>
     </div>
   </div>
-      <a href="#" class="btn btn-warning text-left"><i class="fa fa-angle-left"></i> Continue Shopping</a>
+<!--       <a href="#" class="btn btn-warning text-left"><i class="fa fa-angle-left"></i> Continue Shopping</a>
       <button class="checkout">Checkout</button>
-
+ -->
 </div>

@@ -82,8 +82,9 @@
 
                 <div class="col-md-6 col-sm-6 col-xs-12 top-menu ">
                     <ul class="unstyled">
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="cart"><i class="fa fa-shopping-cart fa-lg"></i> Shopping Cart Empty</a></li>                        
+                        <li><a href="#"><?= $this->session->cart_id ?></a></li>
+                        <!-- <li><a href="#">My Account</a></li> -->
+                        <li><a href="cart"><i class="fa fa-shopping-cart fa-lg"></i> Shopping Cart [ <?= $cart_info ?> ]</a></li>                        
                     </ul>
                 </div><!--/ Top menu end -->
 

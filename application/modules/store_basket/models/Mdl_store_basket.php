@@ -31,6 +31,15 @@ function get_where_many( $item_id, $item_color, $item_size, $session_id ) {
     return $query;
 }
 
+function _delete_cart($session_id){
+    $table = $this->get_table();
+    $this->db->where('session_id', $session_id);   
+    $this->db->delete($table);
+
+    $rows_deleted = $this->db->affected_rows();
+    return $rows_deleted;
+}
+
 
 /* ===============================================
     David Connelly's work from mdl_perctmodel

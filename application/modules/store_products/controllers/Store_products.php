@@ -74,8 +74,6 @@ function view($item_id)
 
     $this->load->module('templates');
     $this->templates->public_main($data);           
-
-
 }
 
 
