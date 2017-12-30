@@ -9,6 +9,8 @@ echo form_hidden('cmd', '_cart');
 echo form_hidden('business', $paypal_email);
 echo form_hidden('currency_code', $currency_code);
 echo form_hidden('custom', $custom);
+echo form_hidden('return', $return);
+echo form_hidden('cancel', $cancel_return);
 
 $count = 0;
 foreach($query->result() as $row) {
@@ -17,15 +19,17 @@ foreach($query->result() as $row) {
     $price = $row->price;
     $item_qty = $row->item_qty;
     $item_size = $row->item_size;
-    $item_colour = $row->item_colour;
+    $item_color = $row->item_color;
+
+//$price = 0.01;
 
     echo form_hidden('item_name_'.$count, $item_title);
     echo form_hidden('amount_'.$count, $price);
     echo form_hidden('item_qty_'.$count, $item_qty);
 
     if ($item_colour!='') {
-        echo form_hidden('on0_'.$count, 'Colour');
-        echo form_hidden('os0_'.$count, $item_colour);
+        echo form_hidden('on0_'.$count, 'Color');
+        echo form_hidden('os0_'.$count, $item_color);
     }
 
     if ($item_size!='') {

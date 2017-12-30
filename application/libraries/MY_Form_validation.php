@@ -13,9 +13,9 @@ public function is_unique($str, $field)
 		$result_set = $this->CI->db->limit(1)->get_where($table, array($field => $str))->num_rows() === 0;
 
 		if( $result_set === true ) {
-			return 1;
+			return true;
 		} else {
-			return 0;			
+			return false;			
 		}
 
 		/* Not working: $this->CI->db always reads false. */

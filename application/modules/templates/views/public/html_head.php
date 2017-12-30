@@ -84,7 +84,7 @@
                     <ul class="unstyled">
                         <li><a href="#"><?= $this->session->cart_id ?></a></li>
                         <!-- <li><a href="#">My Account</a></li> -->
-                        <li><a href="cart"><i class="fa fa-shopping-cart fa-lg"></i> Shopping Cart [ <?= $cart_info ?> ]</a></li>                        
+                        <li><a href="<?= base_url() ?>cart"><i class="fa fa-shopping-cart fa-lg"></i> Shopping Cart [ <?= $cart_info ?> ]</a></li>                        
                     </ul>
                 </div><!--/ Top menu end -->
 

@@ -85,7 +85,7 @@ function update_data( $table_name, $table_data, $user_id )
 
 
 /* ===============================================
-    David Connelly's work from mdl_perctmodel
+    David Connelly's work from mdl_perfectmodel
     is in applications/core/My_Model.php which
     is extened here.
   =============================================== */

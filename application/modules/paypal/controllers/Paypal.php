@@ -29,6 +29,8 @@ function _draw_checkout_btn($query)
         $data['form_location'] = 'https://www.paypal.com/cgi-bin/webscr';
     }
 
+    $data['return'] = base_url().'paypal/thankyou';
+    $data['cancel_return'] = base_url().'paypal/cancel';    
     $data['shipping'] = $this->shipping->_get_shipping();
     $data['custom'] = $this->site_security->_encrypt_string($session_id);
     $data['paypal_email'] = $this->site_settings->_get_paypal_email();
@@ -36,5 +38,24 @@ function _draw_checkout_btn($query)
     $data['query'] = $query;
     $this->load->view('checkout_btn', $data);
 }
+
+function thankyou()
+{
+    $data['view_module'] = 'paypal';    
+    $data['page_url'] = 'thankyou';
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);    
+}
+
+function cancel()
+{
+    $data['view_module'] = 'paypal';    
+    $data['page_url'] = 'cancel';
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);    
+}
+
 
 }

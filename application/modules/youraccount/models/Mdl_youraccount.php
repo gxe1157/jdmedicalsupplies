@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // Rename Mdl_perfectmodel to Mdl_[Name]
-class Mdl_store_categories extends MY_Model
+class Mdl_youraccount extends MY_Model
 {
 
 function __construct( ) {
@@ -11,26 +11,35 @@ function __construct( ) {
 
 function get_table() {
 	// table name goes here	
-    $table = "store_categories";
+    $table = "store_accounts";
     return $table;
 }
 
 
-// function get_item_id($update_id){
-//     /* fetch the item id */
-//     $item_id = null;
-//     $query = $this->get_where($update_id);
-//     foreach($query->result() as $row){
-//         $item_id = $row->item_id;
-//     }
-//     return $item_id ;
-// }    
 
 /* ===================================================
     Add custom model functions here
    =================================================== */
 
+function confirm_userid_email_unique($col1, $value1, $col2, $value2){
+    $table = $this->get_table();
+    $this->db->where($col1, $value1);
+    $query_usename=$this->db->get($table)->num_rows();
 
+    $this->db->where($col2, $value2);
+    $query_email=$this->db->get($table)->num_rows();
+
+    return [$query_usename, $query_email];
+}
+
+
+function get_with_double_condition($col1, $value1, $col2, $value2) {
+    $table = $this->get_table();
+    $this->db->where($col1, $value1);
+    $this->db->or_where($col2, $value2);
+    $query=$this->db->get($table);
+    return $query;
+}
 
 
 /* ===============================================

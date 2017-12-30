@@ -29,7 +29,7 @@ function update_data( $update_id, $table_name, $table_data )
 
 
 /* ===============================================
-    David Connelly's work from mdl_perctmodel
+    David Connelly's work from mdl_perfectmodel
     is in applications/core/My_Model.php which
     is extened here.
   =============================================== */

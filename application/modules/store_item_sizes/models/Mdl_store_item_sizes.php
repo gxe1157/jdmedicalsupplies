@@ -55,7 +55,7 @@ function _get_item_title_byid($id)
 
 
 /* ===============================================
-    David Connelly's work from mdl_perctmodel
+    David Connelly's work from mdl_perfectmodel
     is in applications/core/My_Model.php which
     is extened here.
   =============================================== */

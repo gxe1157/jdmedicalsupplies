@@ -10,7 +10,7 @@ able to enjoy:</p>
         <li>Priority Technical Support</li>
     </ul>
 </p>
-<p>Creating an account only takes a minute or so and it's a good vibe.</p>
+<p>Creating an account only takes a minute.</p>
 <p>Would you like to create an account?</p>
 
 <div class="col-md-10" style="margin-top: 36px; margin-bottom: 15px;">
@@ -20,12 +20,18 @@ echo form_open('cart/submit_choice'); ?>
         <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
         Yes - Let's Do It
     </button>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    <button class="btn btn-danger" name="submit" value="No Thanks" type="submit">
+    <button class="btn btn-danger" style="margin-left: 24px; " name="submit" value="No Thanks" type="submit">
         <i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i>
         No Thanks
     </button>
+
+    <a href="<?= base_url() ?>youraccount/login">
+    <button class="btn btn-primary" style="margin-left: 24px;" name="submit" type="button">
+        <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i>
+        Already Have Account (login) 
+    </button></a>
+
 <?php 
 echo form_hidden('checkout_token', $checkout_token);
 echo form_close(); ?>
