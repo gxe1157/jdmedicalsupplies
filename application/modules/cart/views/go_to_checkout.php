@@ -1,5 +1,5 @@
 <div class="row">
-<div class="container">    
+<div class="container" style="min-height: 425px;">    
 <h1>Please Create An Account</h1>
 <p>You do not need to create an account with us, however, if you do then you'll be 
 able to enjoy:</p>

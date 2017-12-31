@@ -1,68 +1,52 @@
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="http://localhost/cishop/favicon.ico">
-
-    <title>Jumbotron Template for Bootstrap</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="http://localhost/cishop/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <link href="http://localhost/cishop/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="http://localhost/cishop/css/jumbotron.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="container">
+<?php
+  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
+  if( isset( $default['flash']) ) {
+      echo $this->session->flashdata('item');
+      unset($_SESSION['item']);
+  }
+
+  $first_bit = $this->uri->segment(1);
+  $form_location = base_url().$first_bit.'/submit_login';
+?>
 
 <div class="row">
-  <div class="col-md-4 col-md-offset-4">
+  <div class="col-md-4 col-md-offset-4" style="height:420px;">
 
-      <form class="form-signin">
+      <?= validation_errors("<p style='color: red;'>", "</p>"); ?>
+
+      <form class="form-signin" action="<?= $form_location ?>"" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputText" class="sr-only">Username or Email address</label>
+        <input type="text" id="inputText" class="form-control"
+               name="username" placeholder="Username or Email address"
+               autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
+        <br />
+        <input type="password" id="inputPassword" name = "pword"
+               class="form-control" placeholder="Password">
+
+        <br />       
+        <div class="col-xs-12 col-sm-12 col-md-12">
+           <div class="col-xs-6 col-sm-6 col-md-6">
+              <div class="form-group">
+                  <input type="checkbox" value="remember-me"> Remember me
+              </div>
+           </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <div class="form-group">
+                 <a href="<?= base_url() ?>site_dashboard/forgot_password"> Forgot Password? </a>
+                 <a href="<?= base_url() ?>site_dashboard/contactus"> Membership Support</a>
+              </div>
+           </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" 
+                type="submit" name="submit" value="Submit">Sign in
+        </button>
+
       </form>
   </div>
 </div>
 
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://localhost/cishop/assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="http://localhost/cishop/dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="http://localhost/cishop/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
-</html>

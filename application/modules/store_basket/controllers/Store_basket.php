@@ -139,7 +139,7 @@ function remove()
 
     if ($allowed==FALSE) redirect('cart');
     $this->_delete($update_id);
-    $items_in_cart = $this->items_in_cart();
+    $this->items_in_cart();
     redirect('cart');
 }
 
@@ -147,19 +147,40 @@ function clear_cart()
 {
     $cart_id =  $this->session->cart_id;
     $rows_deleted = $this->model_name->_delete_cart($cart_id);
-    if($rows_deleted > 0)
-        unset($_SESSION['cart_id']);
-    
+
+    if($rows_deleted > 0) unset($_SESSION['cart_id']);
     redirect('cart');
 
 }
 
 function items_in_cart()
 {
-        $count = $this->model_name->get_view_data_custom( 'session_id', $_SESSION['cart_id'], 'store_basket', null)->num_rows();
-
+        $count = $this->_check_basket_integrity();
         if( $count<1 ) unset($_SESSION['cart_id']);
         return $count;
+}
+
+function _check_basket_integrity() {
+    $integrity_query = "
+        SELECT `session_id`, `shopper_id`
+        FROM `store_basket` 
+        WHERE `session_id` ='".$_SESSION['cart_id']."'";
+
+    $query = $this->store_basket->_custom_query($integrity_query);
+    $num_rows  = $query->num_rows();
+
+    $shopper_id = isset($this->session->user_id) ? $this->session->user_id : 0;
+    // checkField($shopper_id,0);       
+
+    foreach ($query->result() as $key => $value ) {
+        if($shopper_id != $value->shopper_id) {
+            $query_update = 'UPDATE `store_basket`
+                      SET `shopper_id`="'.$shopper_id.'"
+                      WHERE `session_id` ="'.$_SESSION['cart_id'].'"';
+            $this->store_basket->_custom_query($query_update);                          
+        }
+    }    
+    return $num_rows;
 }
 
 function ajax_update_qty()

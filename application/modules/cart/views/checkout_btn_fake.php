@@ -1,5 +1,4 @@
 <div class ="row">
-
 <div class="col-md-10 col-md-offset-2" style="margin-bottom: 15px; text-align: right;">
 	<a href="<?= base_url().'store_basket/clear_cart'; ?>" class="btn btn-danger">
 		 Clear Cart</a>

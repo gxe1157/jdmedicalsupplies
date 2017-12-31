@@ -40,9 +40,10 @@ foreach($query->result() as $row) {
 
 echo form_hidden('shipping_'.$count, $shipping);
 ?>
-<div class="col-md-10 col-md-offset-1"
-     style="text-align: center; margin-bottom: 15px;">
-     
+<div class="col-md-10 col-md-offset-2" style="margin-bottom: 15px; text-align: right;">
+    <a href="<?= base_url().'store_basket/clear_cart'; ?>" class="btn btn-danger">
+         Clear Cart</a>
+                       
     <button class="btn btn-success" name="submit" value="Submit" type="submit">
         <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
         Go To Checkout

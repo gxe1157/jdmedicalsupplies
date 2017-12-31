@@ -10,7 +10,6 @@ function __construct()
 
     $this->load->module('store_basket');    
     $this->items_in_cart = $this->store_basket->items_in_cart();
-
 }
 
 

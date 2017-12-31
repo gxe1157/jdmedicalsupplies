@@ -168,7 +168,6 @@ function _fetch_cart_contents($session_id, $shopper_id, $table)
 {
     //fetch the contents of the shopping cart
     $this->load->module('store_basket');
-
     $mysql_query = "
         SELECT $table.*, 
             store_items.active_image, 
