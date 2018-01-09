@@ -20,13 +20,20 @@ public $column_rules = array(
 // used like this.. in_array($key, $columns_not_allowed ) === false )
 public $columns_not_allowed = array( 'create_date' );
 
-
 function __construct() {
     parent::__construct();
     // $this->load->library('form_validation');
     // $this->form_validation->CI =& $this;
 }
 
+function homebase()
+{
+
+  $refer_url = $_SERVER['HTTP_REFERER'];
+  $file = last_referer();
+
+  quit('Home..........  '.$file."<br>".$refer_url);
+}
 
 function start()
 {
@@ -133,7 +140,6 @@ function _process_create_account()
     $this->model_name->_insert($data);
 }
 
-
 function _in_you_go($user_id, $login_type)
 {
     //NOTE: the login_type can be longterm or shortterm
@@ -145,11 +151,17 @@ function _in_you_go($user_id, $login_type)
         //set a session variable
         $this->session->set_userdata('user_id', $user_id);
     }
+
+    $refer_url = $_SERVER['HTTP_REFERER'];
+    quit($refer_url,0);
+    redirect($refer_url);
+
     // update cart and divert to cart
     $this->_attempt_cart_divert();
 
     //send the user to the private page
     redirect('youraccount/welcome');
+
 }
 
 function _attempt_cart_divert()
@@ -173,7 +185,6 @@ function _attempt_cart_divert()
         $query = $this->model_name->_custom_query($mysql_query);
         redirect('cart');
     }
-
 }
 
 function fetch_data_from_post()

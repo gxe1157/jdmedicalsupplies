@@ -157,4 +157,16 @@ if ( ! function_exists('validation_errors'))
 	    return $errors_array;
 	}
 
-}                        
+}
+
+
+if ( ! function_exists('last_referer'))
+{
+	function last_referer() {
+	   $current_file = explode('/', $_SERVER['HTTP_REFERER']);
+	   $array_count = count($current_file);
+	   $new_array = $current_file[ $array_count-2 ]."/".$current_file[ $array_count -1];
+	   return $new_array;
+	}
+}
+                        

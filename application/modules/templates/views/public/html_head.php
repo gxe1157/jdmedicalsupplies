@@ -1,4 +1,7 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+   $user_id = !is_numeric($this->session->user_id) ? 0 : $this->session->user_id;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,16 +82,20 @@
                         </li>
                     </ul>
                 </div><!--/ Top social end -->
-
                 <div class="col-md-6 col-sm-6 col-xs-12 top-menu ">
                     <ul class="unstyled">
-                        <li><a href="#"><?= $this->session->user_id ?></a></li>
+                        <?php if($user_id > 0) { ?>
+                          <li>
+                            <a href="<?= base_url() ?>youraccount/logout">Log Out[<?= $user_id ?>]</a>
+                          </li>
+                        <?php } else { ?>
+                          <li><a href="<?= base_url() ?>youraccount/login">My Account</a></li>
+                        <?php } ?>    
+
                         <li><a href="#"><?= $this->session->cart_id ?></a></li>
-                        <!-- <li><a href="#">My Account</a></li> -->
                         <li><a href="<?= base_url() ?>cart"><i class="fa fa-shopping-cart fa-lg"></i> Shopping Cart [ <?= $cart_info ?> ]</a></li>                        
                     </ul>
                 </div><!--/ Top menu end -->
-
             </div><!--/ Content row end -->
         </div><!--/ Container end -->
     </div><!--/ Topbar end -->

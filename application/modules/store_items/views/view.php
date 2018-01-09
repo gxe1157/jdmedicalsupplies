@@ -46,19 +46,20 @@
   		<div style="clear:both;"></div>
       <?= $item_description ?>
 
-      <!-- Add table data here cart/_draw_price_table_to_cart -->
+      <!--Call this module if a volumn discount applies to item. -->
       <div class="row">
         <?php
-          if( $item_setup == 2 ){
-            echo Modules::run('cart/_draw_table_to_cart', $update_id);
+          if( $discount_table_array > 1 ) {
+              // to be added by later;        
           }
-          // echo '<h3>... '.$item_setup.'</h3>';        
         ?>
       </div>
+      <!--Call this module if a volumn discount is applies to item. -->
+
     </div>  
   </div>
 
-  <!-- Add drop down select options here cart/_draw_add_to_cart  -->
+  <!-- Enter Qty and select dropdown options -->
   <div class="col-md-3 showborder">
      <div class="row">
       <div class ="container">      
@@ -66,5 +67,6 @@
       </div>  
      </div> 
   </div>
+  <!-- Enter Qty and select dropdown options -->
 
 </div>

@@ -19,13 +19,17 @@
       <form class="form-signin" action="<?= $form_location ?>"" method="POST">
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputText" class="sr-only">Username or Email address</label>
-        <input type="text" id="inputText" class="form-control"
+        <input type="text" id="inputText"
+               class="form-control"
                name="username" placeholder="Username or Email address"
+               autocomplete="new-password"
                autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <br />
-        <input type="password" id="inputPassword" name = "pword"
-               class="form-control" placeholder="Password">
+        <input type="password" id="inputPassword"
+               class="form-control"
+               name = "pword" placeholder="Password"
+               autocomplete="new-password">
 
         <br />       
         <div class="col-xs-12 col-sm-12 col-md-12">

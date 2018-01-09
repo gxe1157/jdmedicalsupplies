@@ -16,7 +16,6 @@ function index()
         //check that the token is cool, then get the session ID
         $session_id = $this->_check_and_get_session_id($third_bit);
     } else {
-        // checkArray($this->session->userdata(),0);
         $session_id = $this->session->cart_id;
     }
 
@@ -60,7 +59,7 @@ function _check_and_get_session_id($checkout_token)
 
 function _create_checkout_token($session_id)
 {
-     $encrypted_string = $this->site_security->_encrypt_string($session_id);
+    $encrypted_string = $this->site_security->_encrypt_string($session_id);
     //remove dodgy characters
     $checkout_token = str_replace('+', '-plus-', $encrypted_string);
     $checkout_token = str_replace('/', '-fwrd-', $checkout_token);
@@ -175,7 +174,8 @@ function _fetch_cart_contents($session_id, $shopper_id, $table)
         FROM $table LEFT JOIN store_items ON $table.item_id = store_items.id";
 
     if ($shopper_id>0) {
-        $where_condition = " WHERE $table.shopper_id=$shopper_id";
+        $where_condition =
+             " WHERE $table.shopper_id='$shopper_id' and $table.session_id='$session_id'";
     } else {
         $where_condition = " WHERE $table.session_id='$session_id'";
     }

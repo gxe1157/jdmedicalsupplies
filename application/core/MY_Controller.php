@@ -115,6 +115,23 @@ function _get_cat_title( $update_id )
 }
 
 
+function search()
+{
+    $query = $_REQUEST['query'];
+    $stmt = "SELECT id, email, first_name FROM user_main 
+            WHERE email LIKE '%".$query."%' limit 10";
+
+    $query = $_REQUEST['query'];
+
+    $results_set=$this->model_name->_custom_query($stmt);
+    foreach ($results_set->result() as $key => $row) {
+        $json[] = $row->email;
+    }
+
+    //RETURN JSON ARRAY
+    echo json_encode ($json);
+
+}
 
 /* ===============================================
    Below is Perfect Controller From David Connelly

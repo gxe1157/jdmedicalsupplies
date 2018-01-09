@@ -124,7 +124,7 @@ function _get_dropdown_data($value_type, $update_id)
     //NOTE: value_type can be 'color' or 'size'
     $value = 0;
     $table =  $value_type =='size' ? 'store_item_sizes' : 'store_item_colors';
-    $query = $this->model_name->get_view_data_custom('item_id', $item_id, $table, null);
+    $query = $this->model_name->get_view_data_custom('id', $item_id, $table, null);
 
     foreach($query->result() as $row)
             $value = $row->$value_type;

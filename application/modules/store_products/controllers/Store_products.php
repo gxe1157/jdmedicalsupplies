@@ -54,8 +54,11 @@ function manage($sub_cat_id)
 
 function view($item_id)
 {
+    $data['$discount_table_array'] = [];
+    // $data['$discount_table_array'] = $this->model_name->get_view_data_custom( 'id', $item_id, 'store_items_discounts', null)->result();
 
     $results_set = $this->model_name->get_view_data_custom( 'id', $item_id, 'store_items', null)->result();
+
     $sub_cat_id = strtolower($results_set[0]->sub_cat_id);    
     $image_name = strtolower($results_set[0]->active_image);
     list($parent_dir, $parent_cat_title, $parent_cat_id) = parent_cat_folder($sub_cat_id);

@@ -26,7 +26,7 @@
     </div>
     <div class="product-details">
       <div class="product-title"><?= $row->item_title ?></div>
-      <p class="product-description"> -- </p>
+      <p class="product-description"> --<?= $row->session_id ?> </p>
     </div>
     <div class="product-price"><?= $row->price ?></div>
     <div class="product-quantity">
