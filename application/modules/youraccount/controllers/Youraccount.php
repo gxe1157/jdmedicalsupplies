@@ -28,11 +28,7 @@ function __construct() {
 
 function homebase()
 {
-
-  $refer_url = $_SERVER['HTTP_REFERER'];
-  $file = last_referer();
-
-  quit('Home..........  '.$file."<br>".$refer_url);
+  quit('Home..........  '.uri_string());
 }
 
 function start()
@@ -66,6 +62,8 @@ function logout()
 
 function login()
 {
+
+    $data['log_source'] = uri_string() == 'youraccount/myLogin' ? 'myLogin' : 'storeLogin';
     $data['username'] = $this->input->post('username', TRUE);
     $data['page_url'] = "login";
     $this->load->module('templates');
@@ -74,7 +72,10 @@ function login()
 
 function submit_login()
 {
+
     $submit = $this->input->post('submit', TRUE);
+    $login_source = $this->input->post('log_source', TRUE);
+
     if ($submit=="Submit") {
         //process the form
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]');
@@ -101,7 +102,7 @@ function submit_login()
             $data['last_login'] = time();
             $this->model_name->_update($user_id, $data);
             //send them to the private page
-            $this->_in_you_go($user_id, $login_type);
+            $this->_in_you_go($user_id, $login_type, $login_source);
 
         } else {
             echo validation_errors();
@@ -140,7 +141,7 @@ function _process_create_account()
     $this->model_name->_insert($data);
 }
 
-function _in_you_go($user_id, $login_type)
+function _in_you_go($user_id, $login_type, $login_source)
 {
     //NOTE: the login_type can be longterm or shortterm
     if ($login_type=="longterm") {
@@ -152,12 +153,10 @@ function _in_you_go($user_id, $login_type)
         $this->session->set_userdata('user_id', $user_id);
     }
 
-    $refer_url = $_SERVER['HTTP_REFERER'];
-    quit($refer_url,0);
-    redirect($refer_url);
-
     // update cart and divert to cart
-    $this->_attempt_cart_divert();
+    // checkField($login_source,0);
+    if( $login_source != 'myLogin' )
+        $this->_attempt_cart_divert();
 
     //send the user to the private page
     redirect('youraccount/welcome');

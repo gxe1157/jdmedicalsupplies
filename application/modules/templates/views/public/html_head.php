@@ -89,7 +89,7 @@
                             <a href="<?= base_url() ?>youraccount/logout">Log Out[<?= $user_id ?>]</a>
                           </li>
                         <?php } else { ?>
-                          <li><a href="<?= base_url() ?>youraccount/login">My Account</a></li>
+                          <li><a href="<?= base_url() ?>youraccount/myLogin">My Account</a></li>
                         <?php } ?>    
 
                         <li><a href="#"><?= $this->session->cart_id ?></a></li>

@@ -17,6 +17,8 @@
       <?= validation_errors("<p style='color: red;'>", "</p>"); ?>
 
       <form class="form-signin" action="<?= $form_location ?>"" method="POST">
+        <input type='hidden' name='log_source' value='<?= $log_source ?>'  />
+        
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputText" class="sr-only">Username or Email address</label>
         <input type="text" id="inputText"
