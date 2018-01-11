@@ -105,11 +105,13 @@ if(ENV == 'local' )
 	$db['default'] = array(
 		'dsn'	=> '',
 		'hostname' => 'localhost',
-		'username' => 'jdmedica_admin20',
+		// 'username' => 'jdmedica_admin20',
+		// 'password' => 'Smokey{2012}',
+		// 'database' => 'jdmedica_medicalsupplies',
+		'username' => 'mysite_jdmed',
 		'password' => 'Smokey{2012}',
-		'database' => 'jdmedica_medicalsupplies',
+		'database' => 'mysite_jdmedical',
 		'dbdriver' => 'mysql',	
-
 		'dbprefix' => '',
 		'pconnect' => FALSE,
 		'db_debug' => (ENVIRONMENT !== 'production'),
