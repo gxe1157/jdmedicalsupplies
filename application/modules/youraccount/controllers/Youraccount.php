@@ -62,7 +62,6 @@ function logout()
 
 function login()
 {
-
     $data['log_source'] = uri_string() == 'youraccount/myLogin' ? 'myLogin' : 'storeLogin';
     $data['username'] = $this->input->post('username', TRUE);
     $data['page_url'] = "login";
@@ -124,21 +123,23 @@ function submit()
             $this->_process_create_account();
             //$data['flash'] = $this->session->flashdata('item');
             redirect('youraccount/login');
+
         } else {
             $this->start();
         }
     }
 }
 
-
 function _process_create_account()
 {
     $data = $this->fetch_data_from_post();
+
     unset($data['repeat_pword']);
     $pword = $data['pword'];
     $this->load->module('site_security');
     $data['pword'] = $this->site_security->_hash_string($pword);
     $this->model_name->_insert($data);
+
 }
 
 function _in_you_go($user_id, $login_type, $login_source)
