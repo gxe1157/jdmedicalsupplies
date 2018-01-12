@@ -13,13 +13,13 @@
 
     <!-- Favicons
     ================================================== -->
-
+<!-- 
     <link rel="apple-touch-icon-precomposed" sizes="144x144"
-          href="<?= base_url() ?>public/images/favicon/favicon-144x144.png">
+          href="<?= base_url() ?>public/images/site_img/favicon-144x144.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" 
-          href="<?= base_url() ?>public/images/favicon/favicon-72x72.png">
+          href="<?= base_url() ?>public/images/site_img/favicon-72x72.png">
     <link rel="apple-touch-icon-precomposed" 
-          href="<?= base_url() ?>public/images/favicon/favicon-54x54.png">
+          href="<?= base_url() ?>public/images/site_img/favicon-54x54.png"> -->
     
     <!-- CSS
     ================================================== -->

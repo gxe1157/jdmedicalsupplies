@@ -23,6 +23,7 @@ function public_main( $data = array() )
     /* Shopping Cart Data */
     $item = $this->items_in_cart == 1 ? ' Item' : ' Items';
     $data['cart_info'] = $this->items_in_cart.$item;
+    $data['user_id'] = !is_numeric($this->session->user_id) ? 0 : $this->session->user_id;
 
     if( !isset($data['view_module']) ){
         $data['view_module']= $this->uri->segment(2) =='' ?
