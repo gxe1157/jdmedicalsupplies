@@ -1,9 +1,5 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
-   $user_id = !is_numeric($this->session->user_id) ? 0 : $this->session->user_id;
-?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
 
-<!DOCTYPE html>
-<html lang="en">
 <head>
 
     <!-- Basic Page Needs
@@ -17,9 +13,13 @@
 
     <!-- Favicons
     ================================================== -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/favicon/favicon-144x144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/favicon/favicon-72x72.png">
-    <link rel="apple-touch-icon-precomposed" href="img/favicon/favicon-54x54.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144"
+          href="<?= base_url() ?>public/images/favicon/favicon-144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" 
+          href="<?= base_url() ?>public/images/favicon/favicon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" 
+          href="<?= base_url() ?>public/images/favicon/favicon-54x54.png">
     
     <!-- CSS
     ================================================== -->

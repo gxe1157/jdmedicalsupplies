@@ -14,7 +14,7 @@
 <div class="row">
   <div class="col-md-4 col-md-offset-4" style="height:420px;">
 
-      <?= validation_errors("<p style='color: red;'>", "</p>"); ?>
+      <!-- <?= validation_errors("<p style='color: red;'>", "</p>"); ?> -->
 
       <form class="form-signin" action="<?= $form_location ?>"" method="POST">
         <input type='hidden' name='log_source' value='<?= $log_source ?>'  />
@@ -26,12 +26,15 @@
                name="username" placeholder="Username or Email address"
                autocomplete="new-password"
                autofocus>
+        <?= form_error('username', '<p style="color: red;">', '</p>') ?>               
+
         <label for="inputPassword" class="sr-only">Password</label>
         <br />
         <input type="password" id="inputPassword"
                class="form-control"
                name = "pword" placeholder="Password"
                autocomplete="new-password">
+        <?= form_error('pword', '<p style="color: red;">', '</p>') ?>               
 
         <br />       
         <div class="col-xs-12 col-sm-12 col-md-12">

@@ -1,11 +1,8 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <?php $this->load->view('html_head'); ?>
 
-<body>
     <header>
           <?php $this->load->view('html_nav_main.php'); ?>
     </header>

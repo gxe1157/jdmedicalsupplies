@@ -77,8 +77,11 @@ function submit_login()
 
     if ($submit=="Submit") {
         //process the form
-        $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]');
-        $this->form_validation->set_rules('pword', 'Password', 'required|min_length[7]|max_length[35]');
+        // $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]');
+        //process the form
+        $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|callback_username_check');
+
+        $this->form_validation->set_rules('pword', 'Password', 'required|min_length[6]|max_length[35]');
 
         if ($this->form_validation->run() == TRUE) {
             //figure out the user_id
@@ -87,6 +90,7 @@ function submit_login()
             $col2 = 'email';
             $value2 = $this->input->post('username', TRUE);
             $query = $this->model_name->get_with_double_condition('store_accounts', $col1, $value1, $col2, $value2);
+
             foreach($query->result() as $row) {
                 $user_id = $row->id;
             }
@@ -104,7 +108,9 @@ function submit_login()
             $this->_in_you_go($user_id, $login_type, $login_source);
 
         } else {
-            echo validation_errors();
+            $this->login();
+            // echo validation_errors();
+            // on fail 3 times use capcha after 3 more attempts then suspend
         }
     }
 
@@ -197,39 +203,6 @@ function fetch_data_from_post()
 }
 
 
-function username_check($str) 
-{
-    quit('username_check');
-    $error_msg = "You did not enter a correct username and/or password.";
-
-    $col1 = 'username';
-    $value1 = $str;
-    $col2 = 'email';
-    $value2 = $str;
-    $query = $this->model_name->get_with_double_condition($col1, $value1, $col2, $value2);
-    $num_rows = $query->num_rows();
-
-    if ($num_rows<1) {
-        $this->form_validation->set_message('username_check', $error_msg);
-        return FALSE;        
-    }
-
-    foreach($query->result() as $row) {
-        $pword_on_table = $row->pword;
-    }
-
-    $pword = $this->input->post('pword', TRUE);
-    $result = $this->site_security->_verify_hash($pword, $pword_on_table);
-
-    if ($result==TRUE) {
-        return TRUE;
-    } else {
-        $this->form_validation->set_message('username_check', $error_msg);
-        return FALSE;         
-    }
-}
-
-
 function test1()
 {
     $your_name = "David";
@@ -266,6 +239,45 @@ function test3()
 }
 
 
+/* ===============================================
+    Call backs go here...
+   =============================================== */
 
+function username_check($str) 
+{
 
+  $error_msg = "You did not enter a correct username and/or password.";
+
+  $col1 = 'username';
+  $value1 = $str;
+  $col2 = 'email';
+  $value2 = $str;
+  $query = $this->model_name->get_with_double_condition('user_login', $col1, $value1, $col2, $value2);    
+
+  //    $query = $this->model_name->get_with_double_condition('store_accounts',$col1, $value1, $col2, $value2);
+  
+
+    $num_rows = $query->num_rows();
+
+    if ($num_rows<1) {
+        $this->form_validation->set_message('username_check', $error_msg);
+        return FALSE;        
+    }
+
+    foreach($query->result() as $row) {
+        $pword_on_table = $row->pword;
+    }
+
+    $pword = $this->input->post('pword', TRUE);
+    $result = $this->site_security->_verify_hash($pword, $pword_on_table);
+
+    if ($result==TRUE) {
+        return TRUE;
+    } else {
+        $this->form_validation->set_message('username_check', $error_msg);
+        return FALSE;         
+    }
 }
+
+
+} /* ========= */

@@ -81,7 +81,25 @@ function _fetch_data_from_post($use_fields)
     return $data;
 }
 
+function get_with_double_condition($table, $col1, $value1, $col2, $value2)
+{
 
+echo "<h4>".$table." | ".$col1." | ".$value1." | ".$col2." | ".$value2."</h4>";
+
+    $this->db->where('id', '1');
+    $test=$this->db->get($table);
+// checkArray($test,1);
+
+
+    $this->db->where($col1, $value1);
+    $this->db->or_where($col2, $value2);
+    $query=$this->db->get($table);
+//$test = $query->result();
+
+// quit('MyModel ------------ '.$test, 1);
+
+    return $query;
+}
 
 /* ===============================================
     Below is Perfect Model From David Connelly

@@ -33,14 +33,6 @@ function confirm_userid_email_unique($col1, $value1, $col2, $value2){
 }
 
 
-function get_with_double_condition($table, $col1, $value1, $col2, $value2) {
-    $this->db->where($col1, $value1);
-    $this->db->or_where($col2, $value2);
-    $query=$this->db->get($table);
-    return $query;
-}
-
-
 /* ===============================================
     David Connelly's work from mdl_perfectmodel
     is in applications/core/My_Model.php which

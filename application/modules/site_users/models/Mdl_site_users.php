@@ -21,15 +21,6 @@ function get_table() {
     Add custom model functions here
    =================================================== */
 
-function get_with_double_condition($col1, $value1, $col2, $value2) {
-    $table = $this->get_table();
-    // $table = 'user_login';
-    $this->db->where($col1, $value1);
-    $this->db->or_where($col2, $value2);
-    $query=$this->db->get($table);
-    return $query;
-}
-
 function insert_data($table, $data){
     $this->db->insert($table, $data);
     /* get record id number after insert completed */ 

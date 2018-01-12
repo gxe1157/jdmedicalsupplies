@@ -188,5 +188,3 @@
 	<script type="text/javascript" src="<?= base_url() ?>public/js/store_checkout.js"></script>
 
 	</div><!-- Body inner end -->
-</body>
-</html>

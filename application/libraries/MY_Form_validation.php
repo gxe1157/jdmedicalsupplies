@@ -9,7 +9,7 @@ public function is_unique($str, $field)
 	{
 
 		sscanf($field, '%[^.].%[^.]', $table, $field);
-
+echo "<h4>is_valid: ".$table." | ".$field." | ".$str."<h4>";
 		$result_set = $this->CI->db->limit(1)->get_where($table, array($field => $str))->num_rows() === 0;
 
 		if( $result_set === true ) {

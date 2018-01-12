@@ -140,7 +140,7 @@ function submit_login()
             $col2 = 'email';
             $value2 = $this->input->post('username', TRUE);
 
-            $query = $this->model_name->get_with_double_condition($col1, $value1, $col2, $value2);
+            $query = $this->model_name->get_with_double_condition('user_login',$col1, $value1, $col2, $value2);
 
             foreach($query->result() as $row) {
                 $user_id = $row->id;
@@ -444,7 +444,7 @@ function username_check($str)
   $value1 = $str;
   $col2 = 'email';
   $value2 = $str;
-  $query = $this->model_name->get_with_double_condition($col1, $value1, $col2, $value2);    
+  $query = $this->model_name->get_with_double_condition('user_login', $col1, $value1, $col2, $value2);    
   $num_rows = $query->num_rows();
 
   if ($num_rows<1) {
