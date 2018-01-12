@@ -63,15 +63,17 @@ public function check_username($str, $field)
 		/* check password against table  */
 		$pword = $this->CI->input->post('pword', TRUE);
         if( !empty($pword) ) {
-			foreach($query->result() as $row)
+			foreach($query->result() as $row){
 				$pword_on_table = $row->pword;
+				$user_id = $row->id;
+			}
 
-		echo "<h4> ".$pword." | ".$pword_on_table." | ".$str." | <h4>";
-
+			// echo "<h4> ".$pword." | ".$pword_on_table." | ".$str." | <h4>";
 	  		$result = $this->CI->site_security->_verify_hash($pword, $pword_on_table);
 			if ($result==TRUE) {
 			// quit('You passed...............',1)	;
-			  return TRUE;
+				$this->session->set_userdata('user_id', $user_id);
+				return TRUE;
 			} else {
 			quit('You failed...........   '.$pword_on_table,1)	;				
 			  $this->CI->form_validation->set_message('check_username', $error_msg);

@@ -75,33 +75,21 @@ function submit_login()
     $login_source = $this->input->post('log_source', TRUE);
 
     if ($submit=="Submit") {
-        //process the form
+        /* Validate true only if Username and password are valid */
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|check_username[store_accounts.username]');
 
         $this->form_validation->set_rules('pword', 'Password', 'required|min_length[6]|max_length[35]');
 
         if ($this->form_validation->run() == TRUE) {
-            //figure out the user_id
-            $col1 = 'username';
-            $value1 = $this->input->post('username', TRUE);
-            $col2 = 'email';
-            $value2 = $this->input->post('username', TRUE);
-            $query = $this->model_name->get_with_double_condition('store_accounts', $col1, $value1, $col2, $value2);
-
-            foreach($query->result() as $row) {
-                $user_id = $row->id;
-            }
+            /* get userid from session['id'] */
+            $user_id = $this->session->user_id;
 
             $remember = $this->input->post('remember', TRUE);
-            if ($remember=="remember-me") {
-                $login_type = "longterm";
-            } else {
-                $login_type = "shortterm";
-            }
-
+            $login_type = $remember=="remember-me" ? "longterm" : "shortterm";
             $data['last_login'] = time();
             $this->model_name->_update($user_id, $data);
-            //send them to the private page
+
+            /* send them to the private page */
             $this->_in_you_go($user_id, $login_type, $login_source);
 
         } else {
