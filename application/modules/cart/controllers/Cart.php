@@ -9,6 +9,7 @@ function __construct() {
 
 function index()
 {
+    // quit(0);
     $data['flash'] = $this->session->flashdata('item');
 
     $third_bit = $this->uri->segment(3);
@@ -130,8 +131,8 @@ function _draw_checkout_btn_fake($query)
 
 function _draw_checkout_btn_real($query)
 {
-    $this->load->module('paypal');
-    $this->paypal->_draw_checkout_btn($query);
+    $this->load->module('payeezy');
+    $this->payeezy->_draw_checkout_btn($query);
 }
 
 function _draw_cart_contents($query, $user_type)
@@ -141,15 +142,13 @@ function _draw_cart_contents($query, $user_type)
     $this->load->module('shipping');
 
     $data['currency_symbol'] = $this->site_settings->_get_currency_symbol();
-
-    if ($user_type=='public') {
-        $view_file = 'cart_contents_public';
-    } else {
-        $view_file = 'cart_contents_admin';
-    }
-
-    $data['shipping'] = '';//$this->shipping->_get_shipping();
+    $data['taxRate'] = $this->shipping->_get_tax();
+    $data['tax_shipping'] = $this->shipping->_get_tax_opt(); // Some states tax shipping.
+    $data['shipping'] = $this->shipping->_get_shipping();
     $data['query'] = $query;
+
+    /* Set view cart option here */ 
+    $view_file = $user_type=='public' ? 'cart_contents_public' : 'cart_contents_admin';
     $this->load->view($view_file, $data);
 }
 

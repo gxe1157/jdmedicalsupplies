@@ -20,13 +20,18 @@ function get_table() {
    =================================================== */
 
 function get_where_many( $item_id, $item_color, $item_size, $session_id ) {
-// checkField( $item_id.' | '.$item_color.' | '.$item_size.' | '.$session_id, 0);
+// checkField( '|'.$item_id.'|'.$item_color.'|'.$item_size.'|'.$session_id.'|', 1);
+
     $table = $this->get_table();
-    $this->db->where('item_id', $item_id);
-    $this->db->where('item_color', $item_color);  
-    $this->db->where('item_size', $item_size);  
-    $this->db->where('session_id', $session_id);            
+    $array = array(
+     'item_id' => $item_id,
+     'item_color' => $item_color,
+     'item_size' => $item_size,
+     'session_id' => $session_id
+    );
+    $this->db->where($array); 
     $query = $this->db->get($table);
+    // checkArray($query->result(),0);
 
     return $query;
 }

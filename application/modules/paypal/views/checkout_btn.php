@@ -1,12 +1,12 @@
 <div class="row">
 <div class="container">   
 
-<form action="https://checkout.globalgatewaye4.firstdata.com/payment" method="POST">
+<form action="https://demo.globalgatewaye4.firstdata.com/payment" method="POST">
 
 <?php
       $x_login = "HCO-FULL-468";  //  Take from Payment Page ID in Payment Pages interface
       $transaction_key = "H1cCqmSAEZVN0HDrc_qz"; // Take from Payment Pages configuration interface
-      $x_amount = "595.99";
+      $x_amount = ".01";
       $x_currency_code = "USD"; // Needs to agree with the currency of the payment page
       srand(time()); // initialize random generator for x_fp_sequence
       $x_fp_sequence = rand(1000, 100000) + 123456;
@@ -40,3 +40,4 @@ echo "<br>";
       <input type="hidden" name="x_show_form" value="PAYMENT_FORM"/>
       <input type="submit" value="Pay with Payment Pages"/>
 </form>
+<br />

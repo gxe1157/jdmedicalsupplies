@@ -18,26 +18,69 @@ function _draw_checkout_btn($query)
     $this->load->module('site_security');
     $this->load->module('shipping');
 
-    foreach($query->result() as $row) {
-        $session_id = $row->session_id;
-    }
-
-    $on_test_mode = $this->_is_on_test_mode();
-
-    if ($on_test_mode==TRUE) {
-        $data['form_location'] = 'https://www.sandbox.payeezy.com/cgi-bin/webscr';
-    } else {
-        $data['form_location'] = 'https://www.payeezy.com/cgi-bin/webscr';
-    }
-
     $data['return'] = base_url().'payeezy/thankyou';
     $data['cancel_return'] = base_url().'payeezy/cancel';    
-    $data['shipping'] = $this->shipping->_get_shipping();
+
     $data['custom'] = $this->site_security->_encrypt_string($session_id);
     $data['payeezy_email'] = $this->site_settings->_get_paypal_email();
     $data['currency_code'] = $this->site_settings->_get_currency_code();
-    $data['query'] = $query;
+
+    $on_test_mode = $this->_is_on_test_mode();
+    if ($on_test_mode==TRUE) {
+        $data['form_location'] = "https://demo.globalgatewaye4.firstdata.com/payment";
+    } else {
+        $data['form_location'] = '';
+    }
+
+    $data['payeezy'] = $this->payeezy_config($query);
+    // checkArray($data['payeezy'],1);
     $this->load->view('checkout_btn', $data);
+
+}
+
+function payeezy_config($query)
+{
+
+    $shippingRate = $this->shipping->_get_shipping();
+    $taxRate      = $this->shipping->_get_tax();
+    $tax_shipping = $this->shipping->_get_tax_opt();    
+
+
+    foreach($query->result() as $row) {
+        $session_id  = $row->session_id;                
+        $line_item_total = number_format($row->price*$row->item_qty,2);
+        $cart_total = number_format($cart_total+$line_item_total,2);
+
+        $line_is_taxable = 1;
+        if($line_is_taxable)
+           $total_tax_line  = number_format($total_tax_line+$line_item_total,2);
+    }
+
+    /* Compute Total taxes */ 
+    $shipping_tax = $tax_shipping == 0 ? 0 : $shippingRate;
+    $total_tax_line = $total_tax_line+$shipping_tax;
+    $tax_total  = number_format($total_tax_line*$taxRate,2);
+
+    $this->check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total );
+
+    $x_amount = number_format( $cart_total+$tax_total+$shippingRate,2); 
+
+    $payeezy['x_login'] = "HCO-FULL-468";  //  Take from Payment Page ID in Payment Pages interface
+    $payeezy['transaction_key'] = "H1cCqmSAEZVN0HDrc_qz"; // Take from Payment Pages configuration interface
+    $payeezy['x_currency_code'] = "USD"; // Needs to agree with the currency of the payment page
+    srand(time()); // initialize random generator for x_fp_sequence
+    $payeezy['x_fp_sequence'] = rand(1000, 100000) + 123456;
+    $payeezy['x_fp_timestamp'] = time(); // needs to be in UTC. Make sure webserver produces UTC
+
+    // The values that contribute to x_fp_hash 
+    $payeezy['x_amount'] = number_format($x_amount,2);        
+    $payeezy['hmac_data'] = $payeezy['x_login'] . "^" . $payeezy['x_fp_sequence'] . "^" . $payeezy['x_fp_timestamp'] . "^" . $payeezy['x_amount'] . "^" . $payeezy['x_currency_code'];
+    $payeezy['x_fp_hash'] = hash_hmac('MD5', $payeezy['hmac_data'], $payeezy['transaction_key']);
+
+    unset($payeezy['hmac_data']);
+    unset($payeezy['transaction_key']);
+
+    return $payeezy;
 }
 
 function thankyou()
@@ -58,5 +101,11 @@ function cancel()
     $this->templates->public_main($data);    
 }
 
+function check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total )
+{
 
+    echo '<h5>session: '.$session_id.'<br />cart_total: '.$cart_total.'<br />taxable_total: '.$total_tax_line.'<br />tax [ '.($taxRate*100).'% ]: '.$tax_total.'<br />shipping: '.$shippingRate.'<br />x_amount: '.number_format($cart_total+$tax_total+$shippingRate,2).'</h5>';
 }
+
+
+} /************/ 

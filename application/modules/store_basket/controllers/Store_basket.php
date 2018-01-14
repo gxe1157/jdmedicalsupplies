@@ -40,7 +40,7 @@ function add_to_basket()
             $data = $this->_fetch_the_data();
             // check basket to see if item_id already exist
             $results_set = $this->model_name->get_where_many(
-              $data['item_id'], $data['item_color'], $data['item_size'],$data['session_id']
+                $data['item_id'], $data['item_color'], $data['item_size'],$data['session_id']
             );
 
             $num_rows = $results_set->num_rows();
@@ -71,6 +71,7 @@ function add_to_basket()
 function _fetch_the_data()
 {
     //gathers together all of the data, so that we can do a table insert
+    
     $item_id = $this->input->post('item_id', TRUE);
     $item_data = $this->_get_item_data($item_id);
 
@@ -168,7 +169,7 @@ function _check_basket_integrity() {
         FROM `store_basket` 
         WHERE `session_id` ='".$_SESSION['cart_id']."'";
 
-    $query = $this->store_basket->_custom_query($integrity_query);
+    $query = $this->model_name->_custom_query($integrity_query);
     $num_rows  = $query->num_rows();
 
     if($num_rows>0) {    
@@ -186,10 +187,13 @@ function _check_basket_integrity() {
     return $num_rows;
 }
 
+
 function ajax_update_qty()
 {
     $data['item_id'] = $this->input->post('item_id', TRUE);
     $data['item_qty'] = $this->input->post('item_qty', TRUE);
+
+    /* update database */
     $data['rows_updated'] = $this->_update($data['item_id'], $data);
     echo json_encode($data);
 }

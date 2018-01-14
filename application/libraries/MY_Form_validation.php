@@ -42,7 +42,7 @@ public function is_valid($str, $field)
 
 public function check_username($str, $field)
 	{
-		$error_msg = "You did not enter a correct username and/or password.";
+		$error_msg = "Login failed. Invalid username or password, or you may be locked out.";
 
 		sscanf($field, '%[^.].%[^.]', $table, $field);
 
@@ -50,8 +50,6 @@ public function check_username($str, $field)
 		$value1 = $str;
 		$col2 = 'email';
 		$value2 = $str;
-		// echo "<h4>is_valid: ".$table." | ".$field." | ".$str." | <h4>";
-
 		$query = $this->CI->model_name->get_with_double_condition( $table, $col1, $value1, $col2, $value2);    
 
 		$num_rows = $query->num_rows();
@@ -68,14 +66,11 @@ public function check_username($str, $field)
 				$user_id = $row->id;
 			}
 
-			// echo "<h4> ".$pword." | ".$pword_on_table." | ".$str." | <h4>";
 	  		$result = $this->CI->site_security->_verify_hash($pword, $pword_on_table);
 			if ($result==TRUE) {
-			// quit('You passed...............',1)	;
-				$this->session->set_userdata('user_id', $user_id);
+				$this->CI->session->set_userdata('user_id', $user_id);
 				return TRUE;
 			} else {
-			quit('You failed...........   '.$pword_on_table,1)	;				
 			  $this->CI->form_validation->set_message('check_username', $error_msg);
 			  return FALSE;         
 			}
