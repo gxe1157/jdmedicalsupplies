@@ -45,7 +45,6 @@ function payeezy_config($query)
     $taxRate      = $this->shipping->_get_tax();
     $tax_shipping = $this->shipping->_get_tax_opt();    
 
-
     foreach($query->result() as $row) {
         $session_id  = $row->session_id;                
         $line_item_total = number_format($row->price*$row->item_qty,2);
@@ -83,8 +82,20 @@ function payeezy_config($query)
     return $payeezy;
 }
 
-function thankyou()
+function confirmation()
 {
+
+    checkArray( $_REQUEST,0);
+    
+    // response
+    // if approved 
+        // copy order from cart to orders placed
+        // emply basket
+        // display thank you for your order page
+    // not approved
+       // display order failed page
+
+
     $data['view_module'] = 'payeezy';    
     $data['page_url'] = 'thankyou';
 
