@@ -37,7 +37,7 @@
     
     <div class="product-quantity">
       <input type="number" value="<?= $row->item_qty ?>"
-             id="<?= $row->item_id ?>"
+             id="<?= $row->id  ?>"
              min="1">
     </div>
     <div class="product-removal">

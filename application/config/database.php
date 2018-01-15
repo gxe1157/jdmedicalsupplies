@@ -111,7 +111,7 @@ if(ENV == 'local' )
 		'username' => 'mysite_jdmed',
 		'password' => 'Smokey{2012}',
 		'database' => 'mysite_jdmedical',
-		'dbdriver' => 'mysql',	
+		'dbdriver' => 'mysqli',	
 		'dbprefix' => '',
 		'pconnect' => FALSE,
 		'db_debug' => (ENVIRONMENT !== 'production'),

@@ -31,7 +31,7 @@ function add_to_basket()
     if ($submit=="Submit") {
         //process the form
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('item_color', 'Item color', 'numeric');
+        $this->form_validation->set_rules('item_color', 'Item Color', 'numeric');
         $this->form_validation->set_rules('item_size', 'Item Size', 'numeric');
         $this->form_validation->set_rules('item_qty', 'Item Quantity', 'required|numeric');
         $this->form_validation->set_rules('item_id', 'Item ID', 'required|numeric');
@@ -190,11 +190,11 @@ function _check_basket_integrity() {
 
 function ajax_update_qty()
 {
-    $data['item_id'] = $this->input->post('item_id', TRUE);
+    $id = $this->input->post('item_id', TRUE);
     $data['item_qty'] = $this->input->post('item_qty', TRUE);
 
     /* update database */
-    $data['rows_updated'] = $this->_update($data['item_id'], $data);
+    $data['rows_updated'] = $this->_update($id, $data);
     echo json_encode($data);
 }
 

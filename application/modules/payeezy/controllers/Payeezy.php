@@ -61,7 +61,7 @@ function payeezy_config($query)
     $total_tax_line = $total_tax_line+$shipping_tax;
     $tax_total  = number_format($total_tax_line*$taxRate,2);
 
-    $this->check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total );
+    // $this->check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total );
 
     $x_amount = number_format( $cart_total+$tax_total+$shippingRate,2); 
 

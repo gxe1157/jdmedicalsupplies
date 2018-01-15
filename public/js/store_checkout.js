@@ -5,12 +5,9 @@ $(document).ready(function(){
 	/* Assign actions */
 	$('.product-quantity input').change( function() {
 		var obj = this;
-		console.log("obj",obj);
-		return;
-
 	    var item_id = obj.id;
 	    var item_qty= obj.value;
-		// console.log( 'Id: '+item_id, 'Qty: '+item_qty );
+		console.log( 'Id: '+item_id, 'Qty: '+item_qty );
 
 	    var formData = new FormData(obj);
     	formData.append('item_id', item_id );            
