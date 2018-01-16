@@ -18,9 +18,6 @@ function _draw_checkout_btn($query)
     $this->load->module('site_security');
     $this->load->module('shipping');
 
-    $data['return'] = base_url().'payeezy/thankyou';
-    $data['cancel_return'] = base_url().'payeezy/cancel';    
-
     $data['custom'] = $this->site_security->_encrypt_string($session_id);
     $data['payeezy_email'] = $this->site_settings->_get_paypal_email();
     $data['currency_code'] = $this->site_settings->_get_currency_code();
@@ -33,7 +30,6 @@ function _draw_checkout_btn($query)
     }
 
     $data['payeezy'] = $this->payeezy_config($query);
-    // checkArray($data['payeezy'],1);
     $this->load->view('checkout_btn', $data);
 
 }
@@ -102,6 +98,17 @@ function confirmation()
     $this->load->module('templates');
     $this->templates->public_main($data);    
 }
+
+
+function confirmation()
+{
+    $data['view_module'] = 'payeezy';    
+    $data['page_url'] = 'thankyou';
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);    
+}
+
 
 function cancel()
 {
