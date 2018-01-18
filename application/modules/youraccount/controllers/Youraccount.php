@@ -76,7 +76,7 @@ function submit_login()
 
     if ($submit=="Submit") {
         /* Validate true only if Username and password are valid */
-        $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|check_username[store_accounts.username]');
+        $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|check_user[store_accounts.username]');
 
         $this->form_validation->set_rules('pword', 'Password', 'required|min_length[6]|max_length[35]');
 

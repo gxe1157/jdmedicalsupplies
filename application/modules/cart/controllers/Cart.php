@@ -84,7 +84,6 @@ function submit_choice()
     if ($submit=="No Thanks") {
         $checkout_token = $this->input->post('checkout_token', TRUE);
         redirect('cart/index/'.$checkout_token);
-
     } elseif ($submit=="Yes - Let's Do It") {
         redirect('youraccount/start');
     }

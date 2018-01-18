@@ -28,7 +28,7 @@ function send_mail($from, $subject, $message)
 
     if( ENV != 'local' ) {
         // send email to jdmedical
-        $email       = 'info@jdmedicalsupplies.org';
+        $email       = 'info@mailers.com';
         $admin_email = 'webmaster@411mysite.com';
         $from        = $_POST['email'];
 

@@ -36,7 +36,6 @@ function _draw_checkout_btn($query)
 
 function payeezy_config($query)
 {
-
     $shippingRate = $this->shipping->_get_shipping();
     $taxRate      = $this->shipping->_get_tax();
     $tax_shipping = $this->shipping->_get_tax_opt();    
@@ -68,7 +67,7 @@ function payeezy_config($query)
     $payeezy['x_fp_timestamp'] = time(); // needs to be in UTC. Make sure webserver produces UTC
 
     // The values that contribute to x_fp_hash 
-    $payeezy['x_amount'] = number_format($x_amount,2);        
+    $payeezy['x_amount'] = number_format($x_amount,2);   
     $payeezy['hmac_data'] = $payeezy['x_login'] . "^" . $payeezy['x_fp_sequence'] . "^" . $payeezy['x_fp_timestamp'] . "^" . $payeezy['x_amount'] . "^" . $payeezy['x_currency_code'];
     $payeezy['x_fp_hash'] = hash_hmac('MD5', $payeezy['hmac_data'], $payeezy['transaction_key']);
 
@@ -80,30 +79,42 @@ function payeezy_config($query)
 
 function confirmation()
 {
+    // checkArray( $_REQUEST,1);
+    /* payeezy response */
+    $data['_REQUEST'] = $_REQUEST;    
+    $data['view_module'] = 'payeezy';        
 
-    checkArray( $_REQUEST,0);
-    
-    // response
-    // if approved 
-        // copy order from cart to orders placed
-        // emply basket
-        // display thank you for your order page
-    // not approved
-       // display order failed page
+    if( $_REQUEST['x_response_code'] == '1') {
+        // $this->load->module('store_basket');
+        // $rows_updated = $this->update_orders();
+        // $rows_deleted = $this->store_basket->clear_cart();
+        // if($rows_deleted<1) fatal_error();
 
+        $data['page_url'] = 'thankyou';
+    } else {
+        $this->cancel($data);        
+        $data['page_url'] = 'cancel';
+    } 
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);    
+
+}
+
+function receipt_page(){
 
     $data['view_module'] = 'payeezy';    
-    $data['page_url'] = 'thankyou';
+    $data['page_url'] = 'receipt_page';
 
     $this->load->module('templates');
     $this->templates->public_main($data);    
 }
 
-
-function confirmation()
+function thankyou($data)
 {
     $data['view_module'] = 'payeezy';    
     $data['page_url'] = 'thankyou';
+// send email with receipt;
 
     $this->load->module('templates');
     $this->templates->public_main($data);    

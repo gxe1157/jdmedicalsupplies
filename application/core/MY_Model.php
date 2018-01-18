@@ -87,7 +87,7 @@ function get_with_double_condition($table, $col1, $value1, $col2, $value2)
     $this->db->or_where($col2, $value2);
     $query=$this->db->get($table);
 
-// checkArray($query,1);
+    // checkArray($query->result(),0);
     return $query;
 }
 
