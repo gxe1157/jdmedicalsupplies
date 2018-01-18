@@ -63,7 +63,7 @@ public function check_user($str, $field)
 
 		/* check password against table  */
 		$pword = $this->CI->input->post('pword', TRUE);
-		$pword_on_table = $results_set[0]->pword;
+		$pword_on_table = $results_set[0]->password;
 		$user_id = $results_set[0]->id;
 
   		$result = $this->CI->site_security->_verify_hash($pword, $pword_on_table);
