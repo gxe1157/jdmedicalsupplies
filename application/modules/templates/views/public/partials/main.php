@@ -251,10 +251,10 @@ I love ordering from JD Medical Supplies. The prices are amazing it’s easy to 
 				<div class="col-md-4 col-xs-12">
 					<div class="latest-post"> 
 						<img class="img-responsive" 
-							 src="<?= $image_path ?>news_image1.jpg" alt="img">
+							 src="<?= $image_path ?>news_comingsoon.jpg" alt="img">
 						<div class="post-body">
 							<h4 class="post-title">
-								Medline - Voted Best Wheelchairs 2017
+								<!-- Medline - Voted Best Wheelchairs 2017 -->
 								<span style="font-size: .8em;"></span>
 							</h4>
 							<span class="post-item-date">
@@ -270,10 +270,11 @@ I love ordering from JD Medical Supplies. The prices are amazing it’s easy to 
 
 				<div class="col-md-4 col-xs-12">
 					<div class="latest-post">
-						<img class="img-responsive" src="http://via.placeholder.com/350x250" alt="img">
+						<img class="img-responsive"
+							 src="<?= $image_path ?>news_comingsoon.jpg" alt="img">
+
 						<div class="post-body">
 							<h4 class="post-title">
-								<a href="#">...</a>
 								<span style="font-size: .8em;"></span>
 							</h4>
 							<span class="post-item-date">
@@ -290,10 +291,11 @@ I love ordering from JD Medical Supplies. The prices are amazing it’s easy to 
 
 				<div class="col-md-4 col-xs-12">
 					<div class="latest-post">
-						<img class="img-responsive" src="http://via.placeholder.com/350x250" alt="img">
+						<img class="img-responsive"
+							 src="<?= $image_path ?>news_comingsoon.jpg" alt="img">
+
 						<div class="post-body">
 							<h4 class="post-title">
-								<a href="#">...</a>
 								<span style="font-size: .8em;"></span>
 							</h4>
 							<span class="post-item-date">

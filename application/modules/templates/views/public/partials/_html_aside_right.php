@@ -17,7 +17,7 @@
 			                        	<?= $value->short_desc ?></a>
 			                        </h4>
 			                        <p>Part Number: <?= $value->part_num ?> [ <?= $value->id ?> ]</p>
-									<span class="post-date"><a href="#" >Read More...</a></span>
+									<!-- <span class="post-date"><a href="#" >Read More...</a></span> -->
 			                    </div>
 			                    <div class="clearfix"></div>
 							</li><!-- 1st post end-->

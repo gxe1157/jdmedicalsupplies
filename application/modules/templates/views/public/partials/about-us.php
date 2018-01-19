@@ -55,10 +55,10 @@
 
 					<div class="tab-content">
 				        <div class="tab-pane active animated fadeInRight" id="tab_a">
-							<img src="http://via.placeholder.com/378x400"
-							
-							 class="img-responsive pull-right"  width="378px" height="400px;"  alt="Business Insurance">				        	
-
+							<img src="<?= base_url() ?>public/images/site_img/aboutus_image.jpg"				
+							 	 class="img-responsive pull-right"
+							 	 width="378px" height="400px;"  alt="Business Insurance">			
+							 	 
 				        	<div class="tab-wrapper">
 				        		<h4 class="tab-content-title">A relationship that Works</h4>
 					         <p>

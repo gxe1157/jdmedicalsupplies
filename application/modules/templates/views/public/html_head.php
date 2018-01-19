@@ -31,7 +31,7 @@
     <!-- Responsive styles-->
     <link rel="stylesheet" href="<?= base_url() ?>public/css/responsive.css">
     <!-- FontAwesome -->
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>sb-admin/font-awesome/css/font-awesome.min.css">
     <!-- Animation -->
     <link rel="stylesheet" href="<?= base_url() ?>public/css/animate.css">
     <!-- Owl Carousel -->
@@ -72,7 +72,7 @@
                             </a>
  -->                            
                             <a title="Linkedin"
-                             href="https://www.linkedin.com/company/j-d-medical-supplies">
+                             href="https://www.linkedin.com/company/j-d-medical-supplies" target="_blank">
                                 <span class="social-icon"><i class="fa fa-linkedin"></i></span>
                             </a>
                             <a title="instagram"

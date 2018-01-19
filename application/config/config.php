@@ -49,9 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 $config['base_url'] = ENV == 'local' ?
-
 		 "http://localhost/jdmedicalsupplies/" : "http://jdmed.411mysite.com/";
 
+// $config['base_url'] = ENV == 'local' ?
+// 		 "http://localhost/jdmedicalsupplies/" : "http://wwww.jdmedicalsupplies.org/";
 
 
 /*

@@ -10,7 +10,7 @@ public $column_rules = array(
         array('field' => 'username', 'label' => 'Username',
               'rules' => 'required|min_length[5]|max_length[60]|is_unique[store_accounts.username]'),
         array('field' => 'email', 'label' => 'Email',
-              'rules' => 'required|valid_email|max_length[120]'),
+              'rules' => 'required|valid_email|max_length[120]|is_unique[store_accounts.email]'),
         array('field' => 'password', 'label' => 'Password',
               'rules' => 'required|min_length[6]|max_length[35]'),
         array('field' => 'repeat_pword', 'label' => 'Repeat Password',

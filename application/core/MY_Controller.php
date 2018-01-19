@@ -28,8 +28,8 @@ function send_mail($from, $subject, $message)
 
     if( ENV != 'local' ) {
         // send email to jdmedical
-        $email       = 'info@mailers.com';
-        $admin_email = 'webmaster@411mysite.com';
+        $email       = 'info@jdmedicalsupplies.org';
+        $admin_email = 'Joe@designandprintteam.com';
         $from        = $_POST['email'];
 
         $this->load->library('email');

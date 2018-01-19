@@ -161,41 +161,36 @@
                           <span class="help-block color_red"><?php echo form_error('manufacturer'); ?></span>                        
                         </div>
                       </div>
-                      <div class="row">                    
-                        <div class="col-md-12">
-                          <div class="col-lg-4"> 
+
+                      <!--  -->
+                      <div class="row">     
+                        <div class="col-sm-12 col-md-12">
                           <div class="form-group">
-                            <label for="sku">SKU</label>
-                            <div>
-                              <input type="text" id="sku" name="sku"
-                                     value="<?= $columns['sku'] ?> "
-                                     placeholder="" class="form-control sku">
-                            </div>
-                          </div>
-                          </div>
-                          <div class="col-lg-4"> 
+                              <label for="sku">SKU</label>
+                              <div>
+                                <input type="text" id="sku" name="sku"
+                                       value="<?= $columns['sku'] ?> "
+                                       placeholder="" class="form-control sku">
+                              </div>
+                          </div><!-- // form-group -->
                           <div class="form-group">
-                            <label for="part_num">Part No.</label>
-                            <div>
-                              <input type="text" id="part_num" name="part_num"
-                                     value="<?= $columns['part_num'] ?> "                          
-                                     placeholder="" class="form-control manufacturer-part">
-                            </div>
-                          </div>
-                          <span class="help-block color_red"><?php echo form_error('part_num'); ?></span>
-                          </div>
-                          <div class="col-lg-4"> 
+                              <label for="part_num">Part No.</label>
+                              <div>
+                                <input type="text" id="part_num" name="part_num"
+                                       value="<?= $columns['part_num'] ?> "                          
+                                       placeholder="" class="form-control manufacturer-part">
+                              </div>
+                          </div><!-- // form-group -->
                           <div class="form-group">
-                            <label for="upc">UPC</label>
-                            <div>
-                              <input type="text" id="upc" name="upc"
-                                     value="<?= $columns['upc'] ?> "                          
-                                     placeholder="" class="form-control manufacturer-part">
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                     </div>
+                              <label for="upc">UPC</label>
+                              <div>
+                                <input type="text" id="upc" name="upc"
+                                       value="<?= $columns['upc'] ?> "                          
+                                       placeholder="" class="form-control manufacturer-part">
+                              </div>
+                          </div><!-- // form-group -->
+                        </div><!-- // col-sm-12 col col-md-12 -->
+                      </div>    <!-- // row -->
 
                       <div class="row">
                           <div class="col-sm-12 col-md-12">
@@ -218,7 +213,7 @@
                                              class="form-control prd_depth"></div>
                               </div>
                           </div> 
-                      </div>                      
+                      </div> <!--// row  -->
 
                       <div class="form-group">
                           <label for="prd_weight">Weight</label>

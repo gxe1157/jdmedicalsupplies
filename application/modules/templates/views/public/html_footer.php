@@ -107,7 +107,7 @@
 						<ul>
 		                    <li>
 	    	                    <a title="Facebook"
-	    	                     href="https://www.facebook.com/jdmedicalsupplies">
+	    	                     href="https://www.facebook.com/jdmedicalsupplies" target="_blank">
                                 <span class="social-icon"><i class="fa fa-facebook"></i></span></a>   
                             </li>
 
@@ -122,7 +122,7 @@
  -->                            
  							<li>
 	                            <a title="Linkedin"
-	                             href="https://www.linkedin.com/company/j-d-medical-supplies">
+	                             href="https://www.linkedin.com/company/j-d-medical-supplies" target="_blank">
 	                                <span class="social-icon"><i class="fa fa-linkedin"></i></span>
 	                            </a>
 							</li>                        
