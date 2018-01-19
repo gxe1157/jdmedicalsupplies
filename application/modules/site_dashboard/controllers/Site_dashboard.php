@@ -130,7 +130,7 @@ function submit_login()
         //process the form
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|check_user[user_login.username]');
 
-        $this->form_validation->set_rules('pword', 'Password', 'required|min_length[6]|max_length[35]');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[35]');
 
         if ($this->form_validation->run() == TRUE) {
             //figure out the user_id
@@ -287,6 +287,7 @@ function forgot_password()
 
 function change_password()
 {
+quit(0);
 
     $userid = $this->site_security->_make_sure_logged_in();
 

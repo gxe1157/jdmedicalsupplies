@@ -32,9 +32,9 @@
         <br />
         <input type="password" id="inputPassword"
                class="form-control"
-               name = "pword" placeholder="Password"
+               name = "password" placeholder="Password"
                autocomplete="new-password">
-        <?= form_error('pword', '<p style="color: red;">', '</p>') ?>               
+        <?= form_error('password', '<p style="color: red;">', '</p>') ?>               
 
         <br />       
         <div class="col-xs-12 col-sm-12 col-md-12">

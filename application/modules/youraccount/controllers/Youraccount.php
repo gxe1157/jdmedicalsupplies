@@ -11,10 +11,10 @@ public $column_rules = array(
               'rules' => 'required|min_length[5]|max_length[60]|is_unique[store_accounts.username]'),
         array('field' => 'email', 'label' => 'Email',
               'rules' => 'required|valid_email|max_length[120]'),
-        array('field' => 'pword', 'label' => 'Password',
+        array('field' => 'password', 'label' => 'Password',
               'rules' => 'required|min_length[6]|max_length[35]'),
         array('field' => 'repeat_pword', 'label' => 'Repeat Password',
-              'rules' => 'required|matches[pword]')
+              'rules' => 'required|matches[password]')
 );
 
 // used like this.. in_array($key, $columns_not_allowed ) === false )
@@ -78,7 +78,7 @@ function submit_login()
         /* Validate true only if Username and password are valid */
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|check_user[store_accounts.username]');
 
-        $this->form_validation->set_rules('pword', 'Password', 'required|min_length[6]|max_length[35]');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[35]');
 
         if ($this->form_validation->run() == TRUE) {
             /* get userid from session['id'] */
@@ -124,11 +124,11 @@ function submit()
 function _process_create_account()
 {
     $data = $this->fetch_data_from_post();
-
     unset($data['repeat_pword']);
-    $pword = $data['pword'];
+    
+    $password = $data['password'];
     $this->load->module('site_security');
-    $data['pword'] = $this->site_security->_hash_string($pword);
+    $data['password'] = $this->site_security->_hash_string($password);
     $this->model_name->_insert($data);
 
 }
@@ -182,7 +182,7 @@ function fetch_data_from_post()
 {
     $data['username'] = $this->input->post('username', TRUE);
     $data['email'] = $this->input->post('email', TRUE);
-    $data['pword'] = $this->input->post('pword', TRUE);
+    $data['password'] = $this->input->post('password', TRUE);
     $data['repeat_pword'] = $this->input->post('repeat_pword', TRUE);
     return $data;
 }

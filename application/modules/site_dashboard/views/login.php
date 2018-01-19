@@ -24,7 +24,7 @@
                autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <br />
-        <input type="password" id="inputPassword" name = "pword"
+        <input type="password" id="inputPassword" name = "password"
                class="form-control" placeholder="Password">
 
         <br />       

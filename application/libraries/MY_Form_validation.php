@@ -62,15 +62,15 @@ public function check_user($str, $field)
 		if (count($results_set)>1) fatal_error('VALFRM100');
 
 		/* check password against table  */
-		$pword = $this->CI->input->post('pword', TRUE);
+		$pword = $this->CI->input->post('password', TRUE);
 		$pword_on_table = $results_set[0]->password;
 		$user_id = $results_set[0]->id;
 
   		$result = $this->CI->site_security->_verify_hash($pword, $pword_on_table);
-// checkField($pword." | ".$pword_on_table,1);
+// checkField($pword."<br>".$pword_on_table,1);
 
 		if ($result==TRUE) {
-// checkField('passed',1);			
+// checkField('passed',0);			
 			$this->CI->session->set_userdata('user_id', $user_id);
 			return TRUE;
 		} else {
