@@ -6,6 +6,18 @@ function __construct() {
 parent::__construct();
 }
 
+
+function admin_settings()
+{
+    $page_url = $this->uri->segment(3);
+    
+    $data['page_url'] = $page_url;
+    $data['view_module'] = "site_settings";    
+
+    $this->load->module('templates');
+    $this->templates->admin($data);        
+}
+
 function _get_map_code()
 {
     $code = '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2239.2283190121584!2d-4.257482484450545!3d55.8587049805818!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4888469ee3846eff%3A0x7944a8803f167889!2s56+Buchanan+St%2C+Glasgow+G1+3HL!5e0!3m2!1sen!2suk!4v1473833012696" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>';

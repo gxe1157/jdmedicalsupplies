@@ -76,6 +76,25 @@
   <!-- Manage Vendors -->
             <li><a href="<?= base_url() ?>store_vendors/manage">
                     <i class="fa fa-folder fa-lg"></i> Vendors</a></li>
+<!-- Site Settings -->
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-cog fa-lg"></i> Site Settings<b class="caret"></b></a>
+
+              <ul class="dropdown-menu">
+                <li><a href="<?= base_url() ?>site_settings/admin_settings/company_info">
+                    <i class="fa fa-angle-double-right"></i>  Company Info</a></li>
+                <li><a href="<?= base_url() ?>site_settings/admin_settings">
+                    <i class="fa fa-angle-double-right"></i>  Home Page</a></li>
+                <li><a href="<?= base_url() ?>site_settings/admin_settings">
+                    <i class="fa fa-angle-double-right"></i>  Social Media</a></li>
+                <li><a href="<?= base_url() ?>site_settings/admin_settings">
+                    <i class="fa fa-angle-double-right"></i>  Header/Footer</a></li>
+                <li><a href="<?= base_url() ?>site_settings/admin_settings">
+                    <i class="fa fa-angle-double-right"></i>  Misc. Settings</a></li>
+
+              </ul>
+            </li>
 
 
           </ul>
