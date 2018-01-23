@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-//echo '----->'.$default['status'];
-// checkArray($default,1);
+// echo '----->'.$default['status'];
+// checkArray($default,0);
 ?>
 
 <!DOCTYPE html>

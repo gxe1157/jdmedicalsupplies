@@ -1,9 +1,17 @@
 <?php
-class Site_settings extends MX_Controller 
+class Site_settings extends My_Controller 
 {
+
+/* model name goes here */
+public $mdl_name = 'Mdl_site_settings';
+public $main_controller = 'Site_settings';
+public $default = array();
 
 function __construct() {
 parent::__construct();
+    /* is user logged in */
+    $this->default = login_init(); 
+
 }
 
 
@@ -13,6 +21,7 @@ function admin_settings()
     
     $data['page_url'] = $page_url;
     $data['view_module'] = "site_settings";    
+    $data['default'] =  $this->default;  
 
     $this->load->module('templates');
     $this->templates->admin($data);        

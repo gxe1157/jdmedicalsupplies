@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // Rename Mdl_perfectmodel to Mdl_[Name]
-class Mdl_perfectmodel extends MY_Model
+class Mdl_site_settings extends MY_Model
 {
 
 function __construct( ) {
@@ -11,7 +11,8 @@ function __construct( ) {
 
 function get_table() {
 	// table name goes here	
-    $table = "";
+  $table = "";
+
     return $table;
 }
 
