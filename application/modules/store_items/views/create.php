@@ -28,8 +28,14 @@
 
           <a href="<?= base_url() ?>store_item_assign/update/<?= $update_id ?>"><button type="button" class="btn btn-primary">Assign Item</button></a>
 
-  				<a class ="btnConfirm" id="delete-danger" href="<?= base_url() ?>store_items/deleteconf/<?= $update_id ?>">
+<?php if($is_deleted > 0): ?>
+          <a class ="btnConfirm" id="restore-info" href="<?= base_url() ?>store_items/restore/<?= $update_id ?>">
+            <button type="button" class="btn btn-info">Restore Product</button></a>
+<?php else: ?>
+          <a class ="btnConfirm" id="delete-danger" href="<?= base_url() ?>store_items/deactivate/<?= $update_id ?>">
             <button type="button" class="btn btn-danger">Delete Product</button></a>
+<?php endif; ?> 
+
 
 <!--   				<a id="btnAlert" href="<?= base_url() ?>store_items/view/<?= $update_id ?>/preview"><button type="button" class="btn btn-default">Preview Page</button></a>
  -->  			</div>

@@ -32,6 +32,7 @@
 				  <tr>
 					  <th>Product Name</th>				  	
 					  <th>Short Desrciption</th>
+					  <th>Part Num.</th>					  
 					  <th>Price</th>
 					  <th>sale Price</th>
 					  <th>Status</th>
@@ -45,7 +46,7 @@
 			    	 foreach( $columns->result() as $row ){
 			    	 	$edit_url = $redirect_url.$row->id;			    	 	
 			    	 	list($status_label, $status_desc )=
-			    	 	 $row->prd_status ? ["success", "Active"] : ["danger", "Inactive"];
+			    	 	 $row->is_deleted>0 ? ["danger", "Deleted"] : ["success", "Active"];
 
 			    	 	list($image_label, $image_desc )=
 			    	 	 $row->prd_image_status ? ["success", "Yes"] : ["danger", "No"];
@@ -53,6 +54,7 @@
 						<tr>
 							<td class="left"><?= $row->prd_name ?></td>						
 							<td class="left"><?= character_limiter($row->short_desc, 60); ?></td>
+							<td class="right"><?= $row->part_num ?></td>
 							<td class="right"><?= $row->price ?></td>
 							<td class="right"><?= $row->sale_price ?></td>
 							<td class="center">
@@ -64,11 +66,20 @@
 							</td>
 
 							<td class="center">
-								<a class="btn btn-info btn-sm"
-								   style="font-size: 12px; padding: 0px 5px 0px 0px;"
-								   href="<?= $edit_url ?>">
-								   <i class="fa fa-pencil fa-fw"></i> Edit
-								</a>
+								<?php if( $row->is_deleted>0 ): ?>
+									<a class="btn btn-warning btn-sm btnConfirm"
+									   id="delete-danger"
+									   style="font-size: 12px; padding: 0px 5px 0px 0px;"
+									   href="<?= $edit_url ?>">
+									   <i class="fa fa-pencil fa-fw"></i> Restore
+									</a>
+								<?php else: ?>
+									<a class="btn btn-info btn-sm"
+									   style="font-size: 12px; padding: 0px 5px 0px 0px;"
+									   href="<?= $edit_url ?>">
+									   <i class="fa fa-pencil fa-fw"></i> Edit
+									</a>
+								<?php endif; ?>	
 							</td>
 						</tr>
 			    <?php } ?>

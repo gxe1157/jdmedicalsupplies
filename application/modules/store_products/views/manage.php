@@ -70,7 +70,7 @@
 				    	 	$img_src = base_url()."public/images/site_img/products/grid-default-thumb.png";
 			    	 	}
 			    	 ?> 	
-
+<?php if($row->is_deleted == 0 ): ?>
 						<tr><td>	
 							<div class="col-md-2" >
 								<img src="<?= $img_src ?>"
@@ -115,7 +115,7 @@
 						</div>
 
 						</td></tr>
-
+<?php endif; ?>
 
 			    <?php } ?>
 

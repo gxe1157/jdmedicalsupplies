@@ -2,6 +2,7 @@
 /* Build obj to be used by model_js */
 var model_js_mess = {
         'delete' : '<h3>Delete this product?</h3>',
+        'restore': '<h3>Restore this product to Active Status?</h3>',
         'fldNames' : ['company', 'contact', 'address1', 'city', 'state', 'zip', 'Phone', 'email']
     }
 /* Build obj to be used by model_js */

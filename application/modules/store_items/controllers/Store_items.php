@@ -47,7 +47,7 @@ function __construct() {
     $this->default['page_header'] = !is_numeric($update_id) ? "Add New Prodcut" : "Update Product Details";
     $this->default['add_button']  = "Add New Product";
     $this->default['flash'] = $this->session->flashdata('item');   
-    $this->site_security->_make_sure_logged_in();     
+    $user_id = $this->site_security->_make_sure_logged_in();     
 }
 
 
@@ -146,7 +146,6 @@ function create()
         $data['columns']['active_image'] = basename($_POST['current_img']);
     }
 
-
     $this->load->module('store_cat_assign');
     list( $query, $data['assigned_categories'], $data['sub_categories'] ) =
           $this->store_cat_assign->get_category_info($update_id);
@@ -161,6 +160,10 @@ function create()
 
     list($parent_cat_name, $parent_cat_title, $parent_cat_id) =
             parent_cat_folder($data['columns']['sub_cat_id']);    
+
+    /* get imagedeleted status */        
+        $query = $this->get_where($update_id)->result();
+        $data['is_deleted'] = $query[0]->is_deleted;
 
     /* Set image name here */
     $data['active_image'] = 
@@ -200,6 +203,46 @@ function create()
 
 }
 
+function restore($update_id)
+{
+    $this->_numeric_check($update_id);
+
+    /* get item title from store_items table */
+    $row_data = $this->fetch_data_from_db($update_id);
+    $part_num = $row_data['part_num'];
+    $data['is_deleted'] = 0;
+    $data['modified_date'] = time();
+    $data['userid'] = $this->user_id;
+
+    $rows_updated = $this->model_name->_update($update_id, $data);
+    $message = $rows_updated > 0 ?
+     "The part number ".$part_num.", was sucessfully restored" : "Restore part number ".$part_num." has <b>failed</b>. ";
+
+    $this->_set_flash_msg($message);
+    redirect($this->main_controller.'/create/'.$update_id);
+}
+
+
+function deactivate($update_id)
+{
+
+    $this->_numeric_check($update_id);
+
+    /* get item title from store_items table */
+    $row_data = $this->fetch_data_from_db($update_id);
+    $part_num = $row_data['part_num'];
+    $data['is_deleted'] = time();
+    $data['modified_date'] = time();
+    $data['userid'] = $this->user_id;
+
+    $rows_updated = $this->model_name->_update($update_id, $data);
+    $message = $rows_updated > 0 ?
+     "The part number ".$part_num.", was sucessfully deleted" : "Delete part number ".$part_num." has <b>failed</b>. ";
+
+    $this->_set_flash_msg($message);
+    redirect($this->main_controller.'/manage');
+}
+
 
 function delete( $update_id )
 {
@@ -207,7 +250,7 @@ function delete( $update_id )
 
     $submit = $this->input->post('submit', TRUE);
     if( $submit =="Cancel" ){
-        redirect($this->store_controller.'/create/'.$update_id);
+        redirect($this->main_controller.'/create/'.$update_id);
     } elseif( $submit=="Yes - Delete item" ){
         /* get item title from store_items table */
         $row_data = $this->fetch_data_from_db($update_id);
@@ -217,7 +260,7 @@ function delete( $update_id )
         $this->_process_delete($update_id);
         $this->_set_flash_msg("The item ".$data['item_title'].", was sucessfully deleted");
 
-        redirect($this->store_controller.'/manage');
+        redirect($this->main_controller.'/manage');
     }
 
 }
