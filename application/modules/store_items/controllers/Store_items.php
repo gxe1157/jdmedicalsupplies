@@ -158,12 +158,15 @@ function create()
         }
     }    
 
+
     list($parent_cat_name, $parent_cat_title, $parent_cat_id) =
             parent_cat_folder($data['columns']['sub_cat_id']);    
-
-    /* get imagedeleted status */        
-        $query = $this->get_where($update_id)->result();
-        $data['is_deleted'] = $query[0]->is_deleted;
+quit(2,1);
+    /* get deleted status */        
+        if( isset($update_id)){
+            $query = $this->get_where($update_id)->result();
+            $data['is_deleted'] = $query[0]->is_deleted;
+        }
 
     /* Set image name here */
     $data['active_image'] = 
