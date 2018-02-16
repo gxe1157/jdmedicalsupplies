@@ -73,7 +73,6 @@ function submit_login()
 {
     $submit = $this->input->post('submit', TRUE);
     $login_source = $this->input->post('log_source', TRUE);
-
     if ($submit=="Submit") {
         /* Validate true only if Username and password are valid */
         $this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[60]|check_user[store_accounts.username]');
@@ -98,7 +97,6 @@ function submit_login()
             // on fail 3 times use capcha after 3 more attempts then suspend
         }
     }
-
 }
 
 
@@ -114,7 +112,6 @@ function submit()
             $this->_process_create_account();
             //$data['flash'] = $this->session->flashdata('item');
             redirect('youraccount/login');
-
         } else {
             $this->start();
         }
@@ -146,12 +143,8 @@ function _in_you_go($user_id, $login_type, $login_source)
     }
 
     // update cart and divert to cart
-    // checkField($login_source,0);
     if( $login_source != 'myLogin' )
         $this->_attempt_cart_divert();
-
-    //send the user to the private page
-    redirect('youraccount/welcome');
 
 }
 
@@ -174,7 +167,7 @@ function _attempt_cart_divert()
                         where session_id='".$customer_session_id."'";
 
         $query = $this->model_name->_custom_query($mysql_query);
-        redirect('cart');
+        redirect('process_payment');
     }
 }
 
@@ -188,40 +181,40 @@ function fetch_data_from_post()
 }
 
 
-function test1()
-{
-    $your_name = "David";
-    $this->session->set_userdata('your_name', $your_name);
-    echo "The session variable was set.";
+// function test1()
+// {
+//     $your_name = "David";
+//     $this->session->set_userdata('your_name', $your_name);
+//     echo "The session variable was set.";
 
-echo "<hr>";
-    echo anchor('youraccount/test2', 'Get (display) the session variable')."<br>";
-    echo anchor('youraccount/test3', 'Unset (destry) the session variable')."<br>";
-}
+// echo "<hr>";
+//     echo anchor('youraccount/test2', 'Get (display) the session variable')."<br>";
+//     echo anchor('youraccount/test3', 'Unset (destry) the session variable')."<br>";
+// }
 
-function test2()
-{
-    $your_name = $this->session->userdata('your_name');
-    if ($your_name!="") {
-        echo "<h1>Hello $your_name</h1>";
-    } else {
-        echo "No session variable has been set for your_name";
-    }
+// function test2()
+// {
+//     $your_name = $this->session->userdata('your_name');
+//     if ($your_name!="") {
+//         echo "<h1>Hello $your_name</h1>";
+//     } else {
+//         echo "No session variable has been set for your_name";
+//     }
 
-echo "<hr>";
-    echo anchor('youraccount/test1', 'Set the session variable')."<br>";
-    echo anchor('youraccount/test3', 'Unset (destry) the session variable')."<br>";
-}
+// echo "<hr>";
+//     echo anchor('youraccount/test1', 'Set the session variable')."<br>";
+//     echo anchor('youraccount/test3', 'Unset (destry) the session variable')."<br>";
+// }
 
-function test3()
-{
-    unset($_SESSION['your_name']);
-    echo "The session variable was unset.";
+// function test3()
+// {
+//     unset($_SESSION['your_name']);
+//     echo "The session variable was unset.";
 
-    echo "<hr>";
-    echo anchor('youraccount/test1', 'Set the session variable')."<br>";
-    echo anchor('youraccount/test2', 'Get (display) the session variable')."<br>";
-}
+//     echo "<hr>";
+//     echo anchor('youraccount/test1', 'Set the session variable')."<br>";
+//     echo anchor('youraccount/test2', 'Get (display) the session variable')."<br>";
+// }
 
 
 /* ===============================================

@@ -9,22 +9,12 @@ function __construct() {
 
 function index()
 {
-    // quit(0);
     $data['flash'] = $this->session->flashdata('item');
-
-    $third_bit = $this->uri->segment(3);
-    if ($third_bit!='') {
-        //check that the token is cool, then get the session ID
-        $session_id = $this->_check_and_get_session_id($third_bit);
-    } else {
-        $session_id = $this->session->cart_id;
-    }
-
+    $session_id = $this->session->cart_id;
     $shopper_id = $this->site_security->_get_user_id();
 
-    if (!is_numeric($shopper_id)) {
-        $shopper_id = 0;
-    }
+    if (!is_numeric($shopper_id))
+            $shopper_id = 0;
 
     $table = 'store_basket';
     $data['query'] = $this->_fetch_cart_contents($session_id, $shopper_id, $table);
@@ -34,49 +24,12 @@ function index()
     $data['showing_statement'] = $this->_get_showing_statement($data['num_rows']);
 
     $data['view_module'] = 'cart';    
-    $data['page_url'] = 'cart';
+    $data['page_url'] = uri_string()=='process_payment' ? 'pay_now':'cart';
 
     $this->load->module('templates');
     $this->templates->public_main($data);
 }
 
-
-function _check_and_get_session_id($checkout_token)
-{
-    $session_id = $this->_get_session_id_from_token($checkout_token);
-    if ($session_id=='') {
-        redirect(base_url());
-    }
-    //check to see if this session ID appears on store_basket table
-    $this->load->module('store_basket');
-    $query = $this->model_name->get_view_data_custom('session_id', $session_id, 'store_basket', null);    
-    $num_rows = $query->num_rows();
-
-    if ($num_rows<1) {
-        redirect(base_url());
-    }
-    return $session_id;
-}
-
-function _create_checkout_token($session_id)
-{
-    $encrypted_string = $this->site_security->_encrypt_string($session_id);
-    //remove dodgy characters
-    $checkout_token = str_replace('+', '-plus-', $encrypted_string);
-    $checkout_token = str_replace('/', '-fwrd-', $checkout_token);
-    $checkout_token = str_replace('=', '-eqls-', $checkout_token);
-    return $checkout_token;
-}
-
-function _get_session_id_from_token($checkout_token)
-{
-    //remove dodgy characters
-    $session_id = str_replace('-plus-', '+', $checkout_token);
-    $session_id = str_replace('-fwrd-', '/', $session_id);
-    $session_id = str_replace('-eqls-', '=', $session_id);
-    $session_id = $this->site_security->_decrypt_string($session_id);
-    return $session_id;
-}
 
 function submit_choice()
 {
@@ -91,6 +44,7 @@ function submit_choice()
 
 function go_to_checkout()
 {
+
     $shopper_id = $this->site_security->_get_user_id();
 
     if (is_numeric($shopper_id)) {
@@ -105,6 +59,7 @@ function go_to_checkout()
     $this->load->module('templates');
     $this->templates->public_main($data);
 }
+
 
 function _attempt_draw_checkout_btn($query)
 {
@@ -124,8 +79,8 @@ function _draw_checkout_btn_fake($query)
     foreach($query->result() as $row) {
         $session_id = $row->session_id;
     }
-    $data['checkout_token'] = $this->_create_checkout_token($session_id);
-    $this->load->view('checkout_btn_fake', $data);
+    // $data['checkout_token'] = $this->_create_checkout_token($session_id);
+    $this->load->view('checkout_btn_fake');
 }
 
 function _draw_checkout_btn_real($query)
@@ -211,7 +166,6 @@ function _draw_add_to_cart($item_id)
         $size_options[$row->id] = $row->size;
     }
 
-
     $data['submitted_color'] = $submitted_color;
     $data['submitted_size'] = $submitted_size;
     $data['color_options'] = $color_options;
@@ -220,38 +174,77 @@ function _draw_add_to_cart($item_id)
     $this->load->view('add_to_cart', $data);
 }
 
-function test()
-{
-    $string = "Hello blue sky";
-    $encrypted_string = $this->site_security->_encrypt_string($string);
-    $decrypted_string = $this->site_security->_decrypt_string($encrypted_string);
 
-    echo "string is $string<hr>";
-    echo "encrypted string is $encrypted_string<hr>";
-    echo "decrypted string is $decrypted_string<hr>";
-}
+// function test()
+// {
+//     $string = "Hello blue sky";
+//     $encrypted_string = $this->site_security->_encrypt_string($string);
+//     $decrypted_string = $this->site_security->_decrypt_string($encrypted_string);
 
-function test2()
-{
-    $string = "Hello blue sky";
+//     echo "string is $string<hr>";
+//     echo "encrypted string is $encrypted_string<hr>";
+//     echo "decrypted string is $decrypted_string<hr>";
+// }
 
-    $third_bit = $this->uri->segment(3);
-    if ($third_bit!='') {
-        $encrypted_string = $third_bit;
-    } else {
-        $encrypted_string = $this->site_security->_encrypt_string($string);
-    }
+// function test2()
+// {
+//     $string = "Hello blue sky";
 
-    $decrypted_string = $this->site_security->_decrypt_string($encrypted_string);
+//     $third_bit = $this->uri->segment(3);
+//     if ($third_bit!='') {
+//         $encrypted_string = $third_bit;
+//     } else {
+//         $encrypted_string = $this->site_security->_encrypt_string($string);
+//     }
 
-    echo "string is $string<hr>";
-    echo "encrypted string is $encrypted_string<hr>";
-    echo "decrypted string is $decrypted_string<hr>";
+//     $decrypted_string = $this->site_security->_decrypt_string($encrypted_string);
 
-    //create new encrypted string
-    $new_encrypted_string = $this->site_security->_encrypt_string($string);
-    echo anchor('cart/test2/'.$new_encrypted_string, 'refresh');
-}
+//     echo "string is $string<hr>";
+//     echo "encrypted string is $encrypted_string<hr>";
+//     echo "decrypted string is $decrypted_string<hr>";
+
+//     //create new encrypted string
+//     $new_encrypted_string = $this->site_security->_encrypt_string($string);
+//     echo anchor('cart/test2/'.$new_encrypted_string, 'refresh');
+// }
+
+// function _check_and_get_session_id($checkout_token)
+// {
+//     $session_id = $this->_get_session_id_from_token($checkout_token);
+//     if ($session_id=='') {
+//         redirect(base_url());
+//     }
+//     //check to see if this session ID appears on store_basket table
+//     $this->load->module('store_basket');
+//     $query = $this->model_name->get_view_data_custom('session_id', $session_id, 'store_basket', null);    
+//     $num_rows = $query->num_rows();
+
+//     if ($num_rows<1) {
+//         redirect(base_url());
+//     }
+//     return $session_id;
+// }
+
+// function _create_checkout_token($session_id)
+// {
+//     $encrypted_string = $this->site_security->_encrypt_string($session_id);
+//     //remove dodgy characters
+//     $checkout_token = str_replace('+', '-plus-', $encrypted_string);
+//     $checkout_token = str_replace('/', '-fwrd-', $checkout_token);
+//     $checkout_token = str_replace('=', '-eqls-', $checkout_token);
+//     return $checkout_token;
+// }
+
+// function _get_session_id_from_token($checkout_token)
+// {
+//     //remove dodgy characters
+//     $session_id = str_replace('-plus-', '+', $checkout_token);
+//     $session_id = str_replace('-fwrd-', '/', $session_id);
+//     $session_id = str_replace('-eqls-', '=', $session_id);
+//     $session_id = $this->site_security->_decrypt_string($session_id);
+//     return $session_id;
+// }
 
 
-}
+
+}// end cart

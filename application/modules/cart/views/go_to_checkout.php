@@ -1,40 +1,70 @@
+
+<?php $form_location = base_url().'youraccount/submit_login'; ?>
+
 <div class="row">
 <div class="container" style="min-height: 425px;">    
-<h1>Please Create An Account</h1>
-<p>You do not need to create an account with us, however, if you do then you'll be 
-able to enjoy:</p>
-<p>
-    <ul>
-        <li>Order Tracking</li>
-        <li>Downloadable Order Forms</li>
-        <li>Priority Technical Support</li>
-    </ul>
-</p>
-<p>Creating an account only takes a minute.</p>
-<p>Would you like to create an account?</p>
+<div class="col-md-12">
+    <div class="col-md-6" style="margin-top: 15px; border-right: 2px #999 solid;">
+      <form name="form-signin" class="form-signin" style="width: 80%; margin: 0 auto;" 
+            action="<?= $form_location ?>" method="POST">
+        <input type='hidden' name='log_source' value='checkout_token'  />
+        
+        <h2 class="form-signin-heading">Returning Customers</h2>
+        <p>Sign in for faster checkout.</p>
+        <label for="inputText" class="sr-only">Username or Email address</label>
+        <input type="text" id="inputText"
+               
+               class="form-control"
+               name="username" placeholder="Username or Email address"
+               autocomplete="new-password"
+               autofocus>
+        <span class="help-block"><?= form_error('username', '<p style="color: red;">', '</p>') ?></span>       
 
-<div class="col-md-10" style="margin-top: 36px; margin-bottom: 15px;">
-<?php
-echo form_open('cart/submit_choice'); ?>
-    <button class="btn btn-success" name="submit" value="Yes - Let's Do It" type="submit">
-        <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
-        Yes - Let's Do It
-    </button>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <br />
+        <input type="password" id="inputPassword"
+                       
+               class="form-control"
+               name = "password" placeholder="Password"
+               autocomplete="new-password">
+        <span class="help-block"><?= form_error('username', '<p style="color: red;">', '</p>') ?></span>       
 
-    <button class="btn btn-danger" style="margin-left: 24px; " name="submit" value="No Thanks" type="submit">
-        <i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i>
-        No Thanks
-    </button>
+        <br />       
+        <div class="col-xs-12 col-sm-12 col-md-12">
+           <div class="col-xs-6 col-sm-6 col-md-6">
+              <div class="form-group">
+                  <input type="checkbox" value="remember-me"> Remember me
+              </div>
+           </div>
 
-    <a href="<?= base_url() ?>youraccount/login">
-    <button class="btn btn-primary" style="margin-left: 24px;" name="submit" type="button">
-        <i class="fa fa-sign-in fa-lg" aria-hidden="true"></i>
-        Already Have Account (login) 
-    </button></a>
+            <div class="col-xs-6 col-sm-6 col-md-6">
+              <div class="form-group" style="width: 80%;">
+                 <a href="<?= base_url() ?>site_dashboard/forgot_password"> Forgot Password? </a>
+                 <a href="<?= base_url() ?>site_dashboard/contactus"> Membership Support</a>
+              </div>
+           </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" 
+            type="submit" name="submit" value="Submit">Sign in
+        </button>
+      </form>
+    </div>
 
-<?php 
-echo form_hidden('checkout_token', $checkout_token);
-echo form_close(); ?>
+    <div class="col-md-6" style="text-align: center;">
+        <h2 class="form-signin-heading">New Customers</h2>
+        <p>Don't have an account? No Problem, you can check out as a guest. You'll have an opportunity to create an account during checkout.</p>
+        <!-- redirect('cart/index/'.$checkout_token); -->
+        <form  name="form-signup" class="form-signin"
+               action="<?= base_url() ?>process_payment" method="POST"> 
+
+            <button class="btn btn-success" style="margin-bottom: 10px;"
+                    margin-bottom: 20px; name="submit" value="Yes - Let's Do It" type="submit">
+                <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
+                Continue Checkout as Guest
+            </button>
+        </form>
+    </div>
 </div>
+
 </div>
 </div>
