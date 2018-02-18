@@ -1,9 +1,15 @@
 
-<?php $form_location = base_url().'youraccount/submit_login'; ?>
+<?php 
+  $form_location = base_url().'youraccount/submit_login'; 
+  if( $this->uri->segment(3) == 1){
+      $flash_msg = 'Login failed. Invalid username or password';
+      $error = '<div class="alert alert-danger" role="alert">'.$flash_msg.'</div>';
+  }
+
+?>
 
 <div class="row">
 <div class="container" style="min-height: 425px;">    
-<div class="col-md-12">
     <div class="col-md-6" style="margin-top: 15px; border-right: 2px #999 solid;">
       <form name="form-signin" class="form-signin" style="width: 80%; margin: 0 auto;" 
             action="<?= $form_location ?>" method="POST">
@@ -11,6 +17,8 @@
         
         <h2 class="form-signin-heading">Returning Customers</h2>
         <p>Sign in for faster checkout.</p>
+        <?= $error ?>
+
         <label for="inputText" class="sr-only">Username or Email address</label>
         <input type="text" id="inputText"
                
@@ -18,7 +26,6 @@
                name="username" placeholder="Username or Email address"
                autocomplete="new-password"
                autofocus>
-        <span class="help-block"><?= form_error('username', '<p style="color: red;">', '</p>') ?></span>       
 
         <label for="inputPassword" class="sr-only">Password</label>
         <br />
@@ -27,7 +34,6 @@
                class="form-control"
                name = "password" placeholder="Password"
                autocomplete="new-password">
-        <span class="help-block"><?= form_error('username', '<p style="color: red;">', '</p>') ?></span>       
 
         <br />       
         <div class="col-xs-12 col-sm-12 col-md-12">
@@ -65,6 +71,5 @@
         </form>
     </div>
 </div>
-
-</div>
+<br>
 </div>

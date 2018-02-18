@@ -66,8 +66,9 @@ function _attempt_draw_checkout_btn($query)
     $data['query'] = $query;
     $shopper_id = $this->site_security->_get_user_id();
     $third_bit = $this->uri->segment(3);
+    $uri = uri_string();
 
-    if ((!is_numeric($shopper_id)) AND ($third_bit=='')) {
+    if ((!is_numeric($shopper_id)) AND ($third_bit=='') AND ($uri != 'process_payment')) {
         $this->_draw_checkout_btn_fake($query);
     } else {
         $this->_draw_checkout_btn_real($query);

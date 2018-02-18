@@ -22,8 +22,7 @@ public $columns_not_allowed = array( 'create_date' );
 
 function __construct() {
     parent::__construct();
-    // $this->load->library('form_validation');
-    // $this->form_validation->CI =& $this;
+
 }
 
 function homebase()
@@ -92,11 +91,17 @@ function submit_login()
             $this->_in_you_go($user_id, $login_type, $login_source);
 
         } else {
-            $this->login();
             // echo validation_errors();
             // on fail 3 times use capcha after 3 more attempts then suspend
+
+            if( $login_source != 'myLogin' ) {
+                redirect('cart/go_to_checkout/1');                
+            } else {
+                $this->login();
+            }    
         }
     }
+
 }
 
 
@@ -146,6 +151,8 @@ function _in_you_go($user_id, $login_type, $login_source)
     if( $login_source != 'myLogin' )
         $this->_attempt_cart_divert();
 
+    redirect('/youraccount/welcome');
+
 }
 
 function _attempt_cart_divert()
@@ -171,14 +178,14 @@ function _attempt_cart_divert()
     }
 }
 
-function fetch_data_from_post()
-{
-    $data['username'] = $this->input->post('username', TRUE);
-    $data['email'] = $this->input->post('email', TRUE);
-    $data['password'] = $this->input->post('password', TRUE);
-    $data['repeat_pword'] = $this->input->post('repeat_pword', TRUE);
-    return $data;
-}
+// function fetch_data_from_post()
+// {
+//     $data['username'] = $this->input->post('username', TRUE);
+//     $data['email'] = $this->input->post('email', TRUE);
+//     $data['password'] = $this->input->post('password', TRUE);
+//     $data['repeat_pword'] = $this->input->post('repeat_pword', TRUE);
+//     return $data;
+// }
 
 
 // function test1()
