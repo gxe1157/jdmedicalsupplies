@@ -112,178 +112,69 @@
 
         <div class="row">
           <div class="col-md-12 border"><h4>Order Number:  </h4></div>          
-          <div class="col-sm-3 col-md-5 border headers">Shipping Address</div>
-          <div class="col-sm-7 col-md-7 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
         </div>
         <div class="row">
-          <div class="col-md-12 border"><h4>Payments</h4></div>         
-          <div class="col-sm-3 col-md-5 border headers">Billing Contact</div>
-          <div class="col-sm-7 col-md-7 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
+          <div class="col-sm-3 col-md-4 border headers">Bill To:</div>
+          <div class="col-sm-7 col-md-8 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
         </div>          
         <div class="row">
-          <div class="col-sm-3 col-md-5 border headers">Billing Address</div>
-          <div class="col-sm-7 col-md-7 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
+          <div class="col-sm-3 col-md-4 border headers">Ship To:</div>
+          <div class="col-sm-7 col-md-8 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
         </div>  
         <div class="row">
-          <div class="col-sm-3 col-md-5 border headers">Payment Method</div>
-          <div class="col-sm-7 col-md-7 border hsides">American Express ... 1234<br>Authorization No 12345</div>
+          <div class="col-sm-3 col-md-4 border headers">Payment Method</div>
+          <div class="col-sm-7 col-md-8 border hsides"><?= $payment_method ?><br>
+            Card Number: <?= $Card_Number ?><br>
+            Authorization No: <?= $Authorization_Num ?></div>
         </div>  
 
         <!-- Special offer -->
         <div class="row">       
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
                     <div class="listing listing-default">
                         <div class="shape">
-                            <div class="shape-text">buy</div>
+                            <div class="shape-text"></div>
                         </div>
                         <div class="listing-content">
-                            <h3 class="lead">Standard listing</h3>
-                            <p>Buy items on normal prices. No discounts available for this listing.</p>
+                            <h4>Please Create An Account</h4>
+                            <p>You do not need to create an account with us, however, if you do then you'll be 
+                            able to enjoy:</p>
+                            <p>
+                                <ul>
+                                    <li>Order Tracking</li>
+                                    <li>Downloadable Coupon Offers</li>
+                                    <li>.....</li>
+                                </ul>
+                            </p>
+                            <p>Creating an account only takes a minute.</p>
+                            <button class="btn btn-success" name="submit" value="Yes - Let's Do It" type="submit">
+                                <i class="fas fa-thumbs-up"></i></span> 
+                                Yes - Let's Do It
+                            </button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                            <button class="btn btn-danger" name="submit" value="No Thanks" type="submit">
+                                <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 
+                                No Thanks
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="listing listing-radius listing-success">
-                        <div class="shape">
-                            <div class="shape-text">50%</div>
-                        </div>
-                        <div class="listing-content">
-                            <h3 class="lead">Discount listing</h3>
-                            <p>Buy now - 50% off.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="listing listing-danger">
-                        <div class="shape">
-                            <div class="shape-text">hot</div>
-                        </div>
-                        <div class="listing-content">
-                            <h3 class="lead">Hot Offer</h3>
-                            <p>Best selling for this period.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
         </div>
       </div>
 
       <div class="col-md-7 border">
-        <div class="container">
-            <div class="col-md-12 border"><h4>Items to be shipped</h4></div>  
-          <table id="cart" class="table table-hover table-condensed">
-              <thead>
-              <tr>
-                <th style="width:80%">Product</th>
-                <th style="width:10%">Quantity</th>             
-                <th style="width:10%">Price</th>
-                <th style="width:10%" class="text-center">Subtotal</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-th="Product">
-                  <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                      <img src="http://placehold.it/100x100"
-                         alt="..." class="img-responsive"/>
-                    </div>
-                    <div class="col-sm-9">
-                      <h4 class="nomargin">Product 1</h4>
-                      <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                    </div>
-                  </div>
-                </td>
-                <td data-th="Quantity"> 1 </td>
-                <td data-th="Price">$1.99</td>              
-                <td data-th="Subtotal" class="text-center">1.99</td>
-              </tr>
-              <tr>
-                <td data-th="Product">
-                  <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                      <img src="http://placehold.it/100x100"
-                         alt="..." class="img-responsive"/>
-                    </div>
-                    <div class="col-sm-9">
-                      <h4 class="nomargin">Product 1</h4>
-                      <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                    </div>
-                  </div>
-                </td>
-                <td data-th="Quantity"> 1 </td>
-                <td data-th="Price">$1.99</td>              
-                <td data-th="Subtotal" class="text-center">1.99</td>
-              </tr>
-              <tr>
-                <td data-th="Product">
-                  <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                      <img src="http://placehold.it/100x100"
-                         alt="..." class="img-responsive"/>
-                    </div>
-                    <div class="col-sm-9">
-                      <h4 class="nomargin">Product 1</h4>
-                      <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                    </div>
-                  </div>
-                </td>
-                <td data-th="Quantity"> 1 </td>
-                <td data-th="Price">$1.99</td>              
-                <td data-th="Subtotal" class="text-center">1.99</td>
-              </tr>
-              <tr>
-                <td data-th="Product">
-                  <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                      <img src="http://placehold.it/100x100"
-                         alt="..." class="img-responsive"/>
-                    </div>
-                    <div class="col-sm-9">
-                      <h4 class="nomargin">Product 1</h4>
-                      <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                    </div>
-                  </div>
-                </td>
-                <td data-th="Quantity"> 1 </td>
-                <td data-th="Price">$1.99</td>              
-                <td data-th="Subtotal" class="text-center">1.99</td>
-              </tr>
-              <tr>
-                <td data-th="Product">
-                  <div class="row">
-                    <div class="col-sm-3 hidden-xs">
-                      <img src="http://placehold.it/100x100"
-                         alt="..." class="img-responsive"/>
-                    </div>
-                    <div class="col-sm-9">
-                      <h4 class="nomargin">Product 1</h4>
-                      <p>Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet.</p>
-                    </div>
-                  </div>
-                </td>
-                <td data-th="Quantity"> 1 </td>
-                <td data-th="Price">$1.99</td>              
-                <td data-th="Subtotal" class="text-center">1.99</td>
-              </tr>
-
-
-            </tbody>
-            <tfoot>
-              <tr class="visible-xs">
-                <td class="text-center"><strong>Total 1.99</strong></td>
-              </tr>
-              <tr>
-                <td>&nbsp</td>
-                <td colspan="2" class="hidden-xs"></td>
-                <td class="hidden-xs text-center"><strong>Total $1.99</strong></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
+        <div class="row" style="margin-top: 55px; border: 0px red solid;" >
+        <?php
+            echo "<p style='padding-left:15px;'>".$showing_statement."</p>";
+            $user_type = 'public';
+            echo Modules::run('cart/_draw_cart_contents', $query, $user_type);
+        ?>
+      </div>
       </div>
     </div>          
   </div>

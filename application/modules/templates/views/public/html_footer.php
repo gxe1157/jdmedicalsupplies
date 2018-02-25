@@ -183,8 +183,6 @@
 
 	<!-- Template custom -->
 	<script type="text/javascript" src="<?= base_url() ?>public/js/custom.js"></script>
-	<script type="text/javascript" src="<?= base_url() ?>public/js/store_products_list.js"></script>	
-	
 	<script type="text/javascript" src="<?= base_url() ?>public/js/store_checkout.js"></script>
 
 	</div><!-- Body inner end -->

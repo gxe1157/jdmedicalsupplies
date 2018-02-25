@@ -14,13 +14,12 @@
 
   // checkArray($query->result()[0],0);
   foreach($query->result() as $row) {
-      $line_item_total   = number_format($row->price*$row->item_qty,2);
+      $line_item_total = number_format($row->price*$row->item_qty,2);
       $cart_total = number_format($cart_total+$line_item_total,2);
 
       $line_is_taxable = 1;
       if($line_is_taxable)
           $total_tax_line  = number_format($total_tax_line+$line_item_total,2);
-
       $image_path = $row->image_path;
   ?>
 
@@ -33,7 +32,7 @@
       <p class="product-description"> -- <?= $row->part_num ?> </p>
     </div>
     <div class="product-price"><?= $row->price ?></div>
-    <?php if (uri_string()=='process_payment'): ?>
+    <?php if ( $page_url == 'pay_now' || $page_url == 'thankyou' ): ?>
         <div class="product-quantity">
           <input type="number" value="<?= $row->item_qty ?>"
                  id="<?= $row->id  ?>"
@@ -73,7 +72,7 @@
       <div class="totals-value" id="cart-subtotal"><?= number_format($cart_total,2) ?></div>
     </div>
 
-    <?php if (uri_string()=='process_payment'): ?>
+
         <?php  if( $tax_shipping == 1 ) { ?>
             <div class="totals-item">
               <label>Shipping</label>
@@ -94,7 +93,6 @@
           <label>Grand Total</label>
           <div class="totals-value" id="cart-total"><?= number_format( $cart_total+$tax_total+$shipping,2) ?></div>
         </div>
-    <?php endif;?>
 
   </div>
 <!-- 

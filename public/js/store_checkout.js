@@ -1,6 +1,26 @@
 
 $(document).ready(function(){
 	/* Set rates + misc */
+	$('#ship_ground, #ship_2days, #ship_nextday').on('click',  function() {
+	    let shipId = this.id;   
+	    /* uncheck all boxes */
+		$('#ship_ground').prop('checked', false);	// Unchecks it	    
+		$('#ship_2days').prop('checked', false);	// Unchecks it	    
+		$('#ship_nextday').prop('checked', false); 	// Unchecks it	    
+	    /* check this one */
+		$('#'+shipId ).prop('checked', true); 		// checks it	    
+        /* go out and get shipping rates */
+        $('#billTo').slideDown( 2000 );
+       	$('#shipTo').slideDown( 2000 );        
+	})
+
+	$('#shipToCkbox').on('click',  function() {
+	    let shipId = this.id;   
+        //$('#billTo').slideUp( 2000 );
+        $('#shipTo').slideDown( 2000 );
+	})
+	
+    // $( ".btnSubmitForm" ).trigger( "click" );
 
 	/* Assign actions */
 	$('.product-quantity input').change( function() {
@@ -31,5 +51,5 @@ $(document).ready(function(){
 
 	});
 
-
+process_payment
 });

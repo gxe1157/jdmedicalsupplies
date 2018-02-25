@@ -4,12 +4,39 @@ class payeezy extends MX_Controller
 
 function __construct() {
 parent::__construct();
+
+    $this->load->helper('store_accounts/gateway_flds_helper');
+    $this->column_rules = get_fields();
 }
 
 
-function _is_on_test_mode()
+function goto_gateway()
 {
-    return TRUE; //set this to FALSE if we are live!
+
+checkArray($_POST , 1);
+
+    $this->load->library('form_validation');
+    $this->form_validation->set_rules( $this->column_rules );
+
+    if($this->form_validation->run() == TRUE) {
+        quit('Ready to go to gateway');
+        $data['form_location'] = "https://demo.globalgatewaye4.firstdata.com/payment";
+        
+    } else {
+        $data = $this->build_data($data);
+
+        $data['check1'] = array_key_exists("ship_ground", $_POST) ? 'checked' : ''  ;
+        $data['check2'] = array_key_exists("ship_2days", $_POST) ? 'checked' : ''  ;
+        $data['check3'] = array_key_exists("ship_nextday", $_POST) ? 'checked' : ''  ;
+
+        $data['val_errors'] = count(validation_errors());
+        $data['view_module'] = 'cart';    
+        $data['page_url'] = 'pay_now';
+
+        $this->load->module('templates');
+        $this->templates->public_main($data);   
+    }
+
 }
 
 function _draw_checkout_btn($query)
@@ -22,12 +49,10 @@ function _draw_checkout_btn($query)
     $data['payeezy_email'] = $this->site_settings->_get_paypal_email();
     $data['currency_code'] = $this->site_settings->_get_currency_code();
 
-    $on_test_mode = $this->_is_on_test_mode();
-    if ($on_test_mode==TRUE) {
-        $data['form_location'] = "https://demo.globalgatewaye4.firstdata.com/payment";
-    } else {
-        $data['form_location'] = '';
-    }
+    if( ENV != 'local' )
+        $data['form_location'] = "payeezy/goto_gateway";
+    else
+        $data['form_location'] = "goto_gateway" ; /* use to debug - skip gateway */
 
     $data['payeezy'] = $this->payeezy_config($query);
     $this->load->view('checkout_btn', $data);
@@ -81,44 +106,85 @@ function confirmation()
 {
     // checkArray( $_REQUEST,1);
     /* payeezy response */
-    $data['_REQUEST'] = $_REQUEST;    
-    $data['view_module'] = 'payeezy';        
+    // $data['_REQUEST'] = $_REQUEST;    
 
     if( $_REQUEST['x_response_code'] == '1') {
-        // $this->load->module('store_basket');
-        // $rows_updated = $this->update_orders();
-        // $rows_deleted = $this->store_basket->clear_cart();
-        // if($rows_deleted<1) fatal_error();
+        /* post payment information */
+        $data['Authorization_Num'] = $_REQUEST['Authorization_Num'];
+        $data['Bank_Message']      = $_REQUEST['Bank_Message'];
+        $data['CardHoldersName']   = $_REQUEST['CardHoldersName'];
+        $data['Card_Number']       = $_REQUEST['Card_Number'];
+        $data['Client_IP']         = $_REQUEST['Client_IP'];
+        $data['payment_method']    = $_REQUEST['TransactionCardType'];
+        $data['payment_amount']    = $_REQUEST['DollarAmount'];
+        $data['transaction_id']    = $_REQUEST['Transaction_Tag'];
 
-        $data['page_url'] = 'thankyou';
+        $data['order_number'] = '';
+        $data['user_id'] = '';
+        $data['username'] = '';        
+        $data['transaction_type'] = 'e_store';
+
+        $data['session_id']  = $this->session->cart_id;
+        $data['ip_address']  = $this->input->ip_address();
+        $data['create_date'] = time();
+        $data['modified_date'] = 0;
+        $data['admin_id'] = 0;
+
+        $this->load->module('store_orders');
+        $payment_id = $this->store_orders->payment_details('payments', $data);
+
+        $this->thankyou($data);
     } else {
-        $this->cancel($data);        
-        $data['page_url'] = 'cancel';
+        $this->cancel();        
     } 
 
-    $this->load->module('templates');
-    $this->templates->public_main($data);    
-
 }
 
-function receipt_page(){
-
-    $data['view_module'] = 'payeezy';    
-    $data['page_url'] = 'receipt_page';
-
-    $this->load->module('templates');
-    $this->templates->public_main($data);    
-}
-
-function thankyou($data)
+function thankyou($data = null)
 {
+    build_data($data);
+                                                        // if( isset($this->session->cart_id) ) {
+                                                        //     $session_id = $this->session->cart_id;
+                                                        //  } else {
+                                                        //     redirect('cart/cart');
+                                                        // }    
+
+                                                        // $this->load->module('site_security');
+                                                        // $shopper_id = $this->site_security->_get_user_id();
+                                                        // if (!is_numeric($shopper_id))
+                                                        //         $shopper_id = 0;
+
+                                                        // $this->load->module('cart');
+                                                        // $table = 'store_basket';
+                                                        // $data['query'] = $this->cart->_fetch_cart_contents($session_id, $shopper_id, $table);
+
     $data['view_module'] = 'payeezy';    
     $data['page_url'] = 'thankyou';
-// send email with receipt;
 
     $this->load->module('templates');
     $this->templates->public_main($data);    
 }
+
+
+function build_data($data = array())
+{
+    if( isset($this->session->cart_id) ) {
+        $session_id = $this->session->cart_id;
+     } else {
+        redirect('cart/cart');
+    }    
+
+    $this->load->module('site_security');
+    $shopper_id = $this->site_security->_get_user_id();
+    if (!is_numeric($shopper_id))
+            $shopper_id = 0;
+
+    $this->load->module('cart');
+    $table = 'store_basket';
+    $data['query'] = $this->cart->_fetch_cart_contents($session_id, $shopper_id, $table);
+    return $data;
+}
+
 
 
 function cancel()

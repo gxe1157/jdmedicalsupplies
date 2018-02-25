@@ -7,7 +7,7 @@ parent::__construct();
 }
 
 function get_table() {
-    $table = "";
+    $table = "payments";
     return $table;
 }
 

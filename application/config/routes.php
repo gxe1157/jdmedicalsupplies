@@ -57,8 +57,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // HOME / LOGIN
 $route['admin'] = "site_dashboard/login";
 $route['youraccount/myLogin'] = 'youraccount/login';
-$route['payeezy'] = 'payeezy/index';
+// $route['payeezy'] = 'payeezy/index';
 $route['process_payment'] = 'cart';
+$route['goto_gateway'] = 'payeezy/goto_gateway';
 
 $route['default_controller'] = 'default_module';
 $route['404_override'] = 'default_module';
