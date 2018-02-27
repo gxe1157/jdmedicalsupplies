@@ -33,13 +33,8 @@
     </div>
     <div class="product-price"><?= $row->price ?></div>
     <?php if ( $page_url == 'pay_now' || $page_url == 'thankyou' ): ?>
-        <div class="product-quantity">
-          <input type="number" value="<?= $row->item_qty ?>"
-                 id="<?= $row->id  ?>"
-                 min="1" disabled>
-        </div>
-        <div class="product-removal">&nbsp;
-        </div>
+        <div class="product-quantity" style="text-align: right;"><?= $row->item_qty ?></div>
+        <div class="product-removal">&nbsp;</div>
     <?php else: ?>    
         <div class="product-quantity">
           <input type="number" value="<?= $row->item_qty ?>"

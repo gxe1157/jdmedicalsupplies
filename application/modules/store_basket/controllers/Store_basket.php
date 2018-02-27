@@ -2,7 +2,6 @@
 class Store_basket  extends MY_Controller
 {
 
-
 /* model name goes here */
 var $mdl_name = 'Mdl_store_basket';
 var $store_controller = 'store_basket';
@@ -40,7 +39,7 @@ function add_to_basket()
             $data = $this->_fetch_the_data();
             // check basket to see if item_id already exist
             $results_set = $this->model_name->get_where_many(
-                $data['item_id'], $data['item_color'], $data['item_size'],$data['session_id']
+                $data['item_id'], $data['item_color'], $data['item_size'],$data['cart_id']
             );
 
             $num_rows = $results_set->num_rows();
@@ -94,7 +93,7 @@ function _fetch_the_data()
         $this->session->set_userdata($cart_data);
     }
 
-    $data['session_id'] = $this->session->cart_id;
+    $data['cart_id'] = $this->session->cart_id;
 
     $data['item_title'] = $item_data['short_desc'];
     $data['price'] = $item_price;
@@ -104,7 +103,7 @@ function _fetch_the_data()
     $data['item_qty'] = $item_qty;
     $data['item_color'] = $this->_get_dropdown_data('color', $item_color);
     $data['image_path'] = $image_path;
-    $data['date_added'] = time();
+    $data['create_date'] = time();
     $data['shopper_id'] = $shopper_id;
     $data['ip_address'] = $this->input->ip_address();
     return $data;
@@ -150,7 +149,7 @@ function clear_cart()
     $cart_id =  $this->session->cart_id;
     $this->model_name->_delete_cart($cart_id);
 
-    unset($_SESSION['cart_id']);
+    session_destroy();
     redirect('cart');
 }
 
@@ -165,9 +164,9 @@ function _check_basket_integrity() {
     $num_rows = 0;
 
     $integrity_query = "
-        SELECT `session_id`, `shopper_id`
+        SELECT `cart_id`, `shopper_id`
         FROM `store_basket` 
-        WHERE `session_id` ='".$_SESSION['cart_id']."'";
+        WHERE `cart_id` ='".$_SESSION['cart_id']."'";
 
     $query = $this->model_name->_custom_query($integrity_query);
     $num_rows  = $query->num_rows();
@@ -179,7 +178,7 @@ function _check_basket_integrity() {
             if($shopper_id != $value->shopper_id) {
                 $query_update = 'UPDATE `store_basket`
                           SET `shopper_id`="'.$shopper_id.'"
-                          WHERE `session_id` ="'.$_SESSION['cart_id'].'"';
+                          WHERE `cart_id` ="'.$_SESSION['cart_id'].'"';
                 $this->store_basket->_custom_query($query_update);                          
             }
         }    
@@ -203,7 +202,7 @@ function _make_sure_remove_allowed($update_id)
 {
     $query = $this->get_where($update_id);
     foreach($query->result() as $row) {
-        $session_id = $row->session_id;
+        $cart_id = $row->cart_id;
         $shopper_id = $row->shopper_id;
     }
 
@@ -211,11 +210,11 @@ function _make_sure_remove_allowed($update_id)
         return FALSE;
     }
 
-    $customer_session_id = $this->session->cart_id;
+    $customer_cart_id = $this->session->cart_id;
     $this->load->module('site_security');
     $customer_shopper_id = $this->site_security->_get_user_id();
 
-    if (($session_id==$customer_session_id) OR ($shopper_id==$customer_shopper_id)) {
+    if (($cart_id==$customer_cart_id) OR ($shopper_id==$customer_shopper_id)) {
         return TRUE;
     } else {
         return FALSE;
@@ -224,7 +223,7 @@ function _make_sure_remove_allowed($update_id)
 
 function test()
 {
-    $session_id = $this->session->session_id;
+    $session_id = $this->session->cart_id;
     echo $session_id;
     echo "<hr>";
     $shopper_id = $this->site_security->_get_user_id();

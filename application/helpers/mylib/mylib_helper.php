@@ -172,6 +172,10 @@ if ( ! function_exists('last_referer'))
 if ( ! function_exists('fatal_error'))
 {
 	function fatal_error( $code ) {
+	// redirect and send email to webadmin.
+		
 	   die("<h3>We seem to be having techincal difficulties. Contact web developer and provide this error code: ".$code."</h3");
+
+	   // send email
 	}
 }

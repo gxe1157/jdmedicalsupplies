@@ -7,6 +7,13 @@ function __construct() {
     $this->load->module('site_security');    
 }
 
+
+
+/* ===================================================
+    Controller functions goes here. Put all DRY
+    functions in applications/core/My_Controller.php
+   =================================================== */
+   
 function index()
 {
     $data['flash'] = $this->session->flashdata('item');
@@ -24,23 +31,23 @@ function index()
     $data['showing_statement'] = $this->_get_showing_statement($data['num_rows']);
 
     $data['view_module'] = 'cart';    
+    $data['show_state'] = 'none'; // billto ans shipto box at pay_now.php
     $data['page_url'] = uri_string()=='process_payment' ? 'pay_now':'cart';
 
     $this->load->module('templates');
     $this->templates->public_main($data);
 }
 
-
-function submit_choice()
-{
-    $submit = $this->input->post('submit', TRUE);
-    if ($submit=="No Thanks") {
-        $checkout_token = $this->input->post('checkout_token', TRUE);
-        redirect('cart/index/'.$checkout_token);
-    } elseif ($submit=="Yes - Let's Do It") {
-        redirect('youraccount/start');
-    }
-}
+// function submit_choice()
+// {
+//     $submit = $this->input->post('submit', TRUE);
+//     if ($submit=="No Thanks") {
+//         $checkout_token = $this->input->post('checkout_token', TRUE);
+//         redirect('cart/index/'.$checkout_token);
+//     } elseif ($submit=="Yes - Let's Do It") {
+//         redirect('youraccount/start');
+//     }
+// }
 
 function go_to_checkout()
 {
@@ -129,9 +136,9 @@ function _fetch_cart_contents($session_id, $shopper_id, $table)
 
     if ($shopper_id>0) {
         $where_condition =
-             " WHERE $table.shopper_id='$shopper_id' and $table.session_id='$session_id'";
+             " WHERE $table.shopper_id='$shopper_id' and $table.cart_id='$session_id'";
     } else {
-        $where_condition = " WHERE $table.session_id='$session_id'";
+        $where_condition = " WHERE $table.cart_id='$session_id'";
     }
 
     $mysql_query.=$where_condition;

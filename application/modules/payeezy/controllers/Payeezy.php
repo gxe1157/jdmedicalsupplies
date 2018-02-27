@@ -10,34 +10,11 @@ parent::__construct();
 }
 
 
-function goto_gateway()
-{
 
-checkArray($_POST , 1);
-
-    $this->load->library('form_validation');
-    $this->form_validation->set_rules( $this->column_rules );
-
-    if($this->form_validation->run() == TRUE) {
-        quit('Ready to go to gateway');
-        $data['form_location'] = "https://demo.globalgatewaye4.firstdata.com/payment";
-        
-    } else {
-        $data = $this->build_data($data);
-
-        $data['check1'] = array_key_exists("ship_ground", $_POST) ? 'checked' : ''  ;
-        $data['check2'] = array_key_exists("ship_2days", $_POST) ? 'checked' : ''  ;
-        $data['check3'] = array_key_exists("ship_nextday", $_POST) ? 'checked' : ''  ;
-
-        $data['val_errors'] = count(validation_errors());
-        $data['view_module'] = 'cart';    
-        $data['page_url'] = 'pay_now';
-
-        $this->load->module('templates');
-        $this->templates->public_main($data);   
-    }
-
-}
+/* ===================================================
+    Controller functions goes here. Put all DRY
+    functions in applications/core/My_Controller.php
+   =================================================== */
 
 function _draw_checkout_btn($query)
 {
@@ -50,113 +27,116 @@ function _draw_checkout_btn($query)
     $data['currency_code'] = $this->site_settings->_get_currency_code();
 
     if( ENV != 'local' )
-        $data['form_location'] = "payeezy/goto_gateway";
+        $data['form_location'] = "https://demo.globalgatewaye4.firstdata.com/payment";    
     else
-        $data['form_location'] = "goto_gateway" ; /* use to debug - skip gateway */
+        $data['form_location'] = "store_orders"; /* use to debug - skip gateway goto "payeezy/confirmation" */
 
     $data['payeezy'] = $this->payeezy_config($query);
     $this->load->view('checkout_btn', $data);
 
 }
 
-function payeezy_config($query)
+
+function goto_gateway()
 {
-    $shippingRate = $this->shipping->_get_shipping();
-    $taxRate      = $this->shipping->_get_tax();
-    $tax_shipping = $this->shipping->_get_tax_opt();    
-
-    foreach($query->result() as $row) {
-        $session_id  = $row->session_id;                
-        $line_item_total = number_format($row->price*$row->item_qty,2);
-        $cart_total = number_format($cart_total+$line_item_total,2);
-
-        $line_is_taxable = 1;
-        if($line_is_taxable)
-           $total_tax_line  = number_format($total_tax_line+$line_item_total,2);
+    /* This is to control variables on post to client side */
+    $edit_mode = $this->uri->segment(2);
+    if( !empty($edit_mode) ) {
+        $ship_array = $_POST; // Should be one ship method 
+        $_POST = $_SESSION;
+        unset($_POST['__ci_last_regenerate']);
+        unset($_POST['cart_id']);
+        unset($_POST['submit']);
+        foreach ($ship_array as $key => $value) {
+            $_POST[$key] = $value;
+        }
     }
 
-    /* Compute Total taxes */ 
-    $shipping_tax = $tax_shipping == 0 ? 0 : $shippingRate;
-    $total_tax_line = $total_tax_line+$shipping_tax;
-    $tax_total  = number_format($total_tax_line*$taxRate,2);
+    $ready_gateway = 0;
 
-    // $this->check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total );
+    $submit = $this->input->post('submit',true);
+    if($submit == 'Submit'){
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules( $this->column_rules );
 
-    $x_amount = number_format( $cart_total+$tax_total+$shippingRate,2); 
+        if($this->form_validation->run() == TRUE) {
+            // save to session
+            $data = $this->input->post(null,true);
+            $data['shipto_method'] = trim($data['ship_ground']).trim($data['ship_2days']).trim($data['ship_nextday']);                        
 
-    $payeezy['x_login'] = "HCO-FULL-468";  //  Take from Payment Page ID in Payment Pages interface
-    $payeezy['transaction_key'] = "H1cCqmSAEZVN0HDrc_qz"; // Take from Payment Pages configuration interface
-    $payeezy['x_currency_code'] = "USD"; // Needs to agree with the currency of the payment page
-    srand(time()); // initialize random generator for x_fp_sequence
-    $payeezy['x_fp_sequence'] = rand(1000, 100000) + 123456;
-    $payeezy['x_fp_timestamp'] = time(); // needs to be in UTC. Make sure webserver produces UTC
+            $this->session->set_userdata($data);
+            unset($_SESSION['ship_ground']);
+            unset($_SESSION['ship_2days']);
+            unset($_SESSION['ship_nextday']);                        
+            $ready_gateway = 1;
+        }
 
-    // The values that contribute to x_fp_hash 
-    $payeezy['x_amount'] = number_format($x_amount,2);   
-    $payeezy['hmac_data'] = $payeezy['x_login'] . "^" . $payeezy['x_fp_sequence'] . "^" . $payeezy['x_fp_timestamp'] . "^" . $payeezy['x_amount'] . "^" . $payeezy['x_currency_code'];
-    $payeezy['x_fp_hash'] = hash_hmac('MD5', $payeezy['hmac_data'], $payeezy['transaction_key']);
+    }
 
-    unset($payeezy['hmac_data']);
-    unset($payeezy['transaction_key']);
+    $data = $this->build_data($data);        
+    $data['ready_gateway'] = $ready_gateway;
+    $data['show_state'] ='block';
 
-    return $payeezy;
+    $data['check1'] = ( array_key_exists("ship_ground", $_POST) &&  !empty($_POST['ship_ground'] ) ) ? 'checked="checked"' : '';
+    $data['check2'] = ( array_key_exists("ship_2days", $_POST) &&  !empty($_POST['ship_2days'] ) ) ?  'checked="checked"' : '';
+    $data['check3'] = ( array_key_exists("ship_nextday", $_POST) &&  !empty($_POST['ship_nextday'] ) ) ? 'checked="checked"' : '';
+
+    $data['view_module'] = 'cart';    
+    $data['page_url'] = 'pay_now';
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);   
 }
+
 
 function confirmation()
 {
-    // checkArray( $_REQUEST,1);
+    // checkArray( $_REQUEST,0);
     /* payeezy response */
-    // $data['_REQUEST'] = $_REQUEST;    
 
+    $_REQUEST['x_response_code'] = '1';    
     if( $_REQUEST['x_response_code'] == '1') {
         /* post payment information */
-        $data['Authorization_Num'] = $_REQUEST['Authorization_Num'];
-        $data['Bank_Message']      = $_REQUEST['Bank_Message'];
-        $data['CardHoldersName']   = $_REQUEST['CardHoldersName'];
-        $data['Card_Number']       = $_REQUEST['Card_Number'];
-        $data['Client_IP']         = $_REQUEST['Client_IP'];
-        $data['payment_method']    = $_REQUEST['TransactionCardType'];
-        $data['payment_amount']    = $_REQUEST['DollarAmount'];
-        $data['transaction_id']    = $_REQUEST['Transaction_Tag'];
+        $data['Authorization_Num'] = $_REQUEST['Authorization_Num'] ? : 0;
+        $data['Bank_Message']      = $_REQUEST['Bank_Message'] ? : 0;
+        $data['CardHoldersName']   = $_REQUEST['CardHoldersName'] ? : 0;;
+        $data['Card_Number']       = $_REQUEST['Card_Number'] ? : 0;
+        $data['Client_IP']         = $_REQUEST['Client_IP'] ? : 0;;
+        $data['payment_method']    = $_REQUEST['TransactionCardType'] ? : 0;
+        $data['payment_amount']    = $_REQUEST['DollarAmount'] ? : 0;
+        $data['transaction_id']    = $_REQUEST['Transaction_Tag'] ? : 0;
 
-        $data['order_number'] = '';
-        $data['user_id'] = '';
-        $data['username'] = '';        
+        $data['shopper_id'] = '';   // user_id
+        $data['username'] = '';  // email       
         $data['transaction_type'] = 'e_store';
 
-        $data['session_id']  = $this->session->cart_id;
+        $data['cart_id']  = $this->session->cart_id;
         $data['ip_address']  = $this->input->ip_address();
         $data['create_date'] = time();
         $data['modified_date'] = 0;
         $data['admin_id'] = 0;
 
         $this->load->module('store_orders');
-        $payment_id = $this->store_orders->payment_details('payments', $data);
+        list($data['shopper_id'], $data['sales_order_no']) = 
+                    $this->store_orders->payment_details('payments', $data);
 
         $this->thankyou($data);
     } else {
         $this->cancel();        
     } 
-
 }
 
-function thankyou($data = null)
+
+function thankyou($data)
 {
-    build_data($data);
-                                                        // if( isset($this->session->cart_id) ) {
-                                                        //     $session_id = $this->session->cart_id;
-                                                        //  } else {
-                                                        //     redirect('cart/cart');
-                                                        // }    
+    $this->load->module('store_orders');
+    $shopper_is = $data['shopper_id'];
+    $sales_order_no = $data['sales_order_no'];
 
-                                                        // $this->load->module('site_security');
-                                                        // $shopper_id = $this->site_security->_get_user_id();
-                                                        // if (!is_numeric($shopper_id))
-                                                        //         $shopper_id = 0;
-
-                                                        // $this->load->module('cart');
-                                                        // $table = 'store_basket';
-                                                        // $data['query'] = $this->cart->_fetch_cart_contents($session_id, $shopper_id, $table);
+    $query = $this->store_orders->fetch_sales_order($sales_order_no, $shopper_id);
+    $data['account_data'] = $query->result();
+    $data['query'] = $query;
+    
 
     $data['view_module'] = 'payeezy';    
     $data['page_url'] = 'thankyou';
@@ -194,6 +174,50 @@ function cancel()
 
     $this->load->module('templates');
     $this->templates->public_main($data);    
+}
+
+
+function payeezy_config($query)
+{
+    $shippingRate = $this->shipping->_get_shipping();
+    $taxRate      = $this->shipping->_get_tax();
+    $tax_shipping = $this->shipping->_get_tax_opt();    
+
+    foreach($query->result() as $row) {
+        $session_id  = $row->cart_id;                
+        $line_item_total = number_format($row->price*$row->item_qty,2);
+        $cart_total = number_format($cart_total+$line_item_total,2);
+
+        $line_is_taxable = 1;
+        if($line_is_taxable)
+           $total_tax_line  = number_format($total_tax_line+$line_item_total,2);
+    }
+
+    /* Compute Total taxes */ 
+    $shipping_tax = $tax_shipping == 0 ? 0 : $shippingRate;
+    $total_tax_line = $total_tax_line+$shipping_tax;
+    $tax_total  = number_format($total_tax_line*$taxRate,2);
+
+    // $this->check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total );
+
+    $x_amount = number_format( $cart_total+$tax_total+$shippingRate,2); 
+
+    $payeezy['x_login'] = "HCO-FULL-468";  //  Take from Payment Page ID in Payment Pages interface
+    $payeezy['transaction_key'] = "H1cCqmSAEZVN0HDrc_qz"; // Take from Payment Pages configuration interface
+    $payeezy['x_currency_code'] = "USD"; // Needs to agree with the currency of the payment page
+    srand(time()); // initialize random generator for x_fp_sequence
+    $payeezy['x_fp_sequence'] = rand(1000, 100000) + 123456;
+    $payeezy['x_fp_timestamp'] = time(); // needs to be in UTC. Make sure webserver produces UTC
+
+    // The values that contribute to x_fp_hash 
+    $payeezy['x_amount'] = number_format($x_amount,2);   
+    $payeezy['hmac_data'] = $payeezy['x_login'] . "^" . $payeezy['x_fp_sequence'] . "^" . $payeezy['x_fp_timestamp'] . "^" . $payeezy['x_amount'] . "^" . $payeezy['x_currency_code'];
+    $payeezy['x_fp_hash'] = hash_hmac('MD5', $payeezy['hmac_data'], $payeezy['transaction_key']);
+
+    unset($payeezy['hmac_data']);
+    unset($payeezy['transaction_key']);
+
+    return $payeezy;
 }
 
 function check_out_proof( $session_id, $shippingRate, $taxRate, $cart_total, $total_tax_line, $tax_total )

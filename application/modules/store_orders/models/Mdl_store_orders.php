@@ -14,61 +14,47 @@ function get_table() {
     return $table;
 }
 
-  
-// INSERT INTO `payments` (`id`, `order_number`, `user_id`, `username`, `Authorization_Num`, `Bank_Message`, `CardHoldersName`, `Card_Number`, `payment_method`, `payment_amount`, `transaction_id`, `transaction_type`, `Client_IP`, `session_id`, `ip_address`, `create_date`, `modified_date`, `admin_id`) VALUES (NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-
 
 /* ===================================================
     Add custom model functions here
    =================================================== */
 
-function insert_payment_details($table, $table_data){
+function insert_order_details($table, $table_data){
   $this->db->insert($table, $table_data);
-
   /* get record id number after insert completed */ 
-  $payment_id =  $this->db->query('SELECT LAST_INSERT_ID() as last_id')->row()->last_id;
-  return $payment_id;    
+  $new_record =  $this->db->query('SELECT LAST_INSERT_ID() as last_id')->row()->last_id;
+  return $new_record;    
 }
 
-function insert_data( $payments, $user_login, $user_main )
+function update_order_details($col, $value, $table, $table_data){
+  $this->db->where($col, $value);
+  $this->db->update($table, $table_data);
+  $rows_updated = $this->db->affected_rows();
+  return $rows_updated;    
+}        
+
+function fetch_order($sales_order_no, $shopper_id)
 {
-  // user_login
-  $table1  = 'user_login';
-  // update payment table
-  $table2  = 'site_payments';
-  // user_main
-  $table3  = 'user_main';
 
-  $this->db->trans_start();
-      $this->db->insert( $table1, $user_login);
-      $user_id = $this->model_name->_get_insert_id();
+    $this->db->select('
+        store_orders.*,
+        store_orders.id as order_id,
+        store_orders_details.*,
+        store_orders_details.id as line_no,                
+        store_accounts.*,
+        store_accounts.id as account_id,
+    ');
 
-      /* update payments array */
-      $payments['user_id']  = $user_id;
-      $this->db->insert( $table2, $payments);
+    $this->db->join('store_orders_details', 'store_orders_details.cart_id = store_orders.cart_id', 'left');
+    $this->db->join('store_accounts', 'store_accounts.id = store_orders.shopper_id', 'left');
+    $this->db->from('store_orders');
+    $this->db->where( array("store_orders.id"=> $sales_order_no) );    
 
-      /* update user_main array */
-      $user_main['user_id'] = $user_id;
-      $this->db->insert( $table3, $user_main);    
+    $query = $this->db->get();
+    return $query;
 
-      /* Create with tables with user_id and hold for future updates */
-      $reserved_table_rows = array('user_address', 'user_mail_to', 'user_info',
-       'user_employment_le', 'user_employment_prv_sector', 'user_children' );
-
-      foreach ($reserved_table_rows as $table ) {
-        $new_id = $this->db->insert( $table, array('user_id' => $user_id, 'create_date' => time() ));
-      }  
-
-  $this->db->trans_complete();
-
-  if ($this->db->trans_status() === FALSE) {
-      /*-*/    
-      // generate an error... or use the log_message() function to log your error
-      // redirect to payment did not go through.. Start over.            
-      redirect( $this->main_controller.'/user_payment_declined');
-  }
-  
 }
+
 
 
 /* ===============================================

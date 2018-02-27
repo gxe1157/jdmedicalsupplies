@@ -156,7 +156,7 @@ if ( ! function_exists('get_fields'))
             array(
               'field' => 'shipto_zip',
               'label' => 'Zip code',
-              'rules' =>'required|min_length[5]',
+              'rules' =>'required|numeric|min_length[5]',
               'icon'  => 'envelope',
               'placeholder'=>'',
               'input_type' => 'text', // text, password or drop_down_sel

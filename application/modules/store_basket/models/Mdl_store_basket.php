@@ -27,7 +27,7 @@ function get_where_many( $item_id, $item_color, $item_size, $session_id ) {
      'item_id' => $item_id,
      'item_color' => $item_color,
      'item_size' => $item_size,
-     'session_id' => $session_id
+     'cart_id' => $session_id
     );
     $this->db->where($array); 
     $query = $this->db->get($table);
@@ -38,7 +38,7 @@ function get_where_many( $item_id, $item_color, $item_size, $session_id ) {
 
 function _delete_cart($session_id){
     $table = $this->get_table();
-    $this->db->where('session_id', $session_id);   
+    $this->db->where('cart_id', $session_id);   
     $this->db->delete($table);
 
     $rows_deleted = $this->db->affected_rows();

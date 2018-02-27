@@ -1,8 +1,5 @@
-<?php
-    $show_state = $val_errors ? 'block' : 'none';
-?>    
-<style>
 
+<style>
 /*
  * Shipping Address
  */
@@ -25,9 +22,10 @@
     <h4>Please provide a ship to address and contact information.</h4>
   </div>
   <div class="col-md-12 border">
-  <form id="payNowfields" name="payNowfields" action="goto_gateway" method="post">            
     <div class="row">
       <div class="col-md-5 border">
+            <?php if ( $ready_gateway == 0 ): ?>        
+            <form id="payNow" name="payNow" action="<?= base_url('goto_gateway') ?>" method="post">                    
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info">
                         <div class="panel-heading">Shipping Methods</div>
@@ -36,15 +34,15 @@
                                 <div class="col-md-12">
                                     <div class="checkbox">
                                       <label><input id="ship_ground" name="ship_ground" type="checkbox"
-                                                 value="" <?= $check1 ?> >Ground</label>
+                                                 value="Ground" <?= $check1 ?> >Ground</label>
                                     </div>
                                     <div class="checkbox">
                                       <label><input id="ship_2days" name="ship_2days" type="checkbox"
-                                                 value="" <?= $check2 ?>>2 Days</label>
+                                                 value="2Days" <?= $check2 ?> >2 Days</label>
                                     </div>
                                     <div class="checkbox">
                                       <label><input id="ship_nextday" name="ship_nextday" type="checkbox"
-                                                 value="" <?= $check3 ?> >Next Day</label>
+                                                 value="Next Day" <?= $check3 ?> >Next Day</label>
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +86,7 @@
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <input type="text" name="state" class="form-control" placeholder="State"
-                                     value=""<?= set_value('state') ?>"" />
+                                     value="<?= set_value('state') ?>" />
                 <span style="color: red; "><?php echo form_error('state'); ?></span>
                                 </div>
                             </div>
@@ -110,9 +108,14 @@
                             </div>
                         </div>
 
-                        <div class="panel-heading"><input id="shipToCkbox" type="checkbox" value=""> My billing and shipping address are the same.
-                        </div>
+                        <div class="panel-heading">Shipping Address</div>
                         <div class="panel-body" id="shipTo" style="display:<?= $show_state ?>">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input id="shipToCkbox" type="checkbox" value=""> My billing and shipping address are the same.
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <input type="text" name="shipto_first_name" class="form-control" placeholder="First Name" value="<?= set_value('shipto_first_name') ?>" />
@@ -157,46 +160,82 @@
                                 </div>
                             </div>
                        </div>
+                    </div>
 
+                <button class="btn btn-primary btn-block" name="submit" id="get_billto" value="Submit" type="submit">
+                    <!-- <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i> -->
+                    Submit Billing/Shipping Info
+                </button>
+                <br>    
+            </form>
+            <?php else: ?>
 
+            <form id="payNowfields" name="payNowfields" action="<?= base_url('goto_gateway/edit') ?>" method="post">
+                    <!--SHIPPING METHOD-->
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Shipping Methods</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="checkbox">
+                                      <label><input id="ship_ground" name="ship_ground" type="checkbox"
+                                                 value="Ground" <?= $check1 ?> >Ground</label>
+                                    </div>
+                                    <div class="checkbox">
+                                      <label><input id="ship_2days" name="ship_2days" type="checkbox"
+                                                 value="2Days" <?= $check2 ?> >2 Days</label>
+                                    </div>
+                                    <div class="checkbox">
+                                      <label><input id="ship_nextday" name="ship_nextday" type="checkbox"
+                                                 value="Next Day" <?= $check3 ?> >Next Day</label>
+                                    </div>
+                                </div>
+                            </div>
+                       </div>
+
+                       <div class="panel-heading">Billing Address
+                            <button class="btn btn-success btn btn-link pull-right"
+                                    name="mySubmit" value="edit" type="submit">
+                                    <span style="color: #fff;">Edit</span>
+                            </button>                            
+                       </div>
+                        <div class="panel-body" id="billTo" style="display: block">
+                             <p>
+                                <?= $first_name.' '.$last_name ?><br>
+                                <?php if(!empty($company)) echo $company."<br>"; ?>
+                                <?= $address ?><br>
+                                <?= $city.', '.$state.' '.$zip ?><br>
+                                <?php if(!empty($phone)) echo "Phone: ".$phone."<br>"; ?>
+                                <?= "Email: ".$email ?><br>                                
+                            </p>    
+                        </div>
+
+                        <div class="panel-heading">Shipping Adress<span class="pull-right">edit</span></div>
+                        <div class="panel-body" id="shipTo" style="display: block">
+                            <p>
+                                <?= $shipto_first_name.' '.$shipto_last_name ?><br>
+                                <?php if(!empty($shipto_company)) echo $shipto_company."<br>"; ?>
+                                <?= $shipto_address ?><br>
+                                <?= $shipto_city.', '.$shipto_state.' '.$shipto_zip ?><br>
+                            </p>    
+                       </div>
 
                     </div>
+                </form>
+            <?php endif; ?>                            
+
       </div>
       <div class="col-md-7 border" style="margin-top: 50px;">
           <?php
             echo "<p style='padding-left:15px;'>".$showing_statement."</p>";
             $user_type = 'public';
             echo Modules::run('cart/_draw_cart_contents', $query, $user_type);
-            // echo Modules::run('cart/_attempt_draw_checkout_btn', $query);
+            if ( $ready_gateway == 1 ) {            
+               echo Modules::run('cart/_attempt_draw_checkout_btn', $query);
+            }                            
           ?>
-<div class="row">
-<div class="container">   
-
-<div class="col-md-10 col-md-offset-2" style="margin-bottom: 15px; text-align: right;">
-                <input type="hidden" name="x_login" value="<?= $payeezy['x_login'] ?>" >
-                <input type="hidden" name="x_amount" value="<?= $payeezy['x_amount'] ?>" >
-                <input type="hidden" name="x_fp_sequence" value="<?= $payeezy['x_fp_sequence'] ?>" >
-                <input type="hidden" name="x_fp_timestamp" value="<?= $payeezy['x_fp_timestamp'] ?>" >
-                <input type="hidden" name="x_fp_hash" value="<?= $payeezy['x_fp_hash'] ?>" >
-                <input type="hidden" name="x_currency_code" value="<?= $payeezy['x_currency_code'] ?>" >
-                <input type="hidden" name="x_show_form" value="PAYMENT_FORM"/>
-
-                <a href="<?= base_url().'store_basket/clear_cart'; ?>" class="btn btn-danger">
-                     Clear Cart</a>
-                                   
-                <button class="btn btn-success" name="submit" id="pay_now" value="Submit" type="submit">
-                    <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
-                    Pay Now
-                </button>
-
-</div>
-
-</div>
-</div>
-
       </div>  
     </div>
-    </form>            
   </div>
 </div>    
 

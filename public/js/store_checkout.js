@@ -1,5 +1,18 @@
 
 $(document).ready(function(){
+
+    $('#payNowfields').on('submit', function(e){
+        e.preventDefault();
+	    let formData = new FormData();
+	    let getData = $('#payNowfields').find(':input').serializeArray();
+	    $.each(getData, function(i, field){
+	        formData.append( field.name, field.value);  
+	        // console.log('jdata', field.name, field.value );
+	    });
+	    this.submit();
+    });
+
+
 	/* Set rates + misc */
 	$('#ship_ground, #ship_2days, #ship_nextday').on('click',  function() {
 	    let shipId = this.id;   
@@ -14,10 +27,27 @@ $(document).ready(function(){
        	$('#shipTo').slideDown( 2000 );        
 	})
 
+
 	$('#shipToCkbox').on('click',  function() {
-	    let shipId = this.id;   
-        //$('#billTo').slideUp( 2000 );
-        $('#shipTo').slideDown( 2000 );
+      if( $('#shipToCkbox').prop('checked') ){
+          $('input[name="shipto_first_name"]').val( $('input[name="first_name"]').val() );
+          $('input[name="shipto_last_name"]').val( $('input[name="last_name"]').val() );
+          $('input[name="shipto_company"]').val( $('input[name="company"]').val() );
+          $('input[name="shipto_address"]').val( $('input[name="address"]').val() );          
+          $('input[name="shipto_city"]').val( $('input[name="city"]').val() );            
+          $('input[name="shipto_state"]').val( $('input[name="state"]').val() );   
+          $('input[name="shipto_zip"]').val( $('input[name="zip"]').val() );             
+       } else {
+          $('input[name="shipto_fist_name"]').val( $('input[name=""]').val() );
+          $('input[name="shipto_last_name"]').val( $('input[name=""]').val() );
+          $('input[name="shipto_company"]').val( $('input[name=""]').val() );
+          $('input[name="shipto_address"]').val( $('input[name=""]').val() );                    
+          $('input[name="shipto_city"]').val( $('input[name=""]').val() );            
+          $('input[name="shipto_state"]').val( $('input[name=""]').val() );   
+          $('input[name="shipto_zip"]').val( $('input[name=""]').val() );             
+       }
+
+
 	})
 	
     // $( ".btnSubmitForm" ).trigger( "click" );
@@ -50,6 +80,4 @@ $(document).ready(function(){
 		});
 
 	});
-
-process_payment
 });

@@ -18,7 +18,7 @@ function _draw_checkout_btn($query)
     $this->load->module('shipping');
 
     foreach($query->result() as $row) {
-        $session_id = $row->session_id;
+        $session_id = $row->cart_id;
     }
 
     $on_test_mode = $this->_is_on_test_mode();

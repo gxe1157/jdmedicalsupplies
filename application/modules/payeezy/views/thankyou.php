@@ -111,15 +111,31 @@
       <div class="col-md-5 border">
 
         <div class="row">
-          <div class="col-md-12 border"><h4>Order Number:  </h4></div>          
+          <div class="col-md-12 border"><h4>Order Number: <?= $account_data[0]->order_id ?></h4></div>          
         </div>
         <div class="row">
           <div class="col-sm-3 col-md-4 border headers">Bill To:</div>
-          <div class="col-sm-7 col-md-8 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
+          <div class="col-sm-7 col-md-8 border hsides">
+             <p>
+                <?= $account_data[0]->first_name.' '.$account_data[0]->last_name ?><br>
+                <?php if(!empty($account_data[0]->company)) echo $account_data[0]->company."<br>"; ?>
+                <?= $account_data[0]->address ?><br>
+                <?= $account_data[0]->city.', '.$account_data[0]->state.' '.$account_data[0]->zip ?><br>
+                <?php if(!empty($account_data[0]->phone)) echo "Phone: ".$account_data[0]->phone."<br>"; ?>
+                <?= "Email: ".$account_data[0]->email ?><br>                                
+            </p>    
+          </div>
         </div>          
         <div class="row">
           <div class="col-sm-3 col-md-4 border headers">Ship To:</div>
-          <div class="col-sm-7 col-md-8 border hsides">James Gunn<br>123 street<br>new city, nj 07100</div>
+          <div class="col-sm-7 col-md-8 border hsides">
+            <p>
+                <?= $account_data[0]->shipto_first_name.' '.$account_data[0]->shipto_last_name ?><br>
+                <?php if(!empty($account_data[0]->shipto_company)) echo $account_data[0]->shipto_company."<br>"; ?>
+                <?= $account_data[0]->shipto_address ?><br>
+                <?= $account_data[0]->shipto_city.', '.$account_data[0]->shipto_state.' '.$account_data[0]->shipto_zip ?><br>
+            </p>
+          </div>
         </div>  
         <div class="row">
           <div class="col-sm-3 col-md-4 border headers">Payment Method</div>
@@ -149,22 +165,27 @@
                                 </ul>
                             </p>
                             <p>Creating an account only takes a minute.</p>
-                            <button class="btn btn-success" name="submit" value="Yes - Let's Do It" type="submit">
-                                <i class="fas fa-thumbs-up"></i></span> 
-                                Yes - Let's Do It
-                            </button>
+
+                            <a href="<?= base_url('youraccount/start') ?>">
+                                <button class="btn btn-success" name="submit" value="Yes - Let's Do It" type="submit" >
+                                    Yes - Let's Do It
+                                </button>
+                            </a>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-                            <button class="btn btn-danger" name="submit" value="No Thanks" type="submit">
-                                <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> 
-                                No Thanks
-                            </button>
+                            <a href="<?= base_url() ?>">
+                                <button class="btn btn-danger" name="submit" value="No Thanks" type="submit">
+                                    No Thanks
+                                </button>
+                            </a>
+
                         </div>
                     </div>
                 </div>
           </div>
         </div>
         </div>
+
       </div>
 
       <div class="col-md-7 border">
@@ -176,6 +197,7 @@
         ?>
       </div>
       </div>
+      
     </div>          
   </div>
 
