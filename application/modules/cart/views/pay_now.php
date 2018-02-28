@@ -3,6 +3,7 @@
 /*
  * Shipping Address
  */
+
 .panel-info {
     border-color: #999;
 }
@@ -19,11 +20,13 @@
 
 <div class="container">
   <div class="col-md-12 border" style="text-align: center;">
-    <h4>Please provide a ship to address and contact information.</h4>
+    <?php if ( $ready_gateway == 0 ): ?>        
+        <h4>Please provide a ship to address and contact information.</h4>        
+    <?php endif;?>    
   </div>
-  <div class="col-md-12 border">
+  <div class="col-md-12">
     <div class="row">
-      <div class="col-md-5 border">
+      <div class="col-md-5">
             <?php if ( $ready_gateway == 0 ): ?>        
             <form id="payNow" name="payNow" action="<?= base_url('goto_gateway') ?>" method="post">                    
                     <!--SHIPPING METHOD-->
@@ -34,15 +37,15 @@
                                 <div class="col-md-12">
                                     <div class="checkbox">
                                       <label><input id="ship_ground" name="ship_ground" type="checkbox"
-                                                 value="Ground" <?= $check1 ?> >Ground</label>
+                                                 value="Ground" <?= $chkbx_array[0] ?> >Ground</label>
                                     </div>
                                     <div class="checkbox">
                                       <label><input id="ship_2days" name="ship_2days" type="checkbox"
-                                                 value="2Days" <?= $check2 ?> >2 Days</label>
+                                                 value="2Days" <?= $chkbx_array[1] ?> >2 Days</label>
                                     </div>
                                     <div class="checkbox">
                                       <label><input id="ship_nextday" name="ship_nextday" type="checkbox"
-                                                 value="Next Day" <?= $check3 ?> >Next Day</label>
+                                                 value="NextDay" <?= $chkbx_array[2] ?> >Next Day</label>
                                     </div>
                                 </div>
                             </div>
@@ -172,22 +175,14 @@
 
             <form id="payNowfields" name="payNowfields" action="<?= base_url('goto_gateway/edit') ?>" method="post">
                     <!--SHIPPING METHOD-->
-                    <div class="panel panel-info">
+                    <div class="panel panel-info"  style="margin-top: 30px">
                         <div class="panel-heading">Shipping Methods</div>
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="checkbox">
-                                      <label><input id="ship_ground" name="ship_ground" type="checkbox"
-                                                 value="Ground" <?= $check1 ?> >Ground</label>
-                                    </div>
-                                    <div class="checkbox">
-                                      <label><input id="ship_2days" name="ship_2days" type="checkbox"
-                                                 value="2Days" <?= $check2 ?> >2 Days</label>
-                                    </div>
-                                    <div class="checkbox">
-                                      <label><input id="ship_nextday" name="ship_nextday" type="checkbox"
-                                                 value="Next Day" <?= $check3 ?> >Next Day</label>
+                                     <label><input name="shipping" type="checkbox" <?= $chkbx_array[$chkbx_selected] ?> >
+                                        <?= $chkbx_name ?></label>
                                     </div>
                                 </div>
                             </div>
@@ -225,15 +220,88 @@
             <?php endif; ?>                            
 
       </div>
-      <div class="col-md-7 border" style="margin-top: 50px;">
+      <div class="col-md-7" style="margin-top: 10px;">
+          <?php if ( $ready_gateway == 1 ): ?>        
+            <h3 style="text-align: left;">Payment Details.</h3> <img class="img-responsive" src="http://i76.imgup.net/accepted_c22e0.png">        
+          <?php endif; ?>
+
           <?php
             echo "<p style='padding-left:15px;'>".$showing_statement."</p>";
             $user_type = 'public';
             echo Modules::run('cart/_draw_cart_contents', $query, $user_type);
-            if ( $ready_gateway == 1 ) {            
-               echo Modules::run('cart/_attempt_draw_checkout_btn', $query);
-            }                            
-          ?>
+          ?>  
+<?php if ( $ready_gateway == 1 ) { ?>                            
+        <div class="col-xs-12 col-md-4" style="padding: 0px 10px; width: 100%;">
+            <!-- CREDIT CARD FORM STARTS HERE -->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form role="form" id="payment-form" method="POST" action="javascript:void(0);">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label for="cardNumber">CARD NUMBER</label>
+                                    <div class="input-group">
+                                        <input 
+                                            type="tel"
+                                            class="form-control"
+                                            name="cardNumber"
+                                            placeholder="Valid Card Number"
+                                            autocomplete="cc-number"
+                                            required autofocus 
+                                        />
+                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                    </div>
+                                </div>                            
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-7 col-md-7">
+                                <div class="form-group">
+                                    <label for="cardExpiry">
+                                        <span class="hidden-xs">EXPIRATION</span>
+                                        <!-- <span class="visible-xs-inline">EXP</span>DATE -->
+                                    </label>
+                                    <input 
+                                        type="tel" 
+                                        class="form-control" 
+                                        name="cardExpiry"
+                                        placeholder="MM / YY"
+                                        autocomplete="cc-exp"
+                                        required 
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-xs-5 col-md-5 pull-right">
+                                <div class="form-group">
+                                    <label for="cardCVC">CV CODE</label>
+                                    <input 
+                                        type="tel" 
+                                        class="form-control"
+                                        name="cardCVC"
+                                        placeholder="CVC"
+                                        autocomplete="cc-csc"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <button class="subscribe btn btn-success btn-lg btn-block" type="button">Pay Now</button>
+                            </div>
+                        </div>
+                        <div class="row" style="display:none;">
+                            <div class="col-xs-12">
+                                <p class="payment-errors"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+            <!-- CREDIT CARD FORM ENDS HERE -->
+        </div>            
+<?php } ?>
+
       </div>  
     </div>
   </div>

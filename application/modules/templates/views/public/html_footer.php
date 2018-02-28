@@ -181,8 +181,13 @@
 	<script type="text/javascript" src="<?= base_url() ?>public/js/isotope.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>public/js/ini.isotope.js"></script>
 
+<!-- <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.payment/1.2.3/jquery.payment.min.js"></script>
+
 	<!-- Template custom -->
 	<script type="text/javascript" src="<?= base_url() ?>public/js/custom.js"></script>
 	<script type="text/javascript" src="<?= base_url() ?>public/js/store_checkout.js"></script>
+
 
 	</div><!-- Body inner end -->

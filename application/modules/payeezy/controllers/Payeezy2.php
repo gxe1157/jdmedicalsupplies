@@ -42,7 +42,12 @@ function goto_gateway()
     /* This is to control variables on post to client side */
     $edit_mode = $this->uri->segment(2);
     if( !empty($edit_mode) ) {
-        checkArray($_SESSION,0);
+
+        $_POST[ $_SESSION['chkbx_name'] ] = $_SESSION['chkbx_selected'];
+        quit( $_SESSION['$chkbx_text']." | ".$_SESSION['chkbx_selected']." | ".checkArray($_POST,1),1 );
+
+        // checkArray($_SESSION,0);
+
         $ship_array = $_POST; // Should be one ship method 
         $_POST = $_SESSION;
         unset($_POST['__ci_last_regenerate']);

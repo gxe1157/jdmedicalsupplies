@@ -31,6 +31,67 @@ class MyAuthorize {
 
 	public function chargerCreditCard($detCus){	
 		$creditCard = new net\authorize\api\contract\v1\CreditCardType();
+		$creditCard->setCardNumber("4111111111111111");
+		$creditCard->setExpirationDate("2038-12");					 	
+		$creditCard->setCardCode("123");
+
+		$paymentOne = new net\authorize\api\contract\v1\PaymentType();
+		$paymentOne->setCreditCard($creditCard);
+
+		$order = new net\authorize\api\contract\v1\OrderType();
+		$order->setDescription("Golf Shirts");
+
+		// Preparin customer information object
+		$billto = new net\authorize\api\contract\v1\CustomerAddressType();
+		$billto->setFirstName("Ellen");
+	    $billto->setLastName("Johnson");
+	    $billto->setCompany("Souveniropolis");
+	    $billto->setAddress("14 Main Street");
+	    $billto->setCity("Pecan Springs");
+	    $billto->setState("TX");
+	    $billto->setZip("44628");
+	    $billto->setCountry("USA");
+
+
+		// create transaction 
+		$transactionRequestType = new net\authorize\api\contract\v1\TransactionRequestType();
+		$transactionRequestType->setTransactionType("authCaptureTransaction");
+		$transactionRequestType->setAmount($detCus); 
+		$transactionRequestType->setOrder($order);
+		$transactionRequestType->setPayment($paymentOne);
+		$transactionRequestType->setBillTo($billto);
+
+		$request = new net\authorize\api\contract\v1\CreateTransactionRequest();
+		$request->setMerchantAuthentication($this->merchanAuthentication);
+		$request->setRefId($this->refId); 				  	
+		$request->setTransactionRequest($transactionRequestType);
+		$controllerx = new net\authorize\api\controller\CreateTransactionController($request);
+		$response = $controllerx->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+
+		if ($response != null){
+		    $tresponse = $response->getTransactionResponse();
+
+		    if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
+		      echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+		      echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+		    }else{
+		        echo  "Charge Credit Card ERROR :  Invalid response\n";
+		    }
+
+		} else{
+		      echo  "Charge Credit card Null response returned";
+		}
+	}
+
+
+
+
+
+
+
+    /* ******************************************************** */
+	public function chargerCreditCard_org($detCus){	
+		$creditCard = new net\authorize\api\contract\v1\CreditCardType();
 		$creditCard->setCardNumber($detCus['cnumber']);
 		$creditCard->setExpirationDate($detCus['cexpdate']);					 	
 		$creditCard->setCardCode($detCus['ccode']);
