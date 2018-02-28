@@ -42,15 +42,14 @@ function goto_gateway()
     /* This is to control variables on post to client side */
     $edit_mode = $this->uri->segment(2);
     if( !empty($edit_mode) ) {
-        checkArray($_SESSION,0);
-        $ship_array = $_POST; // Should be one ship method 
+        $ship_method = $_SESSION['ship_method'];
         $_POST = $_SESSION;
+        $_POST[$ship_method] = 1; // Should be one ship method 
+
         unset($_POST['__ci_last_regenerate']);
         unset($_POST['cart_id']);
         unset($_POST['submit']);
-        foreach ($ship_array as $key => $value) {
-            $_POST[$key] = $value;
-        }
+        unset($_SESSION['ship_method']);
     }
 
     $ready_gateway = 0;
@@ -63,8 +62,11 @@ function goto_gateway()
         if($this->form_validation->run() == TRUE) {
             // save to session
             $data = $this->input->post(null,true);
-            list( $data['chkbx_array'], $data['chkbx_selected'], $data['chkbx_name'], $data['chkbx_text'] ) = $this->checkbox();            
-                       
+            // $data['ship_method'] = trim($data['ship_ground']).trim($data['ship_2days']).trim($data['ship_nextday']);
+            list( $chkbx_array, $chkbx_selected, $chkbx_name, $chkbx_text ) = $this->checkbox();
+// quit('3 '.$chkbx_selected." | ".$chkbx_name." | ".$chkbx_text,1 );            
+            $data['ship_method'] = $chkbx_name;
+
             $this->session->set_userdata($data);
             unset($_SESSION['ship_ground']);
             unset($_SESSION['ship_2days']);
@@ -89,16 +91,19 @@ function goto_gateway()
 
 function checkbox()
 {
+    $chkbx_name = ["ship_ground", "ship_2days","ship_nextday"];
+    $chkbx_text = ["Ground", "2 Days", "Next Day"];
+
     $chkbx_array[] = ( isset($_POST['ship_ground']) &&  !empty($_POST['ship_ground'] ) ) ? 'checked="checked"' : '';
     $chkbx_array[] = ( isset($_POST['ship_2days']) &&  !empty($_POST['ship_2days'] ) ) ?  'checked="checked"' : '';
     $chkbx_array[] = ( isset($_POST['ship_nextday']) &&  !empty($_POST['ship_nextday'] ) ) ? 'checked="checked"' : '';
     
-    $chkbx_selected = !empty($chkbx_array[0]) ? "0" : !empty($chkbx_array[1]) ? "1" : "2";
-    $chkbx_name     = !empty($chkbx_array[0]) ? "ship_ground" : !empty($chkbx_array[1]) ? "ship_2days" : "ship_nextday";
-    $chkbx_text     = !empty($chkbx_array[0]) ? "Ground" : !empty($chkbx_array[1]) ? "2 Days" : "Next Day";
-
-    return [ $chkbx_array, $chkbx_selected, $chkbx_name, $chkbx_text ];
-
+    foreach ($chkbx_array as $key => $value) {
+        if( $value == 'checked="checked"'){
+            $chkbx_selected = $key;   
+        }
+    }
+    return [ $chkbx_array, $chkbx_selected, $chkbx_name[$chkbx_selected], $chkbx_text[$chkbx_selected] ];
 }
 
 function confirmation()

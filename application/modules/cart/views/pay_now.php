@@ -176,13 +176,18 @@
             <form id="payNowfields" name="payNowfields" action="<?= base_url('goto_gateway/edit') ?>" method="post">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info"  style="margin-top: 30px">
-                        <div class="panel-heading">Shipping Methods</div>
+                        <div class="panel-heading">Shipping Methods
+                            <button class="btn btn-success btn btn-link pull-right"
+                                    name="mySubmit" value="edit" type="submit">
+                                    <span style="color: #fff;">Edit</span>
+                            </button>                            
+                        </div>
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="checkbox">
                                      <label><input name="shipping" type="checkbox" <?= $chkbx_array[$chkbx_selected] ?> >
-                                        <?= $chkbx_name ?></label>
+                                        <?= $chkbx_text ?></label>
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +210,12 @@
                             </p>    
                         </div>
 
-                        <div class="panel-heading">Shipping Adress<span class="pull-right">edit</span></div>
+                        <div class="panel-heading">Shipping Adress
+                            <button class="btn btn-success btn btn-link pull-right"
+                                    name="mySubmit" value="edit" type="submit">
+                                    <span style="color: #fff;">Edit</span>
+                            </button>   
+                        </div>                             
                         <div class="panel-body" id="shipTo" style="display: block">
                             <p>
                                 <?= $shipto_first_name.' '.$shipto_last_name ?><br>

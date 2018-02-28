@@ -84,11 +84,6 @@ class MyAuthorize {
 	}
 
 
-
-
-
-
-
     /* ******************************************************** */
 	public function chargerCreditCard_org($detCus){	
 		$creditCard = new net\authorize\api\contract\v1\CreditCardType();
