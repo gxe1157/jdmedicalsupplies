@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-md-5">
             <?php if ( $ready_gateway == 0 ): ?>        
-            <form id="payNow" name="payNow" action="<?= base_url('goto_gateway') ?>" method="post">                    
+            <form id="payNow" name="payNow" action="<?= base_url('billTo_shipTo') ?>" method="post">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info">
                         <div class="panel-heading">Shipping Methods</div>
@@ -173,7 +173,9 @@
             </form>
             <?php else: ?>
 
-            <form id="payNowfields" name="payNowfields" action="<?= base_url('goto_gateway/edit') ?>" method="post">
+            <form id="payNowfields" name="payNowfields"
+                  action="<?= base_url('billTo_shipTo/edit') ?>" method="post">
+
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info"  style="margin-top: 30px">
                         <div class="panel-heading">Shipping Methods
@@ -239,78 +241,13 @@
             echo "<p style='padding-left:15px;'>".$showing_statement."</p>";
             $user_type = 'public';
             echo Modules::run('cart/_draw_cart_contents', $query, $user_type);
-          ?>  
-<?php if ( $ready_gateway == 1 ) { ?>                            
-        <div class="col-xs-12 col-md-4" style="padding: 0px 10px; width: 100%;">
-            <!-- CREDIT CARD FORM STARTS HERE -->
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <form role="form" id="payment-form" method="POST" action="javascript:void(0);">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <label for="cardNumber">CARD NUMBER</label>
-                                    <div class="input-group">
-                                        <input 
-                                            type="tel"
-                                            class="form-control"
-                                            name="cardNumber"
-                                            placeholder="Valid Card Number"
-                                            autocomplete="cc-number"
-                                            required autofocus 
-                                        />
-                                        <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
-                                    </div>
-                                </div>                            
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-7 col-md-7">
-                                <div class="form-group">
-                                    <label for="cardExpiry">
-                                        <span class="hidden-xs">EXPIRATION</span>
-                                        <!-- <span class="visible-xs-inline">EXP</span>DATE -->
-                                    </label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control" 
-                                        name="cardExpiry"
-                                        placeholder="MM / YY"
-                                        autocomplete="cc-exp"
-                                        required 
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-xs-5 col-md-5 pull-right">
-                                <div class="form-group">
-                                    <label for="cardCVC">CV CODE</label>
-                                    <input 
-                                        type="tel" 
-                                        class="form-control"
-                                        name="cardCVC"
-                                        placeholder="CVC"
-                                        autocomplete="cc-csc"
-                                        required
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <button class="subscribe btn btn-success btn-lg btn-block" type="button">Pay Now</button>
-                            </div>
-                        </div>
-                        <div class="row" style="display:none;">
-                            <div class="col-xs-12">
-                                <p class="payment-errors"></p>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>            
-            <!-- CREDIT CARD FORM ENDS HERE -->
-        </div>            
-<?php } ?>
+
+            // <!-- Pay now cart   -->
+            if ( $ready_gateway == 1 ) {
+                $this->load->view( $payment_gateway.'/view');
+            }
+            // <!-- Pay now cart   -->            
+          ?>
 
       </div>  
     </div>

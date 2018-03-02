@@ -59,16 +59,13 @@
     <div class="col-md-6" style="text-align: center;">
         <h2 class="form-signin-heading">New Customers</h2>
         <p>Don't have an account? No Problem, you can check out as a guest. You'll have an opportunity to create an account during checkout.</p>
-        <!-- redirect('cart/index/'.$checkout_token); -->
-        <form  name="form-signup" class="form-signin"
-               action="<?= base_url() ?>process_payment" method="POST"> 
-
-            <button class="btn btn-success" style="margin-bottom: 10px;"
-                    margin-bottom: 20px; name="submit" value="Yes - Let's Do It" type="submit">
+            <a href="<?= base_url() ?>process_payment">
+              <button class="btn btn-success" style="margin-bottom: 10px;"
+                    margin-bottom: 20px; name="submit" value="Yes - Let's Do It" type="button">
                 <i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i>
                 Continue Checkout as Guest
-            </button>
-        </form>
+              </button>
+          </a>
     </div>
 </div>
 <br>

@@ -29,11 +29,11 @@ class MyAuthorize {
 		$this->refId = 'ref'.time();
 	}
 
-	public function chargerCreditCard($detCus){	
+	public function chargerCreditCard($data){	
 		$creditCard = new net\authorize\api\contract\v1\CreditCardType();
-		$creditCard->setCardNumber("4111111111111111");
-		$creditCard->setExpirationDate("2038-12");					 	
-		$creditCard->setCardCode("123");
+		$creditCard->setCardNumber( $data['cardNumber'] );
+		$creditCard->setExpirationDate($data['cardExpiry']);					 	
+		$creditCard->setCardCode($data['cardCVC']);
 
 		$paymentOne = new net\authorize\api\contract\v1\PaymentType();
 		$paymentOne->setCreditCard($creditCard);
@@ -41,82 +41,37 @@ class MyAuthorize {
 		$order = new net\authorize\api\contract\v1\OrderType();
 		$order->setDescription("Golf Shirts");
 
+
 		// Preparin customer information object
 		$billto = new net\authorize\api\contract\v1\CustomerAddressType();
-		$billto->setFirstName("Ellen");
-	    $billto->setLastName("Johnson");
-	    $billto->setCompany("Souveniropolis");
-	    $billto->setAddress("14 Main Street");
-	    $billto->setCity("Pecan Springs");
-	    $billto->setState("TX");
-	    $billto->setZip("44628");
+		$billto->setFirstName($data['first_name']);
+	    $billto->setLastName($data['last_name']);
+	    $billto->setCompany( null );
+	    $billto->setAddress($data['address']);
+	    $billto->setCity($data['city']);
+	    $billto->setState($data['state']);
+	    $billto->setZip($data['zip']);
 	    $billto->setCountry("USA");
 
-
-		// create transaction 
-		$transactionRequestType = new net\authorize\api\contract\v1\TransactionRequestType();
-		$transactionRequestType->setTransactionType("authCaptureTransaction");
-		$transactionRequestType->setAmount($detCus); 
-		$transactionRequestType->setOrder($order);
-		$transactionRequestType->setPayment($paymentOne);
-		$transactionRequestType->setBillTo($billto);
-
-		$request = new net\authorize\api\contract\v1\CreateTransactionRequest();
-		$request->setMerchantAuthentication($this->merchanAuthentication);
-		$request->setRefId($this->refId); 				  	
-		$request->setTransactionRequest($transactionRequestType);
-		$controllerx = new net\authorize\api\controller\CreateTransactionController($request);
-		$response = $controllerx->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
-
-		if ($response != null){
-		    $tresponse = $response->getTransactionResponse();
-
-		    if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
-		      echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
-		      echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
-		    }else{
-		        echo  "Charge Credit Card ERROR :  Invalid response\n";
-		    }
-
-		} else{
-		      echo  "Charge Credit card Null response returned";
-		}
-	}
-
-
-    /* ******************************************************** */
-	public function chargerCreditCard_org($detCus){	
-		$creditCard = new net\authorize\api\contract\v1\CreditCardType();
-		$creditCard->setCardNumber($detCus['cnumber']);
-		$creditCard->setExpirationDate($detCus['cexpdate']);					 	
-		$creditCard->setCardCode($detCus['ccode']);
-
-		$paymentOne = new net\authorize\api\contract\v1\PaymentType();
-		$paymentOne->setCreditCard($creditCard);
-
-		$order = new net\authorize\api\contract\v1\OrderType();
-		$order->setDescription($detCus['cdesc']);
-
 		// Preparin customer information object
-		$billto = new net\authorize\api\contract\v1\CustomerAddressType();
-		$billto->setFirstName($detCus['fname']);
-		$billto->setLastName($detCus['lname']);
-		$billto->setAddress($detCus['address']);
-		$billto->setCity($detCus['city']);
-		$billto->setState($detCus['state']);
-		$billto->setCountry($detCus['country']);
-		$billto->setZip($detCus['zip']);
-		$billto->setPhoneNumber($detCus['phone']);
-		$billto->setEmail($detCus['email']);
-
+		// $shipto = new net\authorize\api\contract\v1\CustomerAddressType();
+		// $shipto->setFirstName($data['shipto_first_name']);
+		// $shipto->setLastName($data['shipto_last_name']);
+		// $shipto->setCompany($data['shipto_company']);
+		// $shipto->setAddress($data['shipto_address']);
+		// $shipto->setCity($data['shipto_city']);
+		// $shipto->setState($data['shipto_state']);
+		// $shipto->setZip($data['shipto_zip']);
+		// $shipto->setCountry("USA");
 
 		// create transaction 
 		$transactionRequestType = new net\authorize\api\contract\v1\TransactionRequestType();
 		$transactionRequestType->setTransactionType("authCaptureTransaction");
-		$transactionRequestType->setAmount($detCus['amount']); 
+		$transactionRequestType->setAmount($data['amount']); 
 		$transactionRequestType->setOrder($order);
 		$transactionRequestType->setPayment($paymentOne);
 		$transactionRequestType->setBillTo($billto);
+		// $transactionRequestType->setShipTo($shipto);
 
 		$request = new net\authorize\api\contract\v1\CreateTransactionRequest();
 		$request->setMerchantAuthentication($this->merchanAuthentication);
@@ -129,14 +84,20 @@ class MyAuthorize {
 		    $tresponse = $response->getTransactionResponse();
 
 		    if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
-		      echo "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
-		      echo "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+				$reponse = "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+				$reponse .=  "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+				return [ '1', $response ];
+
 		    }else{
-		        echo  "Charge Credit Card ERROR :  Invalid response\n";
+		        $response = "Charge Credit Card ERROR :  Invalid response\n";
+		        return [ '0', $response ];  
 		    }
 
 		} else{
-		      echo  "Charge Credit card Null response returned";
+			$response = "Charge Credit card Null response returned";
+			return [ '9', $response ];  
 		}
+
 	}
+
 }

@@ -57,10 +57,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // HOME / LOGIN
 $route['admin'] = "site_dashboard/login";
 $route['youraccount/myLogin'] = 'youraccount/login';
-// $route['payeezy'] = 'payeezy/index';
 $route['process_payment'] = 'cart';
-$route['goto_gateway'] = 'payeezy/goto_gateway';
-$route['goto_gateway/(:any)'] = 'payeezy/goto_gateway/$1';
+
+$route['payment-process'] = 'authorize_net/myauthorize';
+
+$route['billTo_shipTo'] = 'cart/goto_gateway';
+$route['billTo_shipTo/(:any)'] = 'cart/goto_gateway/$1';
+
+
 $route['store_orders'] = 'payeezy/confirmation';
 //$route['site_upload/upload_categories/(:any)'] = "site_upload/upload_categories/$1";
 

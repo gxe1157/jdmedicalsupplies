@@ -2,9 +2,13 @@
 class Cart extends MX_Controller 
 {
 
+private $gateway_company = '';
+
 function __construct() {
     parent::__construct();
-    $this->load->module('site_security');    
+    $this->load->module('site_security');
+    $this->gateway_company = 'authorize_net';
+
 }
 
 
@@ -32,24 +36,15 @@ function index()
 
     $data['view_module'] = 'cart';    
     $data['show_state'] = 'none'; // billto ans shipto box at pay_now.php
+
+    $data['payment_gateway'] = $this->gateway_company;
     $data['page_url'] = uri_string()=='process_payment' ? 'pay_now':'cart';
 
     $this->load->module('templates');
     $this->templates->public_main($data);
 }
 
-// function submit_choice()
-// {
-//     $submit = $this->input->post('submit', TRUE);
-//     if ($submit=="No Thanks") {
-//         $checkout_token = $this->input->post('checkout_token', TRUE);
-//         redirect('cart/index/'.$checkout_token);
-//     } elseif ($submit=="Yes - Let's Do It") {
-//         redirect('youraccount/start');
-//     }
-// }
-
-function go_to_checkout()
+function checkout()
 {
 
     $shopper_id = $this->site_security->_get_user_id();
@@ -75,7 +70,7 @@ function _attempt_draw_checkout_btn($query)
     $third_bit = $this->uri->segment(3);
     $uri = uri_string();
 
-    if ((!is_numeric($shopper_id)) AND ($third_bit=='') AND ($uri != 'goto_gateway') AND ($uri != 'process_payment') ){
+    if ((!is_numeric($shopper_id)) AND ($third_bit=='') AND ($uri != 'billTo_shipTo') AND ($uri != 'process_payment') ){
         $this->_draw_checkout_btn_fake($query);
     } else {
         $this->_draw_checkout_btn_real($query);
@@ -181,6 +176,103 @@ function _draw_add_to_cart($item_id)
     $data['item_id'] = $item_id;
     $this->load->view('add_to_cart', $data);
 }
+
+
+function goto_gateway()
+{
+    $this->load->helper('store_accounts/gateway_flds_helper');
+    $this->column_rules = get_fields();
+
+    /* This is to control variables on post to client side */
+    $edit_mode = $this->uri->segment(2);
+    if( !empty($edit_mode) ) {
+        $ship_method = $_SESSION['ship_method'];
+        $_POST = $_SESSION;
+        $_POST[$ship_method] = 1; // Should be one ship method 
+
+        unset($_POST['__ci_last_regenerate']);
+        unset($_POST['cart_id']);
+        unset($_POST['submit']);
+        unset($_SESSION['ship_method']);
+    }
+
+    $ready_gateway = 0;
+
+    $submit = $this->input->post('submit',true);
+    if($submit == 'Submit'){
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules( $this->column_rules );
+
+        if($this->form_validation->run() == TRUE) {
+            // save to session
+            $data = $this->input->post(null,true);
+            // $data['ship_method'] = trim($data['ship_ground']).trim($data['ship_2days']).trim($data['ship_nextday']);
+            list( $chkbx_array, $chkbx_selected, $chkbx_name, $chkbx_text ) = $this->checkbox();
+            // quit('3 '.$chkbx_selected." | ".$chkbx_name." | ".$chkbx_text,1 );            
+            $data['ship_method'] = $chkbx_name;
+
+            $this->session->set_userdata($data);
+            unset($_SESSION['ship_ground']);
+            unset($_SESSION['ship_2days']);
+            unset($_SESSION['ship_nextday']);                        
+            $ready_gateway = 1;
+        }
+
+    }
+
+    $data = $this->build_data($data);        
+    $data['ready_gateway'] = $ready_gateway;
+    $data['show_state'] ='block';
+
+    list( $data['chkbx_array'], $data['chkbx_selected'], $data['chkbx_name'], $data['chkbx_text'] ) = $this->checkbox();
+
+    $data['view_module'] = 'cart';    
+    $data['page_url'] = 'pay_now';
+    $data['payment_gateway'] = $this->gateway_company;
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);   
+}
+
+function checkbox()
+{
+    $chkbx_name = ["ship_ground", "ship_2days","ship_nextday"];
+    $chkbx_text = ["Ground", "2 Days", "Next Day"];
+
+    $chkbx_array[] = ( isset($_POST['ship_ground']) &&  !empty($_POST['ship_ground'] ) ) ? 'checked="checked"' : '';
+    $chkbx_array[] = ( isset($_POST['ship_2days']) &&  !empty($_POST['ship_2days'] ) ) ?  'checked="checked"' : '';
+    $chkbx_array[] = ( isset($_POST['ship_nextday']) &&  !empty($_POST['ship_nextday'] ) ) ? 'checked="checked"' : '';
+    
+    foreach ($chkbx_array as $key => $value) {
+        if( $value == 'checked="checked"'){
+            $chkbx_selected = $key;   
+        }
+    }
+    return [ $chkbx_array, $chkbx_selected, $chkbx_name[$chkbx_selected], $chkbx_text[$chkbx_selected] ];
+}
+
+
+function build_data($data = array())
+{
+    if( isset($this->session->cart_id) ) {
+        $session_id = $this->session->cart_id;
+     } else {
+        redirect('cart/cart');
+    }    
+
+    $this->load->module('site_security');
+    $shopper_id = $this->site_security->_get_user_id();
+    if (!is_numeric($shopper_id))
+            $shopper_id = 0;
+
+    // $this->load->module('cart');
+    $table = 'store_basket';
+    $data['query'] = $this->_fetch_cart_contents($session_id, $shopper_id, $table);
+    return $data;
+}
+
+
+
 
 
 // function test()
