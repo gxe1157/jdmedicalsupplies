@@ -30,10 +30,12 @@ class MyAuthorize {
 	}
 
 	public function chargerCreditCard($data){	
+		$approval_status = [];
+
 		$creditCard = new net\authorize\api\contract\v1\CreditCardType();
-		$creditCard->setCardNumber( $data['cardNumber'] );
-		$creditCard->setExpirationDate($data['cardExpiry']);					 	
-		$creditCard->setCardCode($data['cardCVC']);
+		$creditCard->setCardNumber( $_POST['cardNumber'] );
+		$creditCard->setExpirationDate($_POST['cardExpiry']);					 	
+		$creditCard->setCardCode($_POST['cardCVC']);
 
 		$paymentOne = new net\authorize\api\contract\v1\PaymentType();
 		$paymentOne->setCreditCard($creditCard);
@@ -67,7 +69,7 @@ class MyAuthorize {
 		// create transaction 
 		$transactionRequestType = new net\authorize\api\contract\v1\TransactionRequestType();
 		$transactionRequestType->setTransactionType("authCaptureTransaction");
-		$transactionRequestType->setAmount($data['amount']); 
+		$transactionRequestType->setAmount($data['grand_total']); 
 		$transactionRequestType->setOrder($order);
 		$transactionRequestType->setPayment($paymentOne);
 		$transactionRequestType->setBillTo($billto);
@@ -84,20 +86,25 @@ class MyAuthorize {
 		    $tresponse = $response->getTransactionResponse();
 
 		    if (($tresponse != null) && ($tresponse->getResponseCode()=="1") ) {
-				$reponse = "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
-				$reponse .=  "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
-				return [ '1', $response ];
+				$resp['AccountNumber'] = $tresponse->getAccountNumber();
+				$resp['AccountType'] = $tresponse->getAccountType();
+				$resp['AuthCode'] = $tresponse->getAuthCode();
+				$resp['TransId'] = $tresponse->getTransId();
+
+				// $resp = "Charge Credit Card AUTH CODE : " . $tresponse->getAuthCode() . "\n";
+				// $resp .=  "Charge Credit Card TRANS ID  : " . $tresponse->getTransId() . "\n";
+				return [ '1', $resp ];
 
 		    }else{
-		        $response = "Charge Credit Card ERROR :  Invalid response\n";
-		        return [ '0', $response ];  
+		        $resp[] = "Charge Credit Card ERROR :  Invalid response\n";
+		        return [ '0', $resp ];  
 		    }
 
 		} else{
-			$response = "Charge Credit card Null response returned";
-			return [ '9', $response ];  
-		}
+			$resp[] = "Charge Credit card Null response returned";
+			return [ '3', $resp ];  
 
+		}
 	}
 
 }

@@ -14,6 +14,7 @@
                                             type="text"
                                             class="form-control"
                                             name="cardNumber"
+                                            value ="370000000000002"
                                             placeholder="Valid Card Number"
                                             autocomplete="cc-number"
                                             required autofocus 

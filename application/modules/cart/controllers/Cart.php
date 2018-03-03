@@ -206,9 +206,7 @@ function goto_gateway()
         if($this->form_validation->run() == TRUE) {
             // save to session
             $data = $this->input->post(null,true);
-            // $data['ship_method'] = trim($data['ship_ground']).trim($data['ship_2days']).trim($data['ship_nextday']);
             list( $chkbx_array, $chkbx_selected, $chkbx_name, $chkbx_text ) = $this->checkbox();
-            // quit('3 '.$chkbx_selected." | ".$chkbx_name." | ".$chkbx_text,1 );            
             $data['ship_method'] = $chkbx_name;
 
             $this->session->set_userdata($data);
@@ -226,9 +224,9 @@ function goto_gateway()
 
     list( $data['chkbx_array'], $data['chkbx_selected'], $data['chkbx_name'], $data['chkbx_text'] ) = $this->checkbox();
 
+    $data['payment_gateway'] = $this->gateway_company;
     $data['view_module'] = 'cart';    
     $data['page_url'] = 'pay_now';
-    $data['payment_gateway'] = $this->gateway_company;
 
     $this->load->module('templates');
     $this->templates->public_main($data);   
@@ -265,7 +263,6 @@ function build_data($data = array())
     if (!is_numeric($shopper_id))
             $shopper_id = 0;
 
-    // $this->load->module('cart');
     $table = 'store_basket';
     $data['query'] = $this->_fetch_cart_contents($session_id, $shopper_id, $table);
     return $data;
