@@ -233,7 +233,8 @@
 
       </div>
       <div class="col-md-7" style="margin-top: 10px;">
-          <?php if ( $ready_gateway == 1 ): ?>        
+          <?php if ( $ready_gateway == 1 ): ?>  
+            <!-- Show Credit Card images -->
             <h3 style="text-align: left;">Payment Details.</h3> <img class="img-responsive" src="http://i76.imgup.net/accepted_c22e0.png">        
           <?php endif; ?>
 
