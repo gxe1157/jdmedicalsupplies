@@ -10,7 +10,7 @@ parent::__construct();
 
 }
 
-function myauthorize()
+function authorize()
 {
 	/* Init vars */
 	$cart_total = 0;
@@ -30,6 +30,12 @@ function myauthorize()
 
     if($this->debug == 1)
     	$this->display_totals($data);
+
+    /* If approved - copy basket to salesorder */
+    if( $data['reponse_code'] == 1 ) {
+        $this->load->module('store_orders');
+        $this->store_orders->payment_details($data);
+    }
 
 	/* reponse_code 0=>failed, 1->approved 3->settings failure */ 
     $data['view_module'] = 'authorize_net';    

@@ -59,7 +59,7 @@ $route['admin'] = "site_dashboard/login";
 $route['youraccount/myLogin'] = 'youraccount/login';
 $route['process_payment'] = 'cart';
 
-$route['payment-process'] = 'authorize_net/myauthorize';
+$route['payment-process'] = 'authorize_net/authorize';
 
 $route['billTo_shipTo'] = 'cart/goto_gateway';
 $route['billTo_shipTo/(:any)'] = 'cart/goto_gateway/$1';

@@ -27,7 +27,7 @@
   <div class="col-md-12">
     <div class="row">
       <div class="col-md-5">
-            <?php if ( $ready_gateway == 0 ): ?>        
+            <?php if ( $ready_gateway == 0 ): ?>    
             <form id="payNow" name="payNow" action="<?= base_url('billTo_shipTo') ?>" method="post">
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info">
@@ -172,34 +172,30 @@
                 <br>    
             </form>
             <?php else: ?>
-
-            <form id="payNowfields" name="payNowfields"
-                  action="<?= base_url('billTo_shipTo/edit') ?>" method="post">
-
                     <!--SHIPPING METHOD-->
                     <div class="panel panel-info"  style="margin-top: 30px">
                         <div class="panel-heading">Shipping Methods
+                            <a href="<?= base_url('billTo_shipTo/edit?edit=edit') ?>" >
                             <button class="btn btn-success btn btn-link pull-right"
-                                    name="mySubmit" value="edit" type="submit">
-                                    <span style="color: #fff;">Edit</span>
-                            </button>                            
+                                    type="button"><span style="color: #fff;">Edit</span>
+                            </button>
+                            </a>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="col-md-12">
                                     <div class="checkbox">
-                                     <label><input name="shipping" type="checkbox" <?= $chkbx_array[$chkbx_selected] ?> >
                                         <?= $chkbx_text ?></label>
                                     </div>
                                 </div>
                             </div>
                        </div>
-
                        <div class="panel-heading">Billing Address
+                            <a href="<?= base_url('billTo_shipTo/edit?edit=edit') ?>" >
                             <button class="btn btn-success btn btn-link pull-right"
-                                    name="mySubmit" value="edit" type="submit">
-                                    <span style="color: #fff;">Edit</span>
-                            </button>                            
+                                    type="button"><span style="color: #fff;">Edit</span>
+                            </button>
+                            </a>
                        </div>
                         <div class="panel-body" id="billTo" style="display: block">
                              <p>
@@ -213,10 +209,11 @@
                         </div>
 
                         <div class="panel-heading">Shipping Adress
+                            <a href="<?= base_url('billTo_shipTo/edit?edit=edit') ?>" >
                             <button class="btn btn-success btn btn-link pull-right"
-                                    name="mySubmit" value="edit" type="submit">
-                                    <span style="color: #fff;">Edit</span>
-                            </button>   
+                                    type="button"><span style="color: #fff;">Edit</span>
+                            </button>
+                            </a>
                         </div>                             
                         <div class="panel-body" id="shipTo" style="display: block">
                             <p>
@@ -228,7 +225,6 @@
                        </div>
 
                     </div>
-                </form>
             <?php endif; ?>                            
 
       </div>

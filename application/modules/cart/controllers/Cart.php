@@ -12,7 +12,6 @@ function __construct() {
 }
 
 
-
 /* ===================================================
     Controller functions goes here. Put all DRY
     functions in applications/core/My_Controller.php
@@ -213,7 +212,7 @@ function goto_gateway()
             unset($_SESSION['ship_ground']);
             unset($_SESSION['ship_2days']);
             unset($_SESSION['ship_nextday']);                        
-            $ready_gateway = 1;
+            redirect('cart/get_payment_method/1');                         
         }
 
     }
@@ -231,6 +230,32 @@ function goto_gateway()
     $this->load->module('templates');
     $this->templates->public_main($data);   
 }
+
+function get_payment_method()
+{
+    $ship_method = $_SESSION['ship_method'];
+    $data = $_SESSION;
+    unset($data['__ci_last_regenerate']);
+    unset($data['cart_id']);
+    unset($data['submit']);
+    unset($_SESSION['ship_method']);
+
+    $check_gateway = 1;
+    $data = $this->build_data($data);        
+    $data['ready_gateway'] = $check_gateway == '1' ? 1 : $data['ready_gateway'];
+    $data['show_state'] ='block';
+
+    list( $data['chkbx_array'], $data['chkbx_selected'], $data['chkbx_name'], $data['chkbx_text'] ) = $this->checkbox();
+
+    $data['payment_gateway'] = $this->gateway_company;
+    $data['view_module'] = 'cart';    
+    $data['page_url'] = 'pay_now';
+
+    $this->load->module('templates');
+    $this->templates->public_main($data);   
+
+}
+
 
 function checkbox()
 {

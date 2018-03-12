@@ -20,6 +20,8 @@ function get_table() {
    =================================================== */
 
 function insert_order_details($table, $table_data){
+
+  checkArray($table_data,0);
   $this->db->insert($table, $table_data);
   /* get record id number after insert completed */ 
   $new_record =  $this->db->query('SELECT LAST_INSERT_ID() as last_id')->row()->last_id;
